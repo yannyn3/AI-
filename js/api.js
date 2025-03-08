@@ -224,79 +224,34 @@ async function testApiConnection(provider) {
             if (apiProxy) {
                 console.log("使用用户提供的OpenAI API代理:", apiProxy);
                 apiEndpoint = apiProxy;
-            } else {
-                // 使用CORS代理
-                apiEndpoint = addCorsProxy(apiEndpoint);
             }
             
-            console.log(`使用端点测试OpenAI连接: ${apiEndpoint}`);
-            
-            // 发送简单请求测试API连接
-            const response = await fetch(apiEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${openaiKey}`
-                },
-                body: JSON.stringify({
-                    model: "gpt-3.5-turbo",
-                    messages: [
-                        { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
-                    ],
-                    max_tokens: 10
-                })
-            });
-            
-            console.log('OpenAI响应状态:', response.status);
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('OpenAI API响应错误详情:', errorData);
-                throw new Error(`OpenAI API错误: ${errorData.error?.message || response.statusText || '未知错误'}`);
+            try {
+                // 尝试直接调用API，失败后会尝试各种代理
+                const response = await apiRequestWithFallback(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${openaiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
+                        ],
+                        max_tokens: 10
+                    })
+                });
+                
+                console.log('OpenAI响应状态:', response.status);
+                
+                const result = await response.json();
+                console.log('OpenAI API测试成功:', result);
+                return { success: true };
+            } catch (error) {
+                console.error('OpenAI API连接失败:', error);
+                throw error;
             }
-            
-            const result = await response.json();
-            console.log('OpenAI API测试成功:', result);
-            return { success: true };
-        }
-        
-        // Poe API测试
-        else if (provider === 'poe') {
-            const poeKey = apiConfig.poe?.apiKey;
-            if (!poeKey) {
-                throw new Error("未配置Poe API密钥");
-            }
-            
-            // 使用代理服务来避免CORS问题
-            const proxyUrl = addCorsProxy('https://api.poe.com/chat/completions');
-            console.log(`使用端点测试Poe连接: ${proxyUrl}`);
-            
-            // 发送简单请求测试API连接
-            const response = await fetch(proxyUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${poeKey}`
-                },
-                body: JSON.stringify({
-                    model: "Claude-3.5-Sonnet-20240620",
-                    messages: [
-                        { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
-                    ]
-                })
-            });
-            
-            console.log('Poe响应状态:', response.status);
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('Poe API响应错误详情:', errorData);
-                throw new Error(`Poe API错误: ${errorData.error?.message || response.statusText || '未知错误'}`);
-            }
-            
-            const result = await response.json();
-            console.log('Poe API测试成功:', result);
-            return { success: true };
         }
         
         // DeepSeek API测试
@@ -313,39 +268,33 @@ async function testApiConnection(provider) {
             if (apiProxy) {
                 console.log("使用用户提供的DeepSeek API代理:", apiProxy);
                 apiEndpoint = apiProxy;
-            } else {
-                // 使用CORS代理
-                apiEndpoint = addCorsProxy(apiEndpoint);
             }
             
-            console.log(`使用端点测试DeepSeek连接: ${apiEndpoint}`);
-            
-            // 发送简单请求测试API连接
-            const response = await fetch(apiEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${deepseekKey}`
-                },
-                body: JSON.stringify({
-                    model: "deepseek-chat",
-                    messages: [
-                        { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
-                    ]
-                })
-            });
-            
-            console.log('DeepSeek响应状态:', response.status);
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('DeepSeek API响应错误详情:', errorData);
-                throw new Error(`DeepSeek API错误: ${errorData.error?.message || response.statusText || '未知错误'}`);
+            try {
+                // 尝试直接调用API，失败后会尝试各种代理
+                const response = await apiRequestWithFallback(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${deepseekKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [
+                            { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
+                        ]
+                    })
+                });
+                
+                console.log('DeepSeek响应状态:', response.status);
+                
+                const result = await response.json();
+                console.log('DeepSeek API测试成功:', result);
+                return { success: true };
+            } catch (error) {
+                console.error('DeepSeek API连接失败:', error);
+                throw error;
             }
-            
-            const result = await response.json();
-            console.log('DeepSeek API测试成功:', result);
-            return { success: true };
         }
         
         // Anthropic API测试
@@ -355,38 +304,71 @@ async function testApiConnection(provider) {
                 throw new Error("未配置Anthropic API密钥");
             }
             
-            // 使用代理服务来避免CORS问题
-            const proxyUrl = addCorsProxy('https://api.anthropic.com/v1/messages');
-            console.log(`使用端点测试Anthropic连接: ${proxyUrl}`);
+            const apiEndpoint = 'https://api.anthropic.com/v1/messages';
             
-            // 发送简单请求测试API连接
-            const response = await fetch(proxyUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': anthropicKey,
-                    'anthropic-version': '2023-06-01'
-                },
-                body: JSON.stringify({
-                    model: apiConfig.anthropic?.model || "claude-3-sonnet-20240229",
-                    max_tokens: 10,
-                    messages: [
-                        { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
-                    ]
-                })
-            });
-            
-            console.log('Anthropic响应状态:', response.status);
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('Anthropic API响应错误详情:', errorData);
-                throw new Error(`Anthropic API错误: ${errorData.error?.message || response.statusText || '未知错误'}`);
+            try {
+                // 尝试直接调用API，失败后会尝试各种代理
+                const response = await apiRequestWithFallback(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': anthropicKey,
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: apiConfig.anthropic?.model || "claude-3-sonnet-20240229",
+                        max_tokens: 10,
+                        messages: [
+                            { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
+                        ]
+                    })
+                });
+                
+                console.log('Anthropic响应状态:', response.status);
+                
+                const result = await response.json();
+                console.log('Anthropic API测试成功:', result);
+                return { success: true };
+            } catch (error) {
+                console.error('Anthropic API连接失败:', error);
+                throw error;
+            }
+        }
+        
+        // Poe API测试
+        else if (provider === 'poe') {
+            const poeKey = apiConfig.poe?.apiKey;
+            if (!poeKey) {
+                throw new Error("未配置Poe API密钥");
             }
             
-            const result = await response.json();
-            console.log('Anthropic API测试成功:', result);
-            return { success: true };
+            const apiEndpoint = 'https://api.poe.com/chat/completions';
+            
+            try {
+                // 尝试直接调用API，失败后会尝试各种代理
+                const response = await apiRequestWithFallback(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${poeKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "Claude-3.5-Sonnet-20240620",
+                        messages: [
+                            { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
+                        ]
+                    })
+                });
+                
+                console.log('Poe响应状态:', response.status);
+                
+                const result = await response.json();
+                console.log('Poe API测试成功:', result);
+                return { success: true };
+            } catch (error) {
+                console.error('Poe API连接失败:', error);
+                throw error;
+            }
         }
         
         // 百度文心一言API测试
@@ -397,54 +379,58 @@ async function testApiConnection(provider) {
                 throw new Error("未配置百度文心一言API密钥");
             }
             
-            // 使用代理避免CORS问题
-            const tokenUrl = addCorsProxy(`https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${apiKey}&client_secret=${secretKey}`);
-            
-            // 获取访问令牌
-            const tokenResponse = await fetch(tokenUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+            try {
+                // 获取访问令牌
+                const tokenUrl = `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${apiKey}&client_secret=${secretKey}`;
+                
+                const tokenResponse = await apiRequestWithFallback(tokenUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!tokenResponse.ok) {
+                    const errorData = await tokenResponse.json().catch(() => ({}));
+                    throw new Error(`百度API获取Token错误: ${errorData.error_description || tokenResponse.statusText}`);
                 }
-            });
-            
-            if (!tokenResponse.ok) {
-                const errorData = await tokenResponse.json().catch(() => ({}));
-                throw new Error(`百度API获取Token错误: ${errorData.error_description || tokenResponse.statusText}`);
+                
+                const tokenData = await tokenResponse.json();
+                const accessToken = tokenData.access_token;
+                
+                if (!accessToken) {
+                    throw new Error("未能获取有效的百度API访问令牌");
+                }
+                
+                // 使用令牌进行API测试
+                const apiUrl = `https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=${accessToken}`;
+                
+                const response = await apiRequestWithFallback(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: apiConfig.baidu?.model || "ernie-bot-4",
+                        messages: [
+                            { role: "user", content: "你好，测试API连接" }
+                        ]
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`百度API错误: ${errorData.error_msg || response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('百度API测试成功:', result);
+                return { success: true };
+            } catch (error) {
+                console.error('百度API连接失败:', error);
+                throw error;
             }
-            
-            const tokenData = await tokenResponse.json();
-            const accessToken = tokenData.access_token;
-            
-            if (!accessToken) {
-                throw new Error("未能获取有效的百度API访问令牌");
-            }
-            
-            // 使用令牌进行API测试
-            const apiUrl = addCorsProxy(`https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=${accessToken}`);
-            
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: apiConfig.baidu?.model || "ernie-bot-4",
-                    messages: [
-                        { role: "user", content: "你好，测试API连接" }
-                    ]
-                })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(`百度API错误: ${errorData.error_msg || response.statusText}`);
-            }
-            
-            const result = await response.json();
-            console.log('百度API测试成功:', result);
-            return { success: true };
         }
         
         // 月之暗面API测试
@@ -454,32 +440,36 @@ async function testApiConnection(provider) {
                 throw new Error("未配置月之暗面API密钥");
             }
             
-            // 使用代理服务来避免CORS问题
-            const proxyUrl = addCorsProxy('https://api.moonshot.cn/v1/chat/completions');
+            const apiEndpoint = 'https://api.moonshot.cn/v1/chat/completions';
             
-            // 发送简单请求测试API连接
-            const response = await fetch(proxyUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${moonshotKey}`
-                },
-                body: JSON.stringify({
-                    model: apiConfig.moonshot?.model || "moonshot-v1-8k",
-                    messages: [
-                        { role: "user", content: "你好，测试API连接" }
-                    ]
-                })
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(`月之暗面API错误: ${errorData.error?.message || response.statusText}`);
+            try {
+                // 尝试直接调用API，失败后会尝试各种代理
+                const response = await apiRequestWithFallback(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${moonshotKey}`
+                    },
+                    body: JSON.stringify({
+                        model: apiConfig.moonshot?.model || "moonshot-v1-8k",
+                        messages: [
+                            { role: "user", content: "你好，测试API连接" }
+                        ]
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(`月之暗面API错误: ${errorData.error?.message || response.statusText}`);
+                }
+                
+                const result = await response.json();
+                console.log('月之暗面API测试成功:', result);
+                return { success: true };
+            } catch (error) {
+                console.error('月之暗面API连接失败:', error);
+                throw error;
             }
-            
-            const result = await response.json();
-            console.log('月之暗面API测试成功:', result);
-            return { success: true };
         }
         
         // 其他API提供商的测试实现...
