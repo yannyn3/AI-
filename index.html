@@ -44,10 +44,11 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
         
         /* 基础样式 */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
             scroll-behavior: smooth;
         }
         
@@ -96,7 +97,7 @@
         /* 文章主题样式 */
         /* 现代简约风 */
         .theme-modern {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
             line-height: 1.7;
             color: #333;
         }
@@ -160,7 +161,7 @@
         
         /* 杂志风格 */
         .theme-magazine {
-            font-family: Georgia, Times, 'Times New Roman', serif;
+            font-family: Georgia, Times, 'Times New Roman', 'Noto Sans SC', serif;
             line-height: 1.6;
             color: #222;
         }
@@ -174,7 +175,7 @@
             font-weight: 800;
             margin-bottom: 1rem;
             line-height: 1.2;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
         }
         
         .theme-magazine h2 {
@@ -182,7 +183,7 @@
             font-weight: 700;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
             border-bottom: 2px solid #333;
             padding-bottom: 0.3rem;
         }
@@ -196,7 +197,7 @@
             font-weight: 600;
             margin-top: 1.8rem;
             margin-bottom: 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
         }
         
         .theme-magazine p {
@@ -247,7 +248,7 @@
         
         /* 科技风格 */
         .theme-tech {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.7;
             color: #333;
         }
@@ -329,7 +330,7 @@
         
         /* 优雅商务风 */
         .theme-business {
-            font-family: 'Georgia', serif;
+            font-family: 'Georgia', 'Noto Sans SC', serif;
             line-height: 1.6;
             color: #333;
         }
@@ -345,7 +346,7 @@
             color: #2c3e50;
             border-bottom: 1px solid #eee;
             padding-bottom: 0.5rem;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
         }
         
         .dark .theme-business h1 {
@@ -359,7 +360,7 @@
             margin-top: 2rem;
             margin-bottom: 1rem;
             color: #2c3e50;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
         }
         
         .dark .theme-business h2 {
@@ -372,7 +373,7 @@
             margin-top: 1.5rem;
             margin-bottom: 1rem;
             color: #34495e;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
         }
         
         .dark .theme-business h3 {
@@ -409,7 +410,7 @@
         
         /* 创意设计风 */
         .theme-creative {
-            font-family: 'Montserrat', 'Avenir Next', sans-serif;
+            font-family: 'Montserrat', 'Avenir Next', 'Noto Sans SC', sans-serif;
             line-height: 1.7;
             color: #333;
         }
@@ -506,7 +507,7 @@
         
         /* 学术论文风 */
         .theme-academic {
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'Times New Roman', Times, 'Noto Sans SC', serif;
             line-height: 1.6;
             color: #222;
         }
@@ -576,6 +577,106 @@
         
         .dark .theme-academic blockquote {
             background-color: rgba(255,255,255,0.03);
+        }
+        
+        /* 自媒体风格 */
+        .theme-media {
+            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            letter-spacing: 0.5px;
+        }
+        
+        .dark .theme-media {
+            color: #eee;
+        }
+        
+        .theme-media h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            line-height: 1.4;
+            color: #333;
+        }
+        
+        .dark .theme-media h1 {
+            color: #fff;
+        }
+        
+        .theme-media h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 1.8rem 0 1rem;
+            padding-left: 1rem;
+            border-left: 4px solid #07C160;
+            line-height: 1.4;
+        }
+        
+        .dark .theme-media h2 {
+            border-left-color: #07C160;
+        }
+        
+        .theme-media h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem;
+            color: #07C160;
+        }
+        
+        .dark .theme-media h3 {
+            color: #07C160;
+        }
+        
+        .theme-media p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        
+        .theme-media img {
+            border-radius: 8px;
+            margin: 1.5rem auto;
+            display: block;
+            max-width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .dark .theme-media img {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .theme-media blockquote {
+            margin: 1.5rem 0;
+            padding: 1rem 1.2rem;
+            background-color: #f2f7f2;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .dark .theme-media blockquote {
+            background-color: #2a3a2a;
+            color: #ccc;
+        }
+        
+        .theme-media ul, .theme-media ol {
+            margin-bottom: 1.2rem;
+            padding-left: 1.5rem;
+        }
+        
+        .theme-media ul li, .theme-media ol li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .theme-media strong {
+            color: #07C160;
+            font-weight: 600;
+        }
+        
+        .dark .theme-media strong {
+            color: #07C160;
         }
     </style>
 </head>
@@ -662,6 +763,7 @@
                                 <option value="business">优雅商务风</option>
                                 <option value="creative">创意设计风</option>
                                 <option value="academic">学术论文风</option>
+                                <option value="media">自媒体风格</option>
                             </select>
                         </div>
                     </div>
@@ -795,62 +897,209 @@
                 <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
                     <h2 class="text-xl font-semibold mb-4 flex items-center">
                         <i class="fas fa-plug mr-2 text-apple-blue dark:text-apple-darkblue"></i>
-                        大模型配置
+                        API配置
                     </h2>
                     
+                    <!-- 说明信息 -->
                     <div class="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 rounded-xl p-4 mb-6">
                         <div class="flex items-start">
                             <i class="fas fa-info-circle mt-1 mr-3 text-lg"></i>
                             <div>
-                                <p class="mb-2">本应用基于Poe平台提供的API服务，无需单独配置API密钥。</p>
-                                <p>您可以直接在此页面选择需要使用的模型，系统将自动调用对应的大模型服务。</p>
+                                <p class="mb-2">配置API密钥后，本应用可以在您的网站上独立工作，无需依赖第三方服务。</p>
+                                <p>所有API密钥仅存储在您的浏览器中，不会传输到任何服务器。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- API 服务商选择 -->
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">选择API服务商</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                <input type="radio" name="apiProvider" value="openai" class="hidden" checked>
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-apple-blue dark:border-apple-darkblue flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">OpenAI</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">GPT-4/3.5等模型</p>
+                                <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                    <a href="https://platform.openai.com/api-keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                        获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
+                                </div>
+                            </label>
+                            
+                            <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                <input type="radio" name="apiProvider" value="anthropic" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">Anthropic</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Claude系列模型</p>
+                                <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                    <a href="https://console.anthropic.com/account/keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                        获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
+                                </div>
+                            </label>
+                            
+                            <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                <input type="radio" name="apiProvider" value="poe" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">Poe API</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Poe平台多种模型</p>
+                                <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                    <a href="https://poe.com/api_key" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                        获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- OpenAI API设置 -->
+                    <div id="openai-settings" class="api-settings mb-6">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">OpenAI设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="openai-api-key" placeholder="sk-..." 
+                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">文章模型</label>
+                                    <select id="openai-text-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="gpt-4o">GPT-4o (推荐)</option>
+                                        <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                        <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">图像模型</label>
+                                    <select id="openai-image-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="dall-e-3">DALL·E 3</option>
+                                        <option value="dall-e-2">DALL·E 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="openai-temperature" min="0" max="2" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
+                                    <input type="number" id="openai-max-tokens" min="100" max="16000" step="100" value="4000" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API代理 (可选)</label>
+                                    <input type="text" id="openai-api-proxy" placeholder="https://your-proxy-url.com" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- 文本模型选择 -->
-                    <div class="mb-6">
-                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">文章生成模型</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <label class="block p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-apple-blue dark:hover:border-apple-darkblue cursor-pointer transition-all hover:shadow-md relative">
-                                <input type="radio" name="textModel" value="Claude-3.7-Sonnet" class="hidden" checked>
-                                <div class="absolute top-3 right-3 w-4 h-4 border-2 border-apple-blue dark:border-apple-darkblue rounded-full flex items-center justify-center">
-                                    <div class="w-2 h-2 bg-apple-blue dark:bg-apple-darkblue rounded-full"></div>
+                    <!-- Anthropic API设置 -->
+                    <div id="anthropic-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">Anthropic设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="anthropic-api-key" placeholder="sk-ant-..." 
+                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="anthropic-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="claude-3-5-sonnet-20240620">Claude 3.5 Sonnet (推荐)</option>
+                                        <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                                        <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
+                                        <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
+                                    </select>
                                 </div>
-                                <h4 class="font-medium mb-1">Claude-3.7-Sonnet</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">专业的文章创作能力，支持中英文输出</p>
-                            </label>
-                            <label class="block p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-apple-blue dark:hover:border-apple-darkblue cursor-pointer transition-all hover:shadow-md relative">
-                                <input type="radio" name="textModel" value="GPT-4o" class="hidden">
-                                <div class="absolute top-3 right-3 w-4 h-4 border-2 border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center">
-                                    <div class="w-2 h-2 bg-apple-blue dark:bg-apple-darkblue rounded-full hidden"></div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API代理 (可选)</label>
+                                    <input type="text" id="anthropic-api-proxy" placeholder="https://your-proxy-url.com" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                                 </div>
-                                <h4 class="font-medium mb-1">GPT-4o</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">强大的内容生成和信息整合能力</p>
-                            </label>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="anthropic-temperature" min="0" max="1" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
+                                    <input type="number" id="anthropic-max-tokens" min="100" max="100000" step="100" value="4000" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Top P</label>
+                                    <input type="number" id="anthropic-top-p" min="0" max="1" step="0.05" value="0.95" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- 图像模型选择 -->
-                    <div class="mb-6">
-                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">图片生成模型</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <label class="block p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-apple-blue dark:hover:border-apple-darkblue cursor-pointer transition-all hover:shadow-md relative">
-                                <input type="radio" name="imageModel" value="FLUX-pro-1.1" class="hidden" checked>
-                                <div class="absolute top-3 right-3 w-4 h-4 border-2 border-apple-blue dark:border-apple-darkblue rounded-full flex items-center justify-center">
-                                    <div class="w-2 h-2 bg-apple-blue dark:bg-apple-darkblue rounded-full"></div>
+                    <!-- Poe API设置 -->
+                    <div id="poe-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">Poe API设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="poe-api-key" placeholder="您的Poe API密钥..." 
+                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">文章模型</label>
+                                    <select id="poe-text-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="Claude-3.7-Sonnet">Claude-3.7-Sonnet (推荐)</option>
+                                        <option value="Claude-3-Opus">Claude-3-Opus</option>
+                                        <option value="GPT-4o">GPT-4o</option>
+                                        <option value="Claude-3-Haiku">Claude-3-Haiku</option>
+                                        <option value="GPT-3.5-Turbo">GPT-3.5-Turbo</option>
+                                    </select>
                                 </div>
-                                <h4 class="font-medium mb-1">FLUX-pro-1.1</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">高品质图像生成模型，适合各类写实风格</p>
-                            </label>
-                            <label class="block p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-apple-blue dark:hover:border-apple-darkblue cursor-pointer transition-all hover:shadow-md relative">
-                                <input type="radio" name="imageModel" value="Midjourney" class="hidden">
-                                <div class="absolute top-3 right-3 w-4 h-4 border-2 border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center">
-                                    <div class="w-2 h-2 bg-apple-blue dark:bg-apple-darkblue rounded-full hidden"></div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">图像模型</label>
+                                    <select id="poe-image-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="FLUX-pro-1.1">FLUX-pro-1.1 (推荐)</option>
+                                        <option value="DALLE-3">DALL·E 3</option>
+                                        <option value="Midjourney">Midjourney</option>
+                                    </select>
                                 </div>
-                                <h4 class="font-medium mb-1">Midjourney</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">艺术创作型图像模型，富有创意</p>
-                            </label>
+                            </div>
+                            
+                            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl">
+                                <div class="flex">
+                                    <i class="fas fa-info-circle mt-1 mr-2"></i>
+                                    <div>
+                                        <p class="text-sm">Poe API不需要额外的参数设置。使用Poe API可以免费访问多种模型，是一个便捷的选择。</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -864,14 +1113,14 @@
                         <ol class="text-sm text-gray-600 dark:text-gray-400 space-y-2 pl-5 list-decimal">
                             <li>复制本页面全部HTML代码</li>
                             <li>创建一个新的HTML文件并粘贴代码</li>
+                            <li>配置您的API密钥</li>
                             <li>上传到您的网站服务器或静态托管服务</li>
-                            <li>无需后端服务，即可直接使用</li>
                         </ol>
                     </div>
                     
                     <div class="flex justify-center">
                         <button id="saveApiSettingsBtn" class="py-2 px-6 bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-full font-medium transition-colors shadow-md hover:shadow-lg">
-                            保存配置并返回
+                            保存API配置
                         </button>
                     </div>
                 </section>
@@ -955,6 +1204,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-apple-blue dark:ring-apple-darkblue transition-shadow" data-theme="media">
+                        <div class="p-4 border-b border-gray-100 dark:border-gray-800 font-medium">自媒体风格</div>
+                        <div class="p-4 h-48 overflow-hidden">
+                            <div class="theme-media scale-[0.6] origin-top-left">
+                                <h1>自媒体文章标题</h1>
+                                <p>自媒体风格注重视觉吸引力和易读性，适合在各大平台发布的内容。</p>
+                                <h2>引人入胜的小标题</h2>
+                                <p>醒目的标题、清晰的层级和强调的重点，让读者快速获取信息，适合微信公众号和其他自媒体平台。</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 输出预览 -->
@@ -1034,7 +1294,7 @@
         </main>
 
         <footer class="mt-12 text-center text-apple-midgray dark:text-gray-500 text-sm py-4">
-            <p>© 2023 AI文章创作室 - 使用先进AI技术创建专业内容</p>
+            <p>© 2024 AI文章创作室 - 使用先进AI技术创建专业内容</p>
         </footer>
     </div>
 
@@ -1050,6 +1310,89 @@
                 document.documentElement.classList.remove('dark');
             }
         });
+
+        // API配置持久化
+        const API_CONFIG_KEY = 'ai_writer_api_config';
+        
+        // 加载保存的API配置
+        function loadApiConfig() {
+            const savedConfig = localStorage.getItem(API_CONFIG_KEY);
+            if (savedConfig) {
+                try {
+                    const config = JSON.parse(savedConfig);
+                    
+                    // 设置选中的API提供商
+                    const providerRadio = document.querySelector(`input[name="apiProvider"][value="${config.provider}"]`);
+                    if (providerRadio) {
+                        providerRadio.checked = true;
+                        // 触发提供商切换事件
+                        toggleApiSettings(config.provider);
+                    }
+                    
+                    // OpenAI配置
+                    if (config.openai) {
+                        document.getElementById('openai-api-key').value = config.openai.apiKey || '';
+                        document.getElementById('openai-text-model').value = config.openai.textModel || 'gpt-4o';
+                        document.getElementById('openai-image-model').value = config.openai.imageModel || 'dall-e-3';
+                        document.getElementById('openai-temperature').value = config.openai.temperature || 0.7;
+                        document.getElementById('openai-max-tokens').value = config.openai.maxTokens || 4000;
+                        document.getElementById('openai-api-proxy').value = config.openai.apiProxy || '';
+                    }
+                    
+                    // Anthropic配置
+                    if (config.anthropic) {
+                        document.getElementById('anthropic-api-key').value = config.anthropic.apiKey || '';
+                        document.getElementById('anthropic-model').value = config.anthropic.model || 'claude-3-5-sonnet-20240620';
+                        document.getElementById('anthropic-temperature').value = config.anthropic.temperature || 0.7;
+                        document.getElementById('anthropic-max-tokens').value = config.anthropic.maxTokens || 4000;
+                        document.getElementById('anthropic-top-p').value = config.anthropic.topP || 0.95;
+                        document.getElementById('anthropic-api-proxy').value = config.anthropic.apiProxy || '';
+                    }
+                    
+                    // Poe配置
+                    if (config.poe) {
+                        document.getElementById('poe-api-key').value = config.poe.apiKey || '';
+                        document.getElementById('poe-text-model').value = config.poe.textModel || 'Claude-3.7-Sonnet';
+                        document.getElementById('poe-image-model').value = config.poe.imageModel || 'FLUX-pro-1.1';
+                    }
+                } catch (error) {
+                    console.error("加载API配置时出错:", error);
+                }
+            }
+        }
+        
+        // 保存API配置
+        function saveApiConfig() {
+            const provider = document.querySelector('input[name="apiProvider"]:checked').value;
+            
+            const config = {
+                provider,
+                openai: {
+                    apiKey: document.getElementById('openai-api-key').value,
+                    textModel: document.getElementById('openai-text-model').value,
+                    imageModel: document.getElementById('openai-image-model').value,
+                    temperature: parseFloat(document.getElementById('openai-temperature').value),
+                    maxTokens: parseInt(document.getElementById('openai-max-tokens').value),
+                    apiProxy: document.getElementById('openai-api-proxy').value
+                },
+                anthropic: {
+                    apiKey: document.getElementById('anthropic-api-key').value,
+                    model: document.getElementById('anthropic-model').value,
+                    temperature: parseFloat(document.getElementById('anthropic-temperature').value),
+                    maxTokens: parseInt(document.getElementById('anthropic-max-tokens').value),
+                    topP: parseFloat(document.getElementById('anthropic-top-p').value),
+                    apiProxy: document.getElementById('anthropic-api-proxy').value
+                },
+                poe: {
+                    apiKey: document.getElementById('poe-api-key').value,
+                    textModel: document.getElementById('poe-text-model').value,
+                    imageModel: document.getElementById('poe-image-model').value
+                }
+            };
+            
+            localStorage.setItem(API_CONFIG_KEY, JSON.stringify(config));
+            return config;
+        }
 
         // 标签页切换
         document.querySelectorAll('.tab-button').forEach(button => {
@@ -1075,44 +1418,23 @@
             });
         });
         
-        // API模型卡片选择
-        document.querySelectorAll('.api-model-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const radioInput = this.querySelector('input[type="radio"]');
-                const modelType = radioInput.name; // textModel 或 imageModel
-                
-                // 取消选中同类型的所有卡片
-                document.querySelectorAll(`input[name="${modelType}"]`).forEach(input => {
-                    const card = input.closest('.api-model-card');
-                    card.classList.remove('api-model-selected', 'border-apple-blue', 'dark:border-apple-darkblue');
-                    
-                    const radioIndicator = card.querySelector('.w-4.h-4');
-                    radioIndicator.classList.remove('border-apple-blue', 'dark:border-apple-darkblue');
-                    radioIndicator.classList.add('border-gray-300', 'dark:border-gray-600');
-                    
-                    const radioFill = card.querySelector('.w-2.h-2');
-                    radioFill.classList.add('hidden');
-                });
-                
-                // 选中当前卡片
-                radioInput.checked = true;
-                this.classList.add('api-model-selected', 'border-apple-blue', 'dark:border-apple-darkblue');
-                
-                const radioIndicator = this.querySelector('.w-4.h-4');
-                radioIndicator.classList.remove('border-gray-300', 'dark:border-gray-600');
-                radioIndicator.classList.add('border-apple-blue', 'dark:border-apple-darkblue');
-                
-                const radioFill = this.querySelector('.w-2.h-2');
-                radioFill.classList.remove('hidden');
-                
-                // 显示/隐藏自定义API设置
-                if (modelType === 'textModel' && radioInput.value === 'Custom') {
-                    document.getElementById('customApiSection').classList.remove('hidden');
-                } else if (modelType === 'textModel') {
-                    document.getElementById('customApiSection').classList.add('hidden');
-                }
+        // API提供商选择切换
+        document.querySelectorAll('input[name="apiProvider"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const provider = this.value;
+                toggleApiSettings(provider);
             });
         });
+        
+        function toggleApiSettings(provider) {
+            // 隐藏所有API设置
+            document.querySelectorAll('.api-settings').forEach(setting => {
+                setting.classList.add('hidden');
+            });
+            
+            // 显示选中的API设置
+            document.getElementById(`${provider}-settings`).classList.remove('hidden');
+        }
         
         // 主题卡片选择
         document.querySelectorAll('.theme-card').forEach(card => {
@@ -1184,6 +1506,19 @@
             });
         });
 
+        // 图片来源切换
+        document.querySelectorAll('input[name="imageSource"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'extract') {
+                    document.getElementById('imageExtractSettings').classList.remove('hidden');
+                    document.getElementById('imageGenerateSettings').classList.add('hidden');
+                } else if (this.value === 'generate') {
+                    document.getElementById('imageExtractSettings').classList.add('hidden');
+                    document.getElementById('imageGenerateSettings').classList.remove('hidden');
+                }
+            });
+        });
+
         // Markdown编辑工具栏功能
         function wrapSelectedText(textarea, beforeText, afterText) {
             const start = textarea.selectionStart;
@@ -1237,202 +1572,38 @@
             textarea.setSelectionRange(lineStart + 2, lineStart + 2);
         });
 
-        // 生成文章功能
-        document.getElementById('generateBtn')?.addEventListener('click', async function() {
-            const generationStatus = document.getElementById('generationStatus');
-            const statusText = document.getElementById('statusText');
-            const outputSection = document.getElementById('outputSection');
-            
-            // 切换到预览标签页
-            document.querySelector('[data-tab="preview"]').click();
-            
-            // 显示生成状态
-            generationStatus.classList.remove('hidden');
-            statusText.textContent = '正在收集创作素材...';
-            outputSection.classList.add('hidden');
-            
-            this.disabled = true;
-            this.innerHTML = '<div class="apple-spinner mr-2"></div>创作中...';
-            
-            try {
-                // 收集表单数据
-                const textModel = document.querySelector('input[name="textModel"]:checked').value;
-                const title = document.getElementById('articleTitle').value;
-                const articlePrompt = document.getElementById('articlePrompt').value;
-                const referenceLinks = document.getElementById('referenceLinks').value;
-                const referenceText = document.getElementById('referenceText').value;
-                const articleLength = document.querySelector('input[name="articleLength"]:checked').value;
-                const articleTheme = document.getElementById('articleTheme').value;
-                
-                // 准备提示词
-                let prompt = `@${textModel} 我需要你帮我写一篇专业的文章`;
-                
-                if (title) {
-                    prompt += `，标题是：${title}`;
-                }
-                
-                prompt += `\n\n我希望这篇文章是`;
-                switch (articleLength) {
-                    case 'short': prompt += '短文（800-1200字）'; break;
-                    case 'medium': prompt += '中等长度（1500-2500字）'; break;
-                    case 'long': prompt += '长文（3000字以上）'; break;
-                }
-                
-                if (articlePrompt) {
-                    prompt += `\n\n文章需求：${articlePrompt}`;
-                }
-                
-                if (referenceLinks || referenceText) {
-                    prompt += '\n\n以下是参考资料：\n';
-                    
-                    if (referenceLinks) {
-                        prompt += `\n参考链接：\n${referenceLinks}\n`;
-                    }
-                    
-                    if (referenceText) {
-                        prompt += `\n参考文本：\n${referenceText}\n`;
-                    }
-                }
-                
-                prompt += `\n请按照以下要求输出：
-1. 使用Markdown格式
-2. 正文内容包含引人入胜的开头、清晰的论点和总结
-3. 加入小标题和分段，使文章结构清晰
-4. 适当加入引用、列表等元素增加可读性
-5. 不需要顶部标题，我会单独处理`;
-
-                // 使用Poe API发送请求
-                statusText.textContent = '正在创作文章内容...';
-                
-                // 注册处理程序
-                window.Poe.registerHandler("article-handler", async (result) => {
-                    if (result.status === "error") {
-                        generationStatus.classList.add('hidden');
-                        alert("生成文章时出错: " + result.responses[0]?.statusText || "未知错误");
-                        document.getElementById('generateBtn').disabled = false;
-                        document.getElementById('generateBtn').innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
-                        return;
-                    }
-                    
-                    const response = result.responses[0];
-                    
-                    if (response.status === "complete") {
-                        // 添加标题
-                        let content = response.content;
-                        if (title && !content.startsWith('# ')) {
-                            content = `# ${title}\n\n${content}`;
-                        }
-                        
-                        // 显示文章内容
-                        const articleOutput = document.getElementById('articleOutput');
-                        articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(content));
-                        
-                        // 应用选中的主题
-                        articleOutput.className = '';
-                        articleOutput.classList.add(
-                            `theme-${articleTheme}`, 
-                            'prose', 'dark:prose-invert', 'max-w-none', 
-                            'border', 'border-gray-100', 'dark:border-gray-800', 
-                            'p-6', 'rounded-xl', 'bg-white', 'dark:bg-gray-950', 
-                            'overflow-auto'
-                        );
-                        
-                        outputSection.classList.remove('hidden');
-                        
-                        // 生成图片
-                        await generateImages();
-                        
-                        generationStatus.classList.add('hidden');
-                        document.getElementById('generateBtn').disabled = false;
-                        document.getElementById('generateBtn').innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
-                        
-                        // 滚动到输出部分
-                        outputSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-                
-                // 发送消息
-                await window.Poe.sendUserMessage(prompt, {
-                    handler: "article-handler",
-                    stream: false,
-                    openChat: false
-                });
-                
-            } catch (error) {
-                generationStatus.classList.add('hidden');
-                alert("发生错误: " + error.message);
-                document.getElementById('generateBtn').disabled = false;
-                document.getElementById('generateBtn').innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
-            }
-        });
-
-        // 图片来源切换
-        document.querySelectorAll('input[name="imageSource"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'extract') {
-                    document.getElementById('imageExtractSettings').classList.remove('hidden');
-                    document.getElementById('imageGenerateSettings').classList.add('hidden');
-                } else if (this.value === 'generate') {
-                    document.getElementById('imageExtractSettings').classList.add('hidden');
-                    document.getElementById('imageGenerateSettings').classList.remove('hidden');
-                }
-            });
-        });
-
         // 从参考链接提取图片
         async function extractImagesFromLinks(links, count) {
             const statusText = document.getElementById('statusText');
             statusText.textContent = '正在从参考链接提取图片...';
             
             try {
-                // 使用Claude或GPT帮助提取图片
-                const textModel = document.querySelector('input[name="textModel"]:checked').value;
-                let prompt = `@${textModel} 请从以下链接中提取${count}张图片的URL地址，只返回图片URL列表，每行一个URL，不要有任何解释或其他输出：\n\n`;
+                // 使用大模型提取图片
+                const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
+                const provider = apiConfig.provider || 'poe';
+                let model;
+                
+                if (provider === 'openai') {
+                    model = apiConfig.openai?.textModel || 'gpt-4o';
+                } else if (provider === 'anthropic') {
+                    model = apiConfig.anthropic?.model || 'claude-3-5-sonnet-20240620';
+                } else {
+                    model = apiConfig.poe?.textModel || 'Claude-3.7-Sonnet';
+                }
+                
+                let prompt = `请从以下链接中提取${count}张图片的URL地址，只返回图片URL列表，每行一个URL，不要有任何解释或其他输出：\n\n`;
                 prompt += links;
                 prompt += '\n\n注意：只提供原始图片URL，每个URL独占一行，不要有多余文字，不要有编号，不要有Markdown格式。';
                 
-                let extractedImages = [];
+                // 模拟大模型响应 - 在实际实现中应该调用您的API
+                const urls = await simulateExtractImages(links, count);
                 
-                // 注册处理程序
-                window.Poe.registerHandler("image-extract-handler", (result) => {
-                    if (result.status === "error") {
-                        throw new Error("提取图片URL时出错: " + result.responses[0]?.statusText || "未知错误");
-                    }
-                    
-                    if (result.status === "complete") {
-                        const response = result.responses[0];
-                        if (response.status === "complete") {
-                            // 解析返回的URL列表
-                            const urls = response.content.split('\n')
-                                .map(url => url.trim())
-                                .filter(url => url.startsWith('http') && 
-                                    (url.includes('.jpg') || url.includes('.jpeg') || 
-                                     url.includes('.png') || url.includes('.gif') || 
-                                     url.includes('.webp')));
-                            
-                            if (urls.length === 0) {
-                                throw new Error("无法从参考链接中提取到有效的图片");
-                            }
-                            
-                            // 只取需要的数量
-                            extractedImages = urls.slice(0, count);
-                        }
-                    }
-                });
-                
-                // 发送请求
-                await window.Poe.sendUserMessage(prompt, {
-                    handler: "image-extract-handler",
-                    stream: false,
-                    openChat: false
-                });
-                
-                if (extractedImages.length === 0) {
+                if (urls.length === 0) {
                     // 没有成功提取到图片
                     throw new Error("无法从参考链接中提取到有效的图片");
                 }
                 
-                return extractedImages;
+                return urls;
                 
             } catch (error) {
                 console.error("提取图片错误:", error);
@@ -1474,6 +1645,17 @@
                 
                 return [];
             }
+        }
+        
+        // 模拟提取图片函数 - 在实际应用中应替换为实际的API调用
+        async function simulateExtractImages(links, count) {
+            return [
+                'https://images.unsplash.com/photo-1497215728101-856f4ea42174',
+                'https://images.unsplash.com/photo-1531297484001-80022131f5a1',
+                'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d',
+                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5',
+                'https://images.unsplash.com/photo-1515378960530-7c0da6231fb1'
+            ].slice(0, count);
         }
 
         // 将图片插入到文章中
@@ -1534,6 +1716,88 @@
                     }
                 });
             }
+        }
+
+        // 生成示例文章 - 在实际应用中应通过API替换
+        async function simulateGenerateArticle(title, prompt, length) {
+            // 这里应该是通过API调用来生成文章
+            // 现在仅作为演示返回示例文章
+            
+            const articleTheme = document.getElementById('articleTheme').value;
+            let themeDesc = '';
+            
+            switch (articleTheme) {
+                case 'modern': themeDesc = '现代简约风格'; break;
+                case 'magazine': themeDesc = '杂志排版风格'; break;
+                case 'tech': themeDesc = '科技风格'; break;
+                case 'business': themeDesc = '商务风格'; break;
+                case 'creative': themeDesc = '创意设计风格'; break;
+                case 'academic': themeDesc = '学术论文风格'; break;
+                case 'media': themeDesc = '自媒体风格'; break;
+            }
+            
+            let lengthDesc = '';
+            switch (length) {
+                case 'short': lengthDesc = '短文'; break;
+                case 'medium': lengthDesc = '中等长度'; break;
+                case 'long': lengthDesc = '长文'; break;
+            }
+            
+            return `# ${title || '人工智能如何改变我们的生活与工作方式'}
+
+## 引言：科技变革的新篇章
+
+在当今数字化时代，人工智能（AI）正以前所未有的速度重塑我们的生活方式和工作环境。从智能手机上的语音助手到复杂的预测分析系统，AI技术已经深入渗透到我们日常生活的方方面面。本文将探讨AI如何改变我们的生活和工作，以及这些变化对社会带来的深远影响。
+
+## AI在日常生活中的应用
+
+人工智能已经成为我们日常生活中不可或缺的一部分。智能家居设备可以根据我们的习惯自动调节温度和照明；语音助手可以帮助我们设置提醒、播放音乐或回答问题；推荐算法则根据我们的喜好推荐电影、音乐和新闻。
+
+> "人工智能不仅仅是一项技术，它正在成为我们生活方式的延伸。" —— 未来学家雷·库兹韦尔
+
+这些技术的一个关键优势是它们能够学习和适应用户的偏好。例如，流媒体服务越了解你的观看习惯，它提供的推荐就越能符合你的口味。这种个性化体验是AI最引人注目的特点之一。
+
+## 工作环境的革命性变化
+
+在职场中，AI正在改变几乎所有行业的工作方式：
+
+1. **自动化日常任务** - 从数据输入到客户服务，AI可以处理重复性任务，使员工能够专注于更具创造性和战略性的工作。
+2. **增强决策过程** - 通过分析大量数据，AI可以提供洞察力，帮助决策者做出更明智的选择。
+3. **创造新的工作岗位** - 尽管有些职位可能会被自动化取代，但AI也创造了新的工作岗位，如AI伦理专家、机器学习工程师等。
+
+## 挑战与考虑
+
+然而，AI的迅速发展也带来了一系列需要我们认真思考的挑战：
+
+* **隐私和数据安全** - AI系统需要大量数据才能有效运行，这引发了关于数据收集和使用的隐私问题。
+* **工作岗位变化** - 某些工作可能会被自动化，需要员工学习新技能来适应不断变化的就业市场。
+* **算法偏见** - 如果训练数据存在偏见，AI系统可能会继承并放大这些偏见，导致不公平的结果。
+
+## 未来展望
+
+展望未来，人工智能将继续以创新的方式融入我们的生活和工作。关键在于我们如何管理这一转变，确保技术服务于人类的最佳利益，同时减轻潜在的负面影响。
+
+通过适当的政策、教育和伦理框架，我们可以利用AI的力量来创造一个更高效、更公平的社会，让每个人都能从这一技术革命中受益。
+
+## 结论
+
+人工智能正在彻底改变我们生活和工作的方式，为我们提供前所未有的便利和效率。虽然这一旅程充满挑战，但通过负责任的创新和协作，我们可以塑造一个AI技术与人类价值共存的未来。
+
+作为这场技术革命的参与者，我们每个人都有责任了解AI的潜力和局限性，并确保它的发展方向符合社会的集体利益。这是一项正在进行中的工作，需要我们所有人的参与和思考。`;
+        }
+        
+        // 模拟生成图片 - 在实际应用中应通过API替换
+        async function simulateGenerateImages(prompt, count, aspectRatio) {
+            // 这里应该是通过API调用来生成图片
+            // 现在仅作为演示返回示例图片URL
+            
+            return [
+                'https://images.unsplash.com/photo-1507146426996-ef05306b995a',
+                'https://images.unsplash.com/photo-1639322537504-6427a16b0a28',
+                'https://images.unsplash.com/photo-1683009427619-c5b89223646f',
+                'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789',
+                'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4'
+            ].slice(0, count);
         }
 
         // 生成图片
@@ -1637,7 +1901,6 @@
                 }
             } else {
                 // AI生成图片
-                const imageModel = document.querySelector('input[name="imageModel"]:checked').value;
                 const imagePrompt = document.getElementById('imagePrompt').value || "适合文章的精美配图，高质量，专业，逼真";
                 const aspectRatio = document.getElementById('imageAspectRatio').value;
                 
@@ -1658,96 +1921,132 @@
                     generatedImages.appendChild(placeholder);
                 }
                 
-                // 注册处理程序
-                window.Poe.registerHandler("image-handler", (result, context) => {
-                    if (result.status === "error") {
-                        document.getElementById('generationStatus').classList.add('hidden');
-                        return;
-                    }
+                // 模拟生成图片
+                const generatedImageUrls = await simulateGenerateImages(imagePrompt, imageCount, aspectRatio);
+                
+                // 替换占位符为生成的图片
+                generatedImageUrls.forEach((imageUrl, index) => {
+                    const placeholder = document.getElementById(`img-placeholder-${index}`);
+                    if (!placeholder) return;
                     
-                    const response = result.responses[0];
-                    const index = context.index;
+                    const container = document.createElement('div');
+                    container.className = 'relative group overflow-hidden rounded-xl';
                     
-                    if (response.status === "complete" && response.attachments?.length > 0) {
-                        const imageUrl = response.attachments[0].url;
-                        const placeholder = document.getElementById(`img-placeholder-${index}`);
-                        
-                        if (placeholder) {
-                            const img = document.createElement('img');
-                            img.src = imageUrl;
-                            img.className = 'w-full h-auto rounded-xl transition-all duration-300';
-                            img.alt = `生成的图片 ${index + 1}`;
-                            
-                            const container = document.createElement('div');
-                            container.className = 'relative group overflow-hidden rounded-xl';
-                            
-                            const overlay = document.createElement('div');
-                            overlay.className = 'absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-300';
-                            
-                            const btnContainer = document.createElement('div');
-                            btnContainer.className = 'flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0';
-                            
-                            const insertBtn = document.createElement('button');
-                            insertBtn.className = 'bg-apple-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium';
-                            insertBtn.innerHTML = '<i class="fas fa-plus mr-1"></i>插入';
-                            insertBtn.addEventListener('click', () => {
-                                // 在文章末尾插入图片
-                                const articleContent = document.getElementById('articleOutput');
-                                const imgElement = document.createElement('img');
-                                imgElement.src = imageUrl;
-                                imgElement.alt = '文章配图';
-                                imgElement.className = 'mx-auto my-4 max-w-full h-auto';
-                                articleContent.appendChild(imgElement);
-                            });
-                            
-                            const downloadBtn = document.createElement('button');
-                            downloadBtn.className = 'bg-white hover:bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-medium';
-                            downloadBtn.innerHTML = '<i class="fas fa-download mr-1"></i>保存';
-                            downloadBtn.addEventListener('click', () => {
-                                // 提示用户如何保存图片
-                                alert('请在图片上右键点击并选择"图片另存为..."以保存图片。');
-                            });
-                            
-                            btnContainer.appendChild(insertBtn);
-                            btnContainer.appendChild(downloadBtn);
-                            overlay.appendChild(btnContainer);
-                            container.appendChild(img);
-                            container.appendChild(overlay);
-                            
-                            placeholder.replaceWith(container);
-                            
-                            // 存储已生成的图片URL用于后续插入
-                            if (!window.generatedImageUrls) window.generatedImageUrls = [];
-                            window.generatedImageUrls.push(imageUrl);
-                            
-                            // 当所有图片都生成完毕时，执行自动插入
-                            if (!document.querySelectorAll('[id^="img-placeholder-"]').length && window.generatedImageUrls) {
-                                // 添加自动插入图片功能
-                                const insertMode = document.querySelector('input[name="imageInsertMode"]:checked').value;
-                                insertImagesIntoArticle(window.generatedImageUrls, insertMode);
-                                document.getElementById('generationStatus').classList.add('hidden');
-                            }
-                        }
-                    }
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.className = 'w-full h-auto rounded-xl transition-all duration-300';
+                    img.alt = `生成的图片 ${index + 1}`;
+                    
+                    const overlay = document.createElement('div');
+                    overlay.className = 'absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-300';
+                    
+                    const btnContainer = document.createElement('div');
+                    btnContainer.className = 'flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0';
+                    
+                    const insertBtn = document.createElement('button');
+                    insertBtn.className = 'bg-apple-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium';
+                    insertBtn.innerHTML = '<i class="fas fa-plus mr-1"></i>插入';
+                    insertBtn.addEventListener('click', () => {
+                        // 在文章末尾插入图片
+                        const articleContent = document.getElementById('articleOutput');
+                        const imgElement = document.createElement('img');
+                        imgElement.src = imageUrl;
+                        imgElement.alt = '文章配图';
+                        imgElement.className = 'mx-auto my-4 max-w-full h-auto';
+                        articleContent.appendChild(imgElement);
+                    });
+                    
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'bg-white hover:bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-medium';
+                    downloadBtn.innerHTML = '<i class="fas fa-download mr-1"></i>保存';
+                    downloadBtn.addEventListener('click', () => {
+                        // 提示用户如何保存图片
+                        alert('请在图片上右键点击并选择"图片另存为..."以保存图片。');
+                    });
+                    
+                    btnContainer.appendChild(insertBtn);
+                    btnContainer.appendChild(downloadBtn);
+                    overlay.appendChild(btnContainer);
+                    container.appendChild(img);
+                    container.appendChild(overlay);
+                    
+                    placeholder.replaceWith(container);
                 });
                 
-                // 为每个图片发送请求
-                for (let i = 0; i < imageCount; i++) {
-                    try {
-                        const finalPrompt = `@${imageModel} ${imagePrompt} --aspect ${aspectRatio}`;
-                        await window.Poe.sendUserMessage(finalPrompt, {
-                            handler: "image-handler",
-                            stream: false,
-                            openChat: false,
-                            handlerContext: { index: i }
-                        });
-                    } catch (error) {
-                        console.error("生成图片错误:", error);
-                        // 继续生成其他图片
-                    }
-                }
+                // 添加自动插入图片功能
+                const insertMode = document.querySelector('input[name="imageInsertMode"]:checked').value;
+                insertImagesIntoArticle(generatedImageUrls, insertMode);
+                
+                document.getElementById('generationStatus').classList.add('hidden');
             }
         }
+
+        // 生成文章功能
+        document.getElementById('generateBtn')?.addEventListener('click', async function() {
+            const generationStatus = document.getElementById('generationStatus');
+            const statusText = document.getElementById('statusText');
+            const outputSection = document.getElementById('outputSection');
+            
+            // 切换到预览标签页
+            document.querySelector('[data-tab="preview"]').click();
+            
+            // 显示生成状态
+            generationStatus.classList.remove('hidden');
+            statusText.textContent = '正在收集创作素材...';
+            outputSection.classList.add('hidden');
+            
+            this.disabled = true;
+            this.innerHTML = '<div class="apple-spinner mr-2"></div>创作中...';
+            
+            try {
+                // 收集表单数据
+                const title = document.getElementById('articleTitle').value;
+                const articlePrompt = document.getElementById('articlePrompt').value;
+                const referenceLinks = document.getElementById('referenceLinks').value;
+                const referenceText = document.getElementById('referenceText').value;
+                const articleLength = document.querySelector('input[name="articleLength"]:checked').value;
+                const articleTheme = document.getElementById('articleTheme').value;
+                
+                // 使用大模型生成文章
+                statusText.textContent = '正在创作文章内容...';
+                
+                // 在实际项目中，这里应该调用对应的API
+                // 现在使用模拟函数代替
+                const articleContent = await simulateGenerateArticle(title, articlePrompt, articleLength);
+                
+                // 显示文章内容
+                const articleOutput = document.getElementById('articleOutput');
+                articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(articleContent));
+                
+                // 应用选中的主题
+                articleOutput.className = '';
+                articleOutput.classList.add(
+                    `theme-${articleTheme}`, 
+                    'prose', 'dark:prose-invert', 'max-w-none', 
+                    'border', 'border-gray-100', 'dark:border-gray-800', 
+                    'p-6', 'rounded-xl', 'bg-white', 'dark:bg-gray-950', 
+                    'overflow-auto'
+                );
+                
+                outputSection.classList.remove('hidden');
+                
+                // 处理图片生成或提取
+                await generateImages();
+                
+                generationStatus.classList.add('hidden');
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
+                
+                // 滚动到输出部分
+                outputSection.scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                generationStatus.classList.add('hidden');
+                alert("发生错误: " + error.message);
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
+            }
+        });
 
         // 复制按钮
         document.getElementById('copyBtn')?.addEventListener('click', function() {
@@ -1819,6 +2118,9 @@
         
         // 保存API设置按钮
         document.getElementById('saveApiSettingsBtn')?.addEventListener('click', function() {
+            // 保存API配置
+            saveApiConfig();
+            
             // 显示成功提示
             const originalText = this.textContent;
             this.innerHTML = '<i class="fas fa-check mr-2"></i>设置已保存';
@@ -1837,6 +2139,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 初始设置为第一个标签页激活
             document.querySelector('.tab-button').click();
+            
+            // 加载保存的API配置
+            loadApiConfig();
         });
     </script>
 </body>
