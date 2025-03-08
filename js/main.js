@@ -2,13 +2,6 @@
  * 主程序和初始化功能
  */
 
-/**
- * 调试日志 - 帮助排查问题
- */
-function debug(message, data = null) {
-    console.log(`🔍 ${message}`, data || '');
-}
-
 // 验证页面必要元素是否存在
 function validatePageElements() {
     const criticalElements = [
@@ -56,10 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
         initCorsProxy();
     }
     
-    // 初始化模拟模式
-    if (typeof initSimulationMode === 'function') {
-        initSimulationMode();
+    // 始终禁用模拟模式
+    if (typeof disableSimulationMode === 'function') {
+        disableSimulationMode();
     }
+    localStorage.setItem('simulation_mode', 'false');
     
     // 初始化暗色模式
     setupDarkMode();
@@ -79,27 +73,67 @@ document.addEventListener('DOMContentLoaded', function() {
         initApiProviderSelection();
     }
     
+    // 扩展编辑器功能
+    extendMarkdownHelper();
+    
     // 初始化事件监听器
     setupEventListeners();
-    
-    // 添加模拟模式指示器（如果启用）
-    if (typeof isSimulationMode === 'function' && isSimulationMode()) {
-        addSimulationModeIndicator();
-    }
     
     // 确保至少有一个标签被激活 - 直接调用强制激活功能
     forceActivateFirstTab();
     
-    // 添加标签页紧急修复按钮
-    addEmergencyTabFix();
-    
     // 设置版本信息
     const versionElement = document.getElementById('app-version');
     if (versionElement) {
-        versionElement.textContent = '版本 1.1.1';
+        versionElement.textContent = '版本 1.2.1';
     }
     debug('应用初始化完成');
 });
+
+// 扩展Markdown编辑助手功能
+function extendMarkdownHelper() {
+    if (typeof markdownHelper !== 'object') {
+        debug('markdownHelper对象不存在，无法扩展');
+        return;
+    }
+    
+    // 添加图片插入功能
+    if (!markdownHelper.formatImage) {
+        markdownHelper.formatImage = function(textarea) {
+            const imageUrl = prompt('请输入图片URL:', 'https://example.com/image.jpg');
+            if (imageUrl) {
+                const altText = prompt('请输入图片描述:', '图片描述');
+                this.wrapSelectedText(textarea, `![${altText || '图片'}](`, `${imageUrl})`);
+            }
+        };
+    }
+    
+    // 添加列表功能
+    if (!markdownHelper.formatList) {
+        markdownHelper.formatList = function(textarea) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            if (selectedText.trim()) {
+                // 处理已选中文本，将每一行变成列表项
+                const listItems = selectedText.split('\n')
+                    .map(line => line.trim() ? `- ${line}` : line)
+                    .join('\n');
+                
+                textarea.value = textarea.value.substring(0, start) + listItems + textarea.value.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start, start + listItems.length);
+            } else {
+                // 没有选中文本时，插入列表模板
+                const listTemplate = `- 列表项1\n- 列表项2\n- 列表项3`;
+                textarea.value = textarea.value.substring(0, start) + listTemplate + textarea.value.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start, start + listTemplate.length);
+            }
+        };
+    }
+}
 
 // 强制激活第一个标签
 function forceActivateFirstTab() {
@@ -160,95 +194,6 @@ function forceActivateFirstTab() {
             debug('已直接显示内容创作面板');
         }
     }
-}
-
-// 添加紧急修复按钮 - 在标签切换失败时使用
-function addEmergencyTabFix() {
-    const fixButton = document.createElement('button');
-    fixButton.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full text-sm shadow-lg z-50 flex items-center';
-    fixButton.style.display = 'none'; // 默认隐藏
-    fixButton.innerHTML = '<i class="fas fa-tools mr-1"></i>修复标签切换';
-    
-    // 5秒后检查是否有标签被激活，如果没有则显示修复按钮
-    setTimeout(() => {
-        const anyTabActive = document.querySelector('.tab-button.active');
-        const anyContentVisible = Array.from(document.querySelectorAll('.tab-content')).some(
-            tab => !tab.classList.contains('hidden')
-        );
-        
-        if (!anyTabActive || !anyContentVisible) {
-            fixButton.style.display = 'flex';
-        }
-    }, 5000);
-    
-    // 点击修复按钮时强制初始化标签
-    fixButton.addEventListener('click', () => {
-        const tabs = ['content', 'api', 'preview'];
-        const tabIndex = 0; // 默认选中第一个标签
-        
-        // 隐藏所有内容
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.add('hidden');
-        });
-        
-        // 显示选中的内容
-        const targetTab = document.getElementById(`${tabs[tabIndex]}-tab`);
-        if (targetTab) {
-            targetTab.classList.remove('hidden');
-            debug(`已修复标签切换，显示标签: ${tabs[tabIndex]}`);
-        }
-        
-        // 添加快速切换按钮
-        const quickNav = document.createElement('div');
-        quickNav.className = 'fixed top-4 left-4 bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg z-50 flex gap-2';
-        quickNav.innerHTML = `
-            <button data-tab="content" class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">内容</button>
-            <button data-tab="api" class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded">API</button>
-            <button data-tab="preview" class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded">预览</button>
-        `;
-        
-        // 为快速导航按钮添加事件
-        quickNav.querySelectorAll('button').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.add('hidden');
-                });
-                
-                const tabId = btn.getAttribute('data-tab');
-                const tabContent = document.getElementById(`${tabId}-tab`);
-                if (tabContent) {
-                    tabContent.classList.remove('hidden');
-                }
-            });
-        });
-        
-        document.body.appendChild(quickNav);
-        
-        // 隐藏修复按钮
-        fixButton.style.display = 'none';
-    });
-    
-    document.body.appendChild(fixButton);
-}
-
-// 添加模拟模式指示器
-function addSimulationModeIndicator() {
-    const indicator = document.createElement('div');
-    indicator.className = 'fixed top-2 right-2 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold z-50 flex items-center';
-    indicator.innerHTML = '<i class="fas fa-robot mr-1"></i>模拟模式';
-    document.body.appendChild(indicator);
-    
-    // 添加关闭模拟模式的提示
-    indicator.title = '点击关闭模拟模式';
-    indicator.style.cursor = 'pointer';
-    indicator.addEventListener('click', function() {
-        if (confirm('确定要关闭模拟模式吗？关闭后将尝试使用真实API。')) {
-            if (typeof disableSimulationMode === 'function') {
-                disableSimulationMode();
-            }
-            document.body.removeChild(indicator);
-        }
-    });
 }
 
 // 初始化标签页 - 修复版
@@ -341,7 +286,7 @@ function initThemeShowcase() {
     // 添加主题卡片
     themes.forEach(theme => {
         const card = document.createElement('div');
-        card.className = `theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-apple-blue dark:ring-apple-darkblue transition-shadow ${theme.id === 'modern' ? 'theme-card-selected' : ''}`;
+        card.className = `theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-apple-blue dark:ring-apple-darkblue transition-shadow hover-card-effect ${theme.id === 'modern' ? 'theme-card-selected' : ''}`;
         card.setAttribute('data-theme', theme.id);
         
         card.innerHTML = `
@@ -624,6 +569,22 @@ function setupMarkdownToolbar() {
             if (textarea) markdownHelper.formatQuote(textarea);
         });
     }
+    
+    const formatImageBtn = document.getElementById('formatImageBtn');
+    if (formatImageBtn) {
+        formatImageBtn.addEventListener('click', function() {
+            const textarea = document.getElementById('articleEditArea');
+            if (textarea) markdownHelper.formatImage(textarea);
+        });
+    }
+    
+    const formatListBtn = document.getElementById('formatListBtn');
+    if (formatListBtn) {
+        formatListBtn.addEventListener('click', function() {
+            const textarea = document.getElementById('articleEditArea');
+            if (textarea) markdownHelper.formatList(textarea);
+        });
+    }
 }
 
 // 设置编辑文章模态框
@@ -646,13 +607,57 @@ function setupEditArticleModal() {
                 return;
             }
             
-            const turndownService = new TurndownService();
+            const turndownService = new TurndownService({
+                headingStyle: 'atx',
+                codeBlockStyle: 'fenced',
+                emDelimiter: '*'
+            });
+            
+            // 增强Turndown配置
+            turndownService.addRule('preserveImages', {
+                filter: 'img',
+                replacement: function(content, node) {
+                    return `![${node.alt || '图片'}](${node.src})`;
+                }
+            });
+            
             const markdown = turndownService.turndown(articleOutput.innerHTML);
             
             const articleEditArea = document.getElementById('articleEditArea');
             if (articleEditArea) {
                 articleEditArea.value = markdown;
+                
+                // 自动保存功能
+                let autoSaveTimer;
+                articleEditArea.addEventListener('input', function() {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = setTimeout(function() {
+                        localStorage.setItem('article_draft', articleEditArea.value);
+                        // 显示自动保存指示
+                        const saveIndicator = document.getElementById('autoSaveIndicator');
+                        if (saveIndicator) {
+                            saveIndicator.textContent = '已自动保存草稿';
+                            saveIndicator.classList.remove('hidden');
+                            setTimeout(() => {
+                                saveIndicator.classList.add('hidden');
+                            }, 2000);
+                        }
+                    }, 1000);
+                });
+                
+                // 打开模态框
                 editModal.classList.remove('hidden');
+                
+                // 聚焦编辑区域
+                setTimeout(() => {
+                    articleEditArea.focus();
+                }, 100);
+                
+                // 检查是否有保存的草稿
+                const savedDraft = localStorage.getItem('article_draft');
+                if (savedDraft && confirm('检测到有保存的草稿，是否恢复?')) {
+                    articleEditArea.value = savedDraft;
+                }
             }
         });
     }
@@ -660,6 +665,10 @@ function setupEditArticleModal() {
     const closeEditBtn = document.getElementById('closeEditBtn');
     if (closeEditBtn) {
         closeEditBtn.addEventListener('click', () => {
+            if (localStorage.getItem('article_draft') && 
+                confirm('关闭前是否保存当前编辑内容?')) {
+                document.getElementById('saveEditBtn').click();
+            }
             editModal.classList.add('hidden');
         });
     }
@@ -667,6 +676,11 @@ function setupEditArticleModal() {
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     if (cancelEditBtn) {
         cancelEditBtn.addEventListener('click', () => {
+            if (localStorage.getItem('article_draft') && 
+                !confirm('确定放弃当前编辑内容?')) {
+                return;
+            }
+            localStorage.removeItem('article_draft');
             editModal.classList.add('hidden');
         });
     }
@@ -680,9 +694,39 @@ function setupEditArticleModal() {
             if (articleOutput && articleEditArea) {
                 const markdownContent = articleEditArea.value;
                 
+                // 清除草稿
+                localStorage.removeItem('article_draft');
+                
                 // 检查是否存在marked和DOMPurify
                 if (typeof marked === 'object' && typeof DOMPurify === 'object') {
+                    // 扩展marked选项以支持更多格式
+                    const renderer = new marked.Renderer();
+                    renderer.image = function(href, title, text) {
+                        return `<img src="${href}" alt="${text}" title="${title || ''}" class="mx-auto my-4 max-w-full h-auto rounded-lg shadow-md">`;
+                    };
+                    
+                    marked.setOptions({
+                        renderer: renderer,
+                        gfm: true,
+                        breaks: true,
+                        headerIds: true
+                    });
+                    
                     articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(markdownContent));
+                    
+                    // 添加成功提示
+                    const successToast = document.createElement('div');
+                    successToast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
+                    successToast.innerHTML = '<i class="fas fa-check-circle mr-2"></i>文章已成功更新';
+                    document.body.appendChild(successToast);
+                    
+                    setTimeout(() => {
+                        successToast.classList.add('animate-fade-out');
+                        setTimeout(() => {
+                            document.body.removeChild(successToast);
+                        }, 300);
+                    }, 2000);
+                    
                     editModal.classList.add('hidden');
                 } else {
                     console.error('marked或DOMPurify未定义，无法安全解析Markdown');
