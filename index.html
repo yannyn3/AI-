@@ -922,52 +922,58 @@
             <p class="mt-1">© 2024 AI文章创作室 - 使用先进AI技术创建专业内容</p>
         </div>
     </div>
-    
-    <!-- 编辑文章模态框 -->
-    <div id="editArticleModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm hidden">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-7xl w-full h-[90vh] flex flex-col shadow-xl animate-fade-in">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">编辑文章</h3>
-                <button id="closeEditBtn" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
-                    <i class="fas fa-times"></i>
+
+<!-- 编辑文章模态框 -->
+<div id="editArticleModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm hidden">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-7xl w-full h-[90vh] flex flex-col shadow-xl animate-fade-in">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">编辑文章</h3>
+            <button id="closeEditBtn" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="flex justify-between items-center mb-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-xl">
+            <div class="flex space-x-2">
+                <button id="formatBoldBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="加粗">
+                    <i class="fas fa-bold"></i>
+                </button>
+                <button id="formatItalicBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="斜体">
+                    <i class="fas fa-italic"></i>
+                </button>
+                <button id="formatLinkBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="链接">
+                    <i class="fas fa-link"></i>
+                </button>
+                <button id="formatH2Btn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="二级标题">
+                    <i class="fas fa-heading"></i>
+                </button>
+                <button id="formatQuoteBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="引用">
+                    <i class="fas fa-quote-right"></i>
+                </button>
+                <button id="formatImageBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="图片">
+                    <i class="fas fa-image"></i>
+                </button>
+                <button id="formatListBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="列表">
+                    <i class="fas fa-list-ul"></i>
                 </button>
             </div>
-            
-            <div class="flex justify-between items-center mb-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-xl">
-                <div class="flex space-x-2">
-                    <button id="formatBoldBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="加粗">
-                        <i class="fas fa-bold"></i>
-                    </button>
-                    <button id="formatItalicBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="斜体">
-                        <i class="fas fa-italic"></i>
-                    </button>
-                    <button id="formatLinkBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="链接">
-                        <i class="fas fa-link"></i>
-                    </button>
-                    <button id="formatH2Btn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="二级标题">
-                        <i class="fas fa-heading"></i>
-                    </button>
-                    <button id="formatQuoteBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="引用">
-                        <i class="fas fa-quote-right"></i>
-                    </button>
-                </div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">
-                    使用 Markdown 语法
-                </div>
-            </div>
-            
-            <textarea id="articleEditArea" class="flex-1 w-full p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none resize-none transition"></textarea>
-            
-            <div class="flex justify-end space-x-3 mt-4">
-                <button id="cancelEditBtn" class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                    取消
-                </button>
-                <button id="saveEditBtn" class="px-4 py-2 btn-primary text-white rounded-lg transition">
-                    保存更改
-                </button>
+            <div id="autoSaveIndicator" class="text-xs text-green-600 dark:text-green-400 hidden">
+                已自动保存草稿
             </div>
         </div>
+        
+        <textarea id="articleEditArea" class="flex-1 w-full p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none resize-none transition"></textarea>
+        
+        <div class="flex justify-end space-x-3 mt-4">
+            <button id="cancelEditBtn" class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                取消
+            </button>
+            <button id="saveEditBtn" class="px-4 py-2 btn-primary text-white rounded-lg transition">
+                保存更改
+            </button>
+        </div>
     </div>
+</div>
     
     <!-- 加载核心JS库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
