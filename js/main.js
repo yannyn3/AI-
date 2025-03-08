@@ -78,6 +78,57 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化事件监听器
     setupEventListeners();
+    // 初始化事件监听器中添加:
+const directAPITestBtn = document.getElementById('directAPITestBtn');
+if (directAPITestBtn) {
+    directAPITestBtn.addEventListener('click', async function() {
+        // 设置为无代理模式
+        setCorsProxy('none');
+        
+        const directTestResult = document.getElementById('directTestResult');
+        if (directTestResult) {
+            directTestResult.innerHTML = `
+                <div class="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg flex items-center">
+                    <div class="apple-spinner mr-2"></div>
+                    <span>测试直接API连接中...</span>
+                </div>
+            `;
+        }
+        
+        try {
+            // 测试DeepSeek的连接 - 可以根据当前选择的API提供商修改
+            const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
+            const provider = apiConfig.provider || 'deepseek';
+            
+            // 直接创建简单的测试请求
+            const testUrl = 'https://api.deepseek.com/v1/models';
+            const response = await directApiRequest(testUrl);
+            
+            if (response.ok) {
+                directTestResult.innerHTML = `
+                    <div class="p-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>直接API连接成功！无需使用代理。</span>
+                    </div>
+                `;
+                // 保存直接连接设置
+                setCorsProxy('none');
+            } else {
+                throw new Error(`HTTP错误: ${response.status}`);
+            }
+        } catch (error) {
+            console.error("直接API连接测试失败:", error);
+            directTestResult.innerHTML = `
+                <div class="p-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg flex items-center">
+                    <i class="fas fa-times-circle mr-2"></i>
+                    <span>直接连接失败: ${error.message}。将尝试使用代理。</span>
+                </div>
+            `;
+            // 自动切换回代理模式
+            setCorsProxy('allorigins');
+        }
+    });
+}
     
     // 确保至少有一个标签被激活 - 直接调用强制激活功能
     forceActivateFirstTab();
