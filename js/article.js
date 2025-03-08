@@ -1,3 +1,7 @@
+/**
+ * 文章生成相关功能
+ */
+
 // 生成文章 - 增强版
 async function generateArticle(title, prompt, length, referenceLinks, referenceText) {
     console.log('开始生成文章:', {title, prompt, length});
@@ -275,5 +279,113 @@ async function generateArticle(title, prompt, length, referenceLinks, referenceT
         }
         
         throw error;
+    }
+}
+
+// 生成文章主函数
+async function handleArticleGeneration() {
+    const generationStatus = document.getElementById('generationStatus');
+    const statusText = document.getElementById('statusText');
+    const outputSection = document.getElementById('outputSection');
+    const generateBtn = document.getElementById('generateBtn');
+    
+    // 切换到预览标签页
+    document.querySelector('[data-tab="preview"]').click();
+    
+    // 显示生成状态
+    generationStatus.classList.remove('hidden');
+    statusText.textContent = '正在收集创作素材...';
+    outputSection.classList.add('hidden');
+    
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '<div class="apple-spinner mr-2"></div>创作中...';
+    
+    try {
+        // 收集表单数据
+        const title = document.getElementById('articleTitle').value;
+        const articlePrompt = document.getElementById('articlePrompt').value;
+        const referenceLinks = document.getElementById('referenceLinks').value;
+        const referenceText = document.getElementById('referenceText').value;
+        const articleLength = document.querySelector('input[name="articleLength"]:checked').value;
+        const articleTheme = document.getElementById('articleTheme').value;
+        
+        // 加载API配置
+        const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
+        const provider = apiConfig.provider || 'openai';
+        
+        // 验证API配置
+        switch (provider) {
+            case 'openai':
+                if (!apiConfig.openai?.apiKey && !isSimulationMode()) {
+                    throw new Error("请先配置OpenAI API密钥");
+                }
+                break;
+            case 'poe':
+                if (!apiConfig.poe?.apiKey && !isSimulationMode()) {
+                    throw new Error("请先配置Poe API密钥");
+                }
+                break;
+            case 'deepseek':
+                if (!apiConfig.deepseek?.apiKey && !isSimulationMode()) {
+                    throw new Error("请先配置DeepSeek API密钥");
+                }
+                break;
+            // 其他API提供商的验证...
+            default:
+                if (!isSimulationMode()) {
+                    throw new Error(`尚未实现对${provider}的支持`);
+                }
+        }
+        
+        // 使用真实API生成文章
+        statusText.textContent = '正在创作文章内容...';
+        
+        const articleContent = await generateArticle(title, articlePrompt, articleLength, referenceLinks, referenceText);
+        
+        // 显示文章内容
+        const articleOutput = document.getElementById('articleOutput');
+        articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(articleContent));
+        
+        // 应用选中的主题
+        articleOutput.className = '';
+        articleOutput.classList.add(
+            `theme-${articleTheme}`, 
+            'prose', 'dark:prose-invert', 'max-w-none', 
+            'border', 'border-gray-100', 'dark:border-gray-800', 
+            'p-6', 'rounded-xl', 'bg-white', 'dark:bg-gray-950', 
+            'overflow-auto'
+        );
+        
+        outputSection.classList.remove('hidden');
+        
+        // 处理图片生成或提取
+        await handleImageGeneration();
+        
+        generationStatus.classList.add('hidden');
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
+        
+        // 滚动到输出部分
+        outputSection.scrollIntoView({ behavior: 'smooth' });
+        
+    } catch (error) {
+        generationStatus.classList.add('hidden');
+        
+        showAlert(
+            'error',
+            '文章生成失败',
+            error.message,
+            error.stack,
+            [
+                'API密钥无效或已过期',
+                'API服务暂时不可用',
+                '网络连接问题',
+                '提示词太长或包含不当内容',
+                '请检查参考资料是否过多'
+            ]
+        );
+        
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
     }
 }
