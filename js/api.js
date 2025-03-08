@@ -131,14 +131,14 @@ function saveApiConfig() {
     return config;
 }
 
-// 模拟API调用响应（当真实API不可用时）
+// 如果API调用失败，尝试模拟响应
 function simulateApiResponse(provider, type, params = {}) {
     return new Promise((resolve) => {
-        console.log(`[模拟模式] 使用${provider}进行${type}操作`, params);
+        console.log(`[API调用失败]尝试生成示例响应，类型: ${type}`);
         setTimeout(() => {
             switch (type) {
                 case 'test':
-                    resolve({ success: true, message: "API连接测试成功（模拟模式）" });
+                    resolve({ success: true, message: "API连接测试成功（示例响应）" });
                     break;
                 case 'generate_article':
                     resolve({
@@ -146,35 +146,32 @@ function simulateApiResponse(provider, type, params = {}) {
 
 ## 引言
 
-这是一篇由AI创作的示例文章。在实际使用中，这里将显示基于您的提示词和参考资料生成的内容。当前运行在**模拟模式**下，API调用被模拟而非实际执行。
+API调用失败，无法生成真实内容。以下是示例内容，仅用于演示界面。请检查API配置和网络连接。
 
-## 主要内容
+## API调用失败可能的原因
 
-模拟模式适用于以下情况：
-- API密钥不可用或暂时失效
-- 网络连接存在问题
-- 希望在无API环境下演示功能
-- 开发和测试应用功能
+1. API密钥无效或过期
+2. 网络连接问题
+3. API服务暂时不可用
+4. API调用参数错误
 
-## 使用方法
+## 建议解决方案
 
-要使用真实API功能，请确保：
-1. 已正确配置API密钥
-2. 网络连接正常
-3. 已禁用模拟模式
+1. 验证您的API密钥是否正确
+2. 检查网络连接
+3. 稍后再试
+4. 检查API日志以获取详细错误信息
 
-> 本内容仅作为模拟示例，不代表实际生成的文章质量。真实API将根据您的具体需求创建定制内容。
+> 这是示例内容，不代表实际API生成结果。
 
-### 配置说明
+## 请尝试以下操作
 
-当前配置：
-- API提供商: ${provider}
-- 文章长度: ${params.length || '中等'}
-- 主题: ${params.theme || '现代简约风'}
+- 检查控制台以获取详细错误信息
+- 重新配置API密钥
+- 更换不同的API提供商
+- 联系支持获取帮助
 
-## 结论
-
-感谢使用AI文章创作室。要获取最佳体验，请配置正确的API密钥并禁用模拟模式。`
+祝您使用愉快！`
                     });
                     break;
                 case 'extract_images':
@@ -192,32 +189,23 @@ function simulateApiResponse(provider, type, params = {}) {
                     ].slice(0, params.count || 3));
                     break;
                 case 'scrape_content':
-                    resolve(`这是从URL抓取的示例内容（模拟模式）。
+                    resolve(`这是示例抓取内容。API调用失败，无法获取真实内容。
 
-在实际使用中，这里将显示从您提供的URL中提取的真实内容。当前因为处于模拟模式，所以显示此占位内容。
+在真实使用中，此处会显示从您提供的URL中提取的内容。请检查网络连接和API配置。
 
-模拟的网页标题: ${params.url ? '来自 ' + new URL(params.url).hostname + ' 的文章' : '示例文章'}
-
-模拟的文章内容:
-这是模拟的文章第一段。在真实环境下，API会访问您提供的URL并提取其中的主要内容，过滤掉广告、导航和其他无关元素。
-
-这是模拟的文章第二段。实际抓取的内容会保留原文的格式、标点和结构，使您能够将其用作参考资料。`);
+示例内容：
+可能原因包括CORS限制、API密钥问题或网络连接问题。请查看控制台以获取详细错误信息。`);
                     break;
                 default:
-                    resolve({ success: false, message: "未知的模拟操作类型" });
+                    resolve({ success: false, message: "未知的操作类型" });
             }
-        }, 1500); // 模拟网络延迟
+        }, 1000);
     });
 }
 
 // 测试API连接 - 增强版
 async function testApiConnection(provider) {
     console.log(`开始测试${provider} API连接...`);
-    
-    // 如果是模拟模式，返回模拟响应
-    if (isSimulationMode()) {
-        return await simulateApiResponse(provider, 'test');
-    }
     
     const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
     
