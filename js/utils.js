@@ -67,21 +67,7 @@ function addCorsProxy(url) {
     }
 }
 
-// 暗色模式检测和切换
-function setupDarkMode() {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-    }
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        if (event.matches) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    });
-}
-
-// 启用模拟模式（当API不可用时）
+// 模拟模式控制 - 默认禁用
 let simulationMode = false;
 
 function enableSimulationMode() {
@@ -100,12 +86,29 @@ function isSimulationMode() {
     return simulationMode;
 }
 
-// 初始化模拟模式设置
+// 初始化模拟模式设置 - 默认关闭
 function initSimulationMode() {
     const savedMode = localStorage.getItem('simulation_mode');
+    // 默认禁用，只有明确设为true时才启用
     if (savedMode === 'true') {
         simulationMode = true;
+    } else {
+        simulationMode = false;
     }
+}
+
+// 暗色模式检测和切换
+function setupDarkMode() {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        if (event.matches) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
 }
 
 // 显示警告/错误弹窗
