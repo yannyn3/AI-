@@ -72,10 +72,10 @@ async function handleArticleGeneration() {
             '生成文章内容时出现错误。',
             error.message,
             [
-                'API密钥可能无效或已过期',
-                '网络连接问题',
-                '服务器暂时不可用',
-                '请检查控制台以获取详细错误信息'
+                '请检查API密钥是否正确',
+                '检查网络连接',
+                '尝试使用不同的API提供商',
+                '如果使用代理，尝试切换到直接连接'
             ]
         );
         
@@ -121,6 +121,8 @@ ${userPrompt ? `以下是创作要求：${userPrompt}` : ''}
 
 ${referenceText ? `参考资料：\n${referenceText}\n\n请基于上述参考资料，但不要直接复制。` : ''}
 
+${referenceLinks ? `参考链接：\n${referenceLinks}\n\n请参考这些链接中的信息。` : ''}
+
 要求：
 1. 文章结构清晰，包含引言、正文和结论
 2. 使用Markdown格式，包括适当的标题层级、强调和列表
@@ -129,6 +131,7 @@ ${referenceText ? `参考资料：\n${referenceText}\n\n请基于上述参考资
 5. 根据主题提供有价值的信息或观点
 6. 使用准确的数据和事实支持论点（如适用）
 7. 适合${themeDescription}的风格呈现
+8. 保持内容原创，不直接抄袭参考资料
 
 请直接输出完整的文章内容，不要包含额外的解释或注释。`;
     
@@ -177,34 +180,38 @@ async function callOpenAIForArticle(prompt, config) {
     if (apiProxy) {
         console.log("使用用户提供的OpenAI API代理:", apiProxy);
         apiEndpoint = apiProxy;
-    } else {
-        apiEndpoint = addCorsProxy(apiEndpoint);
     }
     
-    const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${config.apiKey}`
-        },
-        body: JSON.stringify({
-            model: config.textModel || 'gpt-4o',
-            messages: [
-                { role: "system", content: "You are a professional writer and content creator. Your task is to create high-quality articles in Markdown format. Focus on substance, clear structure, and engaging style." },
-                { role: "user", content: prompt }
-            ],
-            temperature: config.temperature || 0.7,
-            max_tokens: config.maxTokens || 4000
-        })
-    });
-    
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`OpenAI API错误: ${errorData.error?.message || response.statusText}`);
+    try {
+        // 使用带回退的请求函数
+        const response = await apiRequestWithFallback(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.apiKey}`
+            },
+            body: JSON.stringify({
+                model: config.textModel || 'gpt-4o',
+                messages: [
+                    { role: "system", content: "You are a professional writer and content creator. Your task is to create high-quality articles in Markdown format. Focus on substance, clear structure, and engaging style." },
+                    { role: "user", content: prompt }
+                ],
+                temperature: config.temperature || 0.7,
+                max_tokens: config.maxTokens || 4000
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`OpenAI API错误: ${errorData.error?.message || response.statusText}`);
+        }
+        
+        const result = await response.json();
+        return result.choices[0].message.content;
+    } catch (error) {
+        console.error("调用OpenAI API生成文章失败:", error);
+        throw error;
     }
-    
-    const result = await response.json();
-    return result.choices[0].message.content;
 }
 
 // 调用Anthropic API生成文章
@@ -213,32 +220,38 @@ async function callAnthropicForArticle(prompt, config) {
         throw new Error("未配置Anthropic API密钥");
     }
     
-    const apiEndpoint = addCorsProxy('https://api.anthropic.com/v1/messages');
+    const apiEndpoint = 'https://api.anthropic.com/v1/messages';
     
-    const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': config.apiKey,
-            'anthropic-version': '2023-06-01'
-        },
-        body: JSON.stringify({
-            model: config.model || 'claude-3-sonnet-20240229',
-            max_tokens: config.maxTokens || 4000,
-            temperature: config.temperature || 0.7,
-            messages: [
-                { role: "user", content: prompt }
-            ]
-        })
-    });
-    
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Anthropic API错误: ${errorData.error?.message || response.statusText}`);
+    try {
+        // 使用带回退的请求函数
+        const response = await apiRequestWithFallback(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': config.apiKey,
+                'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+                model: config.model || 'claude-3-sonnet-20240229',
+                max_tokens: config.maxTokens || 4000,
+                temperature: config.temperature || 0.7,
+                messages: [
+                    { role: "user", content: prompt }
+                ]
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`Anthropic API错误: ${errorData.error?.message || response.statusText}`);
+        }
+        
+        const result = await response.json();
+        return result.content[0].text;
+    } catch (error) {
+        console.error("调用Anthropic API生成文章失败:", error);
+        throw error;
     }
-    
-    const result = await response.json();
-    return result.content[0].text;
 }
 
 // 调用DeepSeek API生成文章
@@ -254,34 +267,38 @@ async function callDeepSeekForArticle(prompt, config) {
     if (apiProxy) {
         console.log("使用用户提供的DeepSeek API代理:", apiProxy);
         apiEndpoint = apiProxy;
-    } else {
-        apiEndpoint = addCorsProxy(apiEndpoint);
     }
     
-    const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${config.apiKey}`
-        },
-        body: JSON.stringify({
-            model: config.model || 'deepseek-chat',
-            messages: [
-                { role: "system", content: "你是一位专业的文章创作者，善于创作结构清晰、内容专业、语言流畅的高质量文章。请用Markdown格式输出。" },
-                { role: "user", content: prompt }
-            ],
-            temperature: config.temperature || 0.7,
-            max_tokens: config.maxTokens || 4000
-        })
-    });
-    
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`DeepSeek API错误: ${errorData.error?.message || response.statusText}`);
+    try {
+        // 使用带回退的请求函数
+        const response = await apiRequestWithFallback(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.apiKey}`
+            },
+            body: JSON.stringify({
+                model: config.model || 'deepseek-chat',
+                messages: [
+                    { role: "system", content: "你是一位专业的文章创作者，善于创作结构清晰、内容专业、语言流畅的高质量文章。请用Markdown格式输出。" },
+                    { role: "user", content: prompt }
+                ],
+                temperature: config.temperature || 0.7,
+                max_tokens: config.maxTokens || 4000
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`DeepSeek API错误: ${errorData.error?.message || response.statusText}`);
+        }
+        
+        const result = await response.json();
+        return result.choices[0].message.content;
+    } catch (error) {
+        console.error("调用DeepSeek API生成文章失败:", error);
+        throw error;
     }
-    
-    const result = await response.json();
-    return result.choices[0].message.content;
 }
 
 // 调用百度文心一言API生成文章
@@ -292,9 +309,9 @@ async function callBaiduForArticle(prompt, config) {
     
     try {
         // 获取访问令牌
-        const tokenUrl = addCorsProxy(`https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${config.apiKey}&client_secret=${config.secretKey}`);
+        const tokenUrl = `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${config.apiKey}&client_secret=${config.secretKey}`;
         
-        const tokenResponse = await fetch(tokenUrl, {
+        const tokenResponse = await apiRequestWithFallback(tokenUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -315,9 +332,9 @@ async function callBaiduForArticle(prompt, config) {
         }
         
         // 使用令牌调用文心一言API
-        const apiUrl = addCorsProxy(`https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=${accessToken}`);
+        const apiUrl = `https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=${accessToken}`;
         
-        const response = await fetch(apiUrl, {
+        const response = await apiRequestWithFallback(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -351,31 +368,37 @@ async function callMoonshotForArticle(prompt, config) {
         throw new Error("未配置月之暗面API密钥");
     }
     
-    const apiEndpoint = addCorsProxy('https://api.moonshot.cn/v1/chat/completions');
+    const apiEndpoint = 'https://api.moonshot.cn/v1/chat/completions';
     
-    const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${config.apiKey}`
-        },
-        body: JSON.stringify({
-            model: config.model || 'moonshot-v1-8k',
-            messages: [
-                { role: "system", content: "你是一位专业的文章创作者，善于创作结构清晰、内容专业、语言流畅的高质量文章。请用Markdown格式输出。" },
-                { role: "user", content: prompt }
-            ],
-            temperature: config.temperature || 0.7
-        })
-    });
-    
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`月之暗面API错误: ${errorData.error?.message || response.statusText}`);
+    try {
+        // 使用带回退的请求函数
+        const response = await apiRequestWithFallback(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.apiKey}`
+            },
+            body: JSON.stringify({
+                model: config.model || 'moonshot-v1-8k',
+                messages: [
+                    { role: "system", content: "你是一位专业的文章创作者，善于创作结构清晰、内容专业、语言流畅的高质量文章。请用Markdown格式输出。" },
+                    { role: "user", content: prompt }
+                ],
+                temperature: config.temperature || 0.7
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`月之暗面API错误: ${errorData.error?.message || response.statusText}`);
+        }
+        
+        const result = await response.json();
+        return result.choices[0].message.content;
+    } catch (error) {
+        console.error("调用月之暗面API生成文章失败:", error);
+        throw error;
     }
-    
-    const result = await response.json();
-    return result.choices[0].message.content;
 }
 
 // 调用Poe API生成文章
@@ -384,30 +407,36 @@ async function callPoeForArticle(prompt, config) {
         throw new Error("未配置Poe API密钥");
     }
     
-    const apiEndpoint = addCorsProxy('https://api.poe.com/chat/completions');
+    const apiEndpoint = 'https://api.poe.com/chat/completions';
     
-    const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${config.apiKey}`
-        },
-        body: JSON.stringify({
-            model: config.textModel || 'Claude-3.7-Sonnet',
-            messages: [
-                { role: "system", content: "你是一位专业的文章创作者，善于创作结构清晰、内容专业、语言流畅的高质量文章。请用Markdown格式输出。" },
-                { role: "user", content: prompt }
-            ]
-        })
-    });
-    
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Poe API错误: ${errorData.error?.message || response.statusText}`);
+    try {
+        // 使用带回退的请求函数
+        const response = await apiRequestWithFallback(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${config.apiKey}`
+            },
+            body: JSON.stringify({
+                model: config.textModel || 'Claude-3.7-Sonnet',
+                messages: [
+                    { role: "system", content: "你是一位专业的文章创作者，善于创作结构清晰、内容专业、语言流畅的高质量文章。请用Markdown格式输出。" },
+                    { role: "user", content: prompt }
+                ]
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`Poe API错误: ${errorData.error?.message || response.statusText}`);
+        }
+        
+        const result = await response.json();
+        return result.choices[0].message.content;
+    } catch (error) {
+        console.error("调用Poe API生成文章失败:", error);
+        throw error;
     }
-    
-    const result = await response.json();
-    return result.choices[0].message.content;
 }
 
 // 渲染文章
@@ -440,6 +469,16 @@ function renderArticle(content, theme) {
         return `<li class="my-1">${text}</li>`;
     };
     
+    // 增强引用块渲染
+    renderer.blockquote = function(quote) {
+        return `<blockquote class="pl-4 border-l-4 border-gray-300 dark:border-gray-600 italic text-gray-700 dark:text-gray-300 my-4">${quote}</blockquote>`;
+    };
+    
+    // 增强代码块渲染
+    renderer.code = function(code, language) {
+        return `<pre class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 overflow-x-auto"><code class="language-${language || 'text'}">${code}</code></pre>`;
+    };
+    
     // 配置marked
     marked.setOptions({
         renderer: renderer,
@@ -466,4 +505,119 @@ function renderArticle(content, theme) {
     
     // 渲染Markdown内容
     articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(content));
+}
+
+// 处理图片生成
+async function handleImageGeneration() {
+    // 获取图片来源和数量
+    const imageSource = document.querySelector('input[name="imageSource"]:checked')?.value || 'generate';
+    const imageCountSelects = document.querySelectorAll('#imageCount');
+    
+    // 找到可见的imageCount选择框
+    let visibleImageCountSelect = null;
+    for (const select of imageCountSelects) {
+        if (select.offsetParent !== null) {  // 元素可见
+            visibleImageCountSelect = select;
+            break;
+        }
+    }
+    
+    if (!visibleImageCountSelect) {
+        console.error('未找到可见的图片数量选择框');
+        return;
+    }
+    
+    const imageCount = parseInt(visibleImageCountSelect.value) || 0;
+    
+    // 如果图片数量为0，不需要生成
+    if (imageCount === 0) {
+        console.log('用户选择不使用图片');
+        return;
+    }
+    
+    // 获取图片插入方式
+    const insertModeInputs = document.querySelectorAll('input[name="imageInsertMode"]');
+    // 找到选中的插入方式
+    let insertMode = 'even';  // 默认均匀分布
+    for (const input of insertModeInputs) {
+        if (input.checked && input.offsetParent !== null) {  // 元素可见且被选中
+            insertMode = input.value;
+            break;
+        }
+    }
+    
+    // 根据图片来源获取图片
+    try {
+        let images = [];
+        
+        if (imageSource === 'extract') {
+            // 从参考链接提取图片
+            const referenceLinks = document.getElementById('referenceLinks')?.value || '';
+            if (!referenceLinks.trim()) {
+                console.log('没有提供参考链接，无法提取图片');
+                return;
+            }
+            
+            // 显示提取状态
+            const statusText = document.getElementById('statusText');
+            if (statusText) {
+                statusText.textContent = '正在从参考链接提取图片...';
+            }
+            
+            // TODO: 实现从参考链接提取图片的功能
+            // 暂时使用随机图片代替
+            images = await simulateApiResponse('openai', 'extract_images', { count: imageCount });
+        } else {
+            // 生成AI图片
+            const imagePrompt = document.getElementById('imagePrompt')?.value || '高质量、专业的配图';
+            const imageAspectRatio = document.getElementById('imageAspectRatio')?.value || '4:3';
+            
+            // 显示生成状态
+            const statusText = document.getElementById('statusText');
+            if (statusText) {
+                statusText.textContent = '正在生成AI图片...';
+            }
+            
+            // 获取API配置
+            const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
+            const provider = apiConfig.provider || 'openai';
+            
+            // TODO: 实现生成AI图片的功能
+            // 暂时使用随机图片代替
+            images = await simulateApiResponse(provider, 'generate_images', { 
+                count: imageCount,
+                prompt: imagePrompt,
+                aspectRatio: imageAspectRatio
+            });
+        }
+        
+        // 如果成功获取到图片，显示它们
+        if (images && images.length > 0) {
+            const generatedImages = document.getElementById('generatedImages');
+            if (generatedImages) {
+                generatedImages.innerHTML = '';
+                
+                images.forEach(imgUrl => {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'bg-white dark:bg-gray-800 rounded-xl p-2 shadow-apple dark:shadow-apple-dark overflow-hidden';
+                    
+                    const img = document.createElement('img');
+                    img.src = imgUrl;
+                    img.alt = '生成的配图';
+                    img.className = 'w-full h-auto rounded-lg';
+                    
+                    imgContainer.appendChild(img);
+                    generatedImages.appendChild(imgContainer);
+                });
+                
+                generatedImages.classList.remove('hidden');
+            }
+            
+            // 将图片插入到文章中
+            insertImagesIntoArticle(images, insertMode);
+        }
+    } catch (error) {
+        console.error('处理图片时出错:', error);
+        // 继续生成文章，但没有图片
+    }
 }
