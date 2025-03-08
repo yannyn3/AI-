@@ -17,52 +17,6 @@ const CORS_PROXIES = {
 // 默认代理 - 默认设为"none"即无代理模式
 let currentProxy = 'none';
 
-/**
- * 通过Vercel代理发送API请求
- */
-async function sendViaProxy(targetUrl, options = {}) {
-  // 替换为您的Vercel代理URL
-  const PROXY_URL = "https://your-api-proxy.vercel.app/api/proxy";
-  
-  try {
-    console.log(`通过代理发送请求到: ${targetUrl}`);
-    
-    // 组装代理请求数据
-    const proxyData = {
-      targetUrl,
-      method: options.method || "POST",
-      headers: options.headers || {},
-      body: options.body || null
-    };
-    
-    // 发送请求到代理
-    const response = await fetch(PROXY_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(proxyData)
-    });
-    
-    if (!response.ok) {
-      throw new Error(`代理请求失败: ${response.status}`);
-    }
-    
-    // 解析代理响应
-    const proxyResponse = await response.json();
-    
-    // 检查代理返回的状态
-    if (proxyResponse.status >= 400) {
-      throw new Error(`API错误: ${proxyResponse.status} ${proxyResponse.statusText}`);
-    }
-    
-    return proxyResponse.data;
-  } catch (error) {
-    console.error("代理请求失败:", error);
-    throw error;
-  }
-}
-
 // 设置当前使用的代理
 function setCorsProxy(proxyName) {
     if (CORS_PROXIES.hasOwnProperty(proxyName)) {
@@ -100,6 +54,55 @@ function addCorsProxy(url) {
     } catch (e) {
         console.error('添加CORS代理出错:', e);
         return url;
+    }
+}
+
+/**
+ * 通过Vercel API代理发送请求
+ * @param {string} targetUrl - 目标API URL
+ * @param {Object} options - 请求选项
+ * @returns {Promise<Object>} - API响应
+ */
+async function sendViaProxy(targetUrl, options = {}) {
+    // 替换为您的Vercel代理URL
+    const PROXY_URL = "https://ai-yannyn3.vercel.app/api/proxy";
+    
+    try {
+        console.log(`通过代理发送请求到: ${targetUrl}`);
+        
+        // 准备代理请求数据
+        const proxyData = {
+            targetUrl: targetUrl,
+            method: options.method || "POST",
+            headers: options.headers || {},
+            body: options.body || null
+        };
+        
+        // 发送请求到代理
+        const response = await fetch(PROXY_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(proxyData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`代理请求失败: ${response.status} ${errorData.error || ''}`);
+        }
+        
+        const result = await response.json();
+        
+        // 检查API响应状态
+        if (result.status >= 400) {
+            throw new Error(`API错误: ${result.status} ${result.statusText || ''}`);
+        }
+        
+        return result.data;
+    } catch (error) {
+        console.error("代理请求失败:", error);
+        throw error;
     }
 }
 
@@ -152,8 +155,21 @@ async function apiRequestWithFallback(url, options = {}, preferredProxies = ['no
         }
     }
     
-    // 所有尝试都失败
-    throw lastError || new Error('所有API连接方式都失败');
+    // 所有尝试都失败，尝试使用代理服务
+    try {
+        console.log("所有直接请求失败，尝试使用Vercel代理服务...");
+        const response = await sendViaProxy(url, options);
+        // 创建一个类似fetch响应的对象
+        return {
+            ok: true,
+            status: 200,
+            statusText: "OK",
+            json: async () => response
+        };
+    } catch (error) {
+        console.error("Vercel代理请求也失败:", error);
+        throw lastError || new Error('所有API连接方式都失败');
+    }
 }
 
 // 始终返回false，强制使用真实API
@@ -465,6 +481,55 @@ function insertImagesIntoArticle(images, insertMode) {
             }
         });
     }
+}
+
+// 模拟API响应（仅用于调试）
+async function simulateApiResponse(provider, type, params = {}) {
+    return new Promise((resolve) => {
+        console.log(`[模拟模式]尝试生成示例响应，类型: ${type}`);
+        setTimeout(() => {
+            switch (type) {
+                case 'test':
+                    resolve({ success: true, message: "API连接测试成功（模拟响应）" });
+                    break;
+                case 'generate_article':
+                    resolve({
+                        content: `# ${params.title || '示例文章标题'}
+
+## 引言
+
+这是一篇示例文章内容。在实际使用中，这里会是由AI生成的完整文章。
+
+## 主要内容
+
+- 这是示例内容的第一点
+- 这是示例内容的第二点
+- 这是示例内容的第三点
+
+## 结论
+
+这是示例文章的结论部分。感谢阅读！`
+                    });
+                    break;
+                case 'extract_images':
+                    resolve([
+                        'https://picsum.photos/800/600?random=1',
+                        'https://picsum.photos/800/600?random=2',
+                        'https://picsum.photos/800/600?random=3'
+                    ].slice(0, params.count || 3));
+                    break;
+                case 'generate_images':
+                    resolve([
+                        'https://picsum.photos/800/600?random=4',
+                        'https://picsum.photos/800/600?random=5',
+                        'https://picsum.photos/800/600?random=6'
+                    ].slice(0, params.count || 3));
+                    break;
+                default:
+                    resolve({ success: false, message: "未知的操作类型" });
+            }
+        }, 500);
+    });
 }
 
 // 调试日志函数
