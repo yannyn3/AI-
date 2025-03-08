@@ -65,7 +65,7 @@ function addCorsProxy(url) {
  */
 async function sendViaProxy(targetUrl, options = {}) {
     // 替换为您的Vercel代理URL
-    const PROXY_URL = "https://ai-yannyn3.vercel.app/api/proxy";
+    const PROXY_URL = "https://ai-wenzhang-git-main-printyang0gmailcoms-projects.vercel.app/";
     
     try {
         console.log(`通过代理发送请求到: ${targetUrl}`);
