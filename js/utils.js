@@ -67,34 +67,22 @@ function addCorsProxy(url) {
     }
 }
 
-// 模拟模式控制 - 默认禁用
-let simulationMode = false;
+// 始终返回false，强制使用真实API
+function isSimulationMode() {
+    return false;
+}
 
+// 这些函数保留但空实现，确保调用它们不会出错
 function enableSimulationMode() {
-    simulationMode = true;
-    localStorage.setItem('simulation_mode', 'true');
-    console.log('已启用模拟模式 - API调用将被模拟');
+    localStorage.setItem('simulation_mode', 'false');
 }
 
 function disableSimulationMode() {
-    simulationMode = false;
     localStorage.setItem('simulation_mode', 'false');
-    console.log('已禁用模拟模式 - 将使用真实API');
 }
 
-function isSimulationMode() {
-    return simulationMode;
-}
-
-// 初始化模拟模式设置 - 默认关闭
 function initSimulationMode() {
-    const savedMode = localStorage.getItem('simulation_mode');
-    // 默认禁用，只有明确设为true时才启用
-    if (savedMode === 'true') {
-        simulationMode = true;
-    } else {
-        simulationMode = false;
-    }
+    localStorage.setItem('simulation_mode', 'false');
 }
 
 // 暗色模式检测和切换
@@ -295,6 +283,37 @@ const markdownHelper = {
         textarea.value = beforeText + '> ' + afterText;
         textarea.focus();
         textarea.setSelectionRange(lineStart + 2, lineStart + 2);
+    },
+    
+    formatImage: function(textarea) {
+        const imageUrl = prompt('请输入图片URL:', 'https://example.com/image.jpg');
+        if (imageUrl) {
+            const altText = prompt('请输入图片描述:', '图片描述');
+            this.wrapSelectedText(textarea, `![${altText || '图片'}](`, `${imageUrl})`);
+        }
+    },
+    
+    formatList: function(textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end);
+        
+        if (selectedText.trim()) {
+            // 处理已选中文本，将每一行变成列表项
+            const listItems = selectedText.split('\n')
+                .map(line => line.trim() ? `- ${line}` : line)
+                .join('\n');
+            
+            textarea.value = textarea.value.substring(0, start) + listItems + textarea.value.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start, start + listItems.length);
+        } else {
+            // 没有选中文本时，插入列表模板
+            const listTemplate = `- 列表项1\n- 列表项2\n- 列表项3`;
+            textarea.value = textarea.value.substring(0, start) + listTemplate + textarea.value.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start, start + listTemplate.length);
+        }
     }
 };
 
@@ -357,4 +376,9 @@ function insertImagesIntoArticle(images, insertMode) {
             }
         });
     }
+}
+
+// 调试日志函数
+function debug(message, data = null) {
+    console.log(`🔍 ${message}`, data || '');
 }
