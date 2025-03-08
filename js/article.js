@@ -444,6 +444,113 @@ function renderArticle(content, theme) {
     const articleOutput = document.getElementById('articleOutput');
     if (!articleOutput) return;
     
+    // 检查marked和DOMPurify是否已加载
+    if (typeof marked === 'undefined' || typeof DOMPurify === 'undefined') {
+        console.error('缺少必要的渲染库: marked或DOMPurify未加载');
+        
+        // 尝试动态加载库
+        const missingLibraries = [];
+        if (typeof marked === 'undefined') missingLibraries.push('marked');
+        if (typeof DOMPurify === 'undefined') missingLibraries.push('DOMPurify');
+        
+        articleOutput.innerHTML = `
+            <div class="p-6 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-xl flex flex-col gap-3">
+                <h3 class="font-bold">错误：缺少必要的渲染库</h3>
+                <p>无法渲染Markdown内容，因为以下库未正确加载：${missingLibraries.join(', ')}</p>
+                <div class="mt-3">
+                    <button id="loadMissingLibraries" class="px-4 py-2 bg-apple-blue text-white rounded-lg">
+                        尝试加载缺失库
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // 添加尝试加载库的按钮事件
+        document.getElementById('loadMissingLibraries')?.addEventListener('click', function() {
+            // 动态加载缺失的库
+            if (typeof marked === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/marked@4.0.2/marked.min.js';
+                script.onload = () => console.log('marked 库已加载');
+                document.head.appendChild(script);
+            }
+            
+            if (typeof DOMPurify === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/dompurify@2.3.4/dist/purify.min.js';
+                script.onload = () => console.log('DOMPurify 库已加载');
+                document.head.appendChild(script);
+            }
+            
+            this.textContent = '正在加载...';
+            this.disabled = true;
+            
+            // 2秒后尝试重新渲染
+            setTimeout(() => {
+                renderArticle(content, theme);
+            }, 2000);
+        });
+        
+        return;
+    }
+    
+    // 配置marked选项，增强渲染效果
+    const renderer = new marked.Renderer();
+    
+    // 增强链接渲染
+    renderer.link = function(href, title, text) {
+        return `<a href="${href}" title="${title || ''}" target="_blank" class="text-apple-blue dark:text-apple-darkblue hover:underline">${text}</a>`;
+    };
+    
+    // 增强图片渲染
+    renderer.image = function(href, title, text) {
+        return `<img src="${href}" alt="${text}" title="${title || ''}" class="mx-auto my-4 max-w-full h-auto rounded-lg shadow-md">`;
+    };
+    
+    // 增强列表渲染
+    renderer.listitem = function(text) {
+        return `<li class="my-1">${text}</li>`;
+    };
+    
+    // 配置marked
+    marked.setOptions({
+        renderer: renderer,
+        headerIds: true,
+        gfm: true,
+        breaks: true,
+        pedantic: false,
+        smartLists: true,
+        smartypants: true
+    });
+    
+    // 清除现有内容
+    articleOutput.innerHTML = '';
+    
+    // 设置主题类
+    articleOutput.className = '';
+    articleOutput.classList.add(
+        `theme-${theme}`, 
+        'prose', 'dark:prose-invert', 'max-w-none', 
+        'border', 'border-gray-100', 'dark:border-gray-800', 
+        'p-6', 'rounded-xl', 'bg-white', 'dark:bg-gray-950', 
+        'overflow-auto'
+    );
+    
+    try {
+        // 渲染Markdown内容
+        articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(content));
+    } catch (error) {
+        console.error('渲染文章内容时出错:', error);
+        articleOutput.innerHTML = `
+            <div class="p-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg">
+                <h3 class="font-bold">渲染错误</h3>
+                <p>${error.message}</p>
+                <pre class="mt-2 text-xs bg-red-100 dark:bg-red-900/40 p-2 rounded overflow-auto">${content.substring(0, 200)}...</pre>
+            </div>
+        `;
+    }
+}
+    
     // 确保marked和DOMPurify已加载
     if (typeof marked !== 'object' || typeof DOMPurify !== 'object') {
         console.error('marked或DOMPurify未加载，无法安全渲染Markdown');
