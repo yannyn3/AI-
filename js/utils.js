@@ -3,7 +3,7 @@
  */
 
 // 全局常量
-const API_CONFIG_KEY = 'ai_writer_api_config_v2'; // 更新版本号以避免旧配置兼容性问题
+const API_CONFIG_KEY = 'ai_writer_api_config_v3'; // 更新版本号以避免旧配置兼容性问题
 
 // 提供多个CORS代理选项
 const CORS_PROXIES = {
@@ -59,13 +59,10 @@ function addCorsProxy(url) {
 
 /**
  * 通过Vercel API代理发送请求
- * @param {string} targetUrl - 目标API URL
- * @param {Object} options - 请求选项
- * @returns {Promise<Object>} - API响应
  */
 async function sendViaProxy(targetUrl, options = {}) {
-    // 替换为您的Vercel代理URL
-    const PROXY_URL = "https://ai-wenzhang-git-main-printyang0gmailcoms-projects.vercel.app/";
+    // 使用您部署的Vercel代理URL
+    const PROXY_URL = "https://ai-yannyn3.vercel.app/api/proxy";
     
     try {
         console.log(`通过代理发送请求到: ${targetUrl}`);
@@ -123,7 +120,26 @@ async function directApiRequest(url, options = {}) {
 async function apiRequestWithFallback(url, options = {}, preferredProxies = ['none', 'allorigins', 'corsproxy']) {
     let lastError = null;
     
-    // 先尝试直接连接，再尝试依次使用各代理
+    console.log("使用apiRequestWithFallback发送请求到:", url);
+    
+    // 先尝试使用Vercel代理
+    try {
+        console.log("尝试使用Vercel代理服务...");
+        const response = await sendViaProxy(url, options);
+        
+        // 创建一个类似fetch响应的对象
+        return {
+            ok: true,
+            status: 200,
+            statusText: "OK",
+            json: async () => response
+        };
+    } catch (error) {
+        console.warn("Vercel代理请求失败:", error);
+        lastError = error;
+    }
+    
+    // 如果Vercel代理失败，尝试直接连接和其他代理
     for (const proxy of preferredProxies) {
         try {
             let proxyUrl = url;
@@ -155,21 +171,8 @@ async function apiRequestWithFallback(url, options = {}, preferredProxies = ['no
         }
     }
     
-    // 所有尝试都失败，尝试使用代理服务
-    try {
-        console.log("所有直接请求失败，尝试使用Vercel代理服务...");
-        const response = await sendViaProxy(url, options);
-        // 创建一个类似fetch响应的对象
-        return {
-            ok: true,
-            status: 200,
-            statusText: "OK",
-            json: async () => response
-        };
-    } catch (error) {
-        console.error("Vercel代理请求也失败:", error);
-        throw lastError || new Error('所有API连接方式都失败');
-    }
+    // 所有尝试都失败
+    throw lastError || new Error('所有API连接方式都失败');
 }
 
 // 始终返回false，强制使用真实API
@@ -202,6 +205,36 @@ function setupDarkMode() {
             document.documentElement.classList.remove('dark');
         }
     });
+}
+
+// 显示进度条
+function showProgress(message, progress = 0) {
+    // 检查是否已经存在进度条
+    const progressContainer = document.getElementById('generation-progress-container');
+    const progressBar = document.getElementById('generation-progress-bar');
+    const progressMessage = document.getElementById('generation-progress-message');
+    
+    if (progressContainer) {
+        progressContainer.classList.remove('hidden');
+    }
+    
+    // 更新进度条消息
+    if (progressMessage) {
+        progressMessage.textContent = message;
+    }
+    
+    // 更新进度条
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+    }
+}
+
+// 隐藏进度条
+function hideProgress() {
+    const progressContainer = document.getElementById('generation-progress-container');
+    if (progressContainer) {
+        progressContainer.classList.add('hidden');
+    }
 }
 
 // 显示警告/错误弹窗
