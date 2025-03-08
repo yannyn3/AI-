@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI文章创作室</title>
-    <meta name="description" content="使用AI技术自动创作高质量文章，支持多种语言模型和排版主题">
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMjgiIGZpbGw9IiM1RDVDREUiLz48cGF0aCBkPSJNMzQzLjc0IDEzOS4wNTZDMzU5LjM0IDEzOS4wNTYgMzcyIDE1MS44MiAzNzIgMTY3LjU1N1YzNDMuOTQxQzM3MiAzNTkuNjc5IDM1OS4zNCAzNzIuNDQzIDM0My43NCAzNzIuNDQzSDIzNS45MzRMMTc2Ljk3IDQyOC44NjlDMTc1LjA1IDQzMC43MjMgMTcxLjcwNSA0MjkuMzc3IDE3MS43MDUgNDI2Ljc2OVYzNzIuNDQzSDE2OC4yNkMxNTIuNjU5IDM3Mi40NDMgMTQwIDM1OS42NzkgMTQwIDM0My45NDFWMTY3LjU1N0MxNDAgMTUxLjgyIDE1Mi42NTkgMTM5LjA1NiAxNjguMjYgMTM5LjA1NkgzNDMuNzRaIiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik0yMDUuMTg4IDI1NS44MTdDMjA1LjE4OCAyNDQuNzU3IDIwNS4xODggMjM5LjIyNiAyMDguNDI2IDIzNS45MzVDMjExLjY2MyAyMzIuNjQ0IDIxNy4xMjYgMjMyLjY0NCAyMjguMDUyIDIzMi42NDRIMjgzLjk0OEMyOTQuODc0IDIzMi42NDQgMzAwLjMzNyAyMzIuNjQ0IDMwMy41NzQgMjM1LjkzNUMzMDYuODEyIDIzOS4yMjYgMzA2LjgxMiAyNDQuNzU3IDMwNi44MTIgMjU1LjgxN0MzMDYuODEyIDI2Ni44NzYgMzA2LjgxMiAyNzIuNDA3IDMwMy41NzQgMjc1LjY5OEMzMDAuMzM3IDI3OC45ODkgMjk0Ljg3NCAyNzguOTg5IDI4My45NDggMjc4Ljk4OUgyMjguMDUyQzIxNy4xMjYgMjc4Ljk4OSAyMTEuNjYzIDI3OC45ODkgMjA4LjQyNiAyNzUuNjk4QzIwNS4xODggMjcyLjQwNyAyMDUuMTg4IDI2Ni44NzYgMjA1LjE4OCAyNTUuODE3WiIgZmlsbD0iIzVENUNERSIvPjxwYXRoIGQ9Ik0yMDUuMTg4IDE5My4yMTZDMjA1LjE4OCAxODIuMTU3IDIwNS4xODggMTc2LjYyNiAyMDguNDI2IDE3My4zMzVDMjExLjY2MyAxNzAuMDQ0IDIxNy4xMjYgMTcwLjA0NCAyMjguMDUyIDE3MC4wNDRIMjgzLjk0OEMyOTQuODc0IDE3MC4wNDQgMzAwLjMzNyAxNzAuMDQ0IDMwMy41NzQgMTczLjMzNUMzMDYuODEyIDE3Ni42MjYgMzA2LjgxMiAxODIuMTU3IDMwNi44MTIgMTkzLjIxNkMzMDYuODEyIDIwNC4yNzUgMzA2LjgxMiAyMDkuODA2IDMwMy41NzQgMjEzLjA5N0MzMDAuMzM3IDIxNi4zODggMjk0Ljg3NCAyMTYuMzg4IDI4My45NDggMjE2LjM4OEgyMjguMDUyQzIxNy4xMjYgMjE2LjM4OCAyMTEuNjYzIDIxNi4zODggMjA4LjQyNiAyMTMuMDk3QzIwNS4xODggMjA5LjgwNiAyMDUuMTg4IDIwNC4yNzUgMjA1LjE4OCAxOTMuMjE2WiIgZmlsbD0iIzVENUNERSIvPjxwYXRoIGQ9Ik0yMDUuMTg4IDMxOC40MTdDMjA1LjE4OCAzMDcuMzU4IDIwNS4xODggMzAxLjgyNyAyMDguNDI2IDI5OC41MzZDMjExLjY2MyAyOTUuMjQ1IDIxNy4xMjYgMjk1LjI0NSAyMjguMDUyIDI5NS4yNDVIMjgzLjk0OEMyOTQuODc0IDI5NS4yNDUgMzAwLjMzNyAyOTUuMjQ1IDMwMy41NzQgMjk4LjUzNkMzMDYuODEyIDMwMS44MjcgMzA2LjgxMiAzMDcuMzU4IDMwNi44MTIgMzE4LjQxN0MzMDYuODEyIDMyOS40NzYgMzA2LjgxMiAzMzUuMDA3IDMwMy41NzQgMzM4LjI5OEMzMDAuMzM3IDM0MS41ODkgMjk0Ljg3NCAzNDEuNTg5IDI4My45NDggMzQxLjU4OUgyMjguMDUyQzIxNy4xMjYgMzQxLjU4OSAyMTEuNjYzIDM0MS41ODkgMjA4LjQyNiAzMzguMjk4QzIwNS4xODggMzM1LjAwNyAyMDUuMTg4IDMyOS40NzYgMjA1LjE4OCAzMTguNDE3WiIgZmlsbD0iIzVENUNERSIvPjwvc3ZnPg==">
+    <title>AI文章创作室 - 专业内容创作平台</title>
+    <meta name="description" content="AI文章创作室，使用最先进的人工智能技术自动创作高质量文章，支持多种语言模型和排版主题">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMjgiIGZpbGw9InVybCgjZ3JhZCkiLz48cGF0aCBkPSJNMzQzLjc0IDEzOS4wNTZDMzU5LjM0IDEzOS4wNTYgMzcyIDE1MS44MiAzNzIgMTY3LjU1N1YzNDMuOTQxQzM3MiAzNTkuNjc5IDM1OS4zNCAzNzIuNDQzIDM0My43NCAzNzIuNDQzSDIzNS45MzRMMTc2Ljk3IDQyOC44NjlDMTc1LjA1IDQzMC43MjMgMTcxLjcwNSA0MjkuMzc3IDE3MS43MDUgNDI2Ljc2OVYzNzIuNDQzSDE2OC4yNkMxNTIuNjU5IDM3Mi40NDMgMTQwIDM1OS42NzkgMTQwIDM0My45NDFWMTY3LjU1N0MxNDAgMTUxLjgyIDE1Mi42NTkgMTM5LjA1NiAxNjguMjYgMTM5LjA1NkgzNDMuNzRaIiBmaWxsPSJ3aGl0ZSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjAiIHkxPSIwIiB4Mj0iNTEyIiB5Mj0iNTEyIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNUQ1Q0RFIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjODA0NkRCIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PC9zdmc+">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,17 +16,22 @@
                 extend: {
                     colors: {
                         'apple-blue': '#5D5CDE',
+                        'apple-purple': '#8046DB',
                         'apple-darkblue': '#7A79E5',
+                        'apple-darkpurple': '#9A6FE7',
                         'apple-gray': '#f2f2f7',
                         'apple-darkgray': '#1c1c1e',
                         'apple-lightgray': '#f9f9fb'
                     },
                     boxShadow: {
-                        'apple': '0 4px 14px rgba(0, 0, 0, 0.08)',
-                        'apple-dark': '0 4px 14px rgba(0, 0, 0, 0.25)'
+                        'apple': '0 4px 20px rgba(0, 0, 0, 0.08)',
+                        'apple-dark': '0 4px 20px rgba(0, 0, 0, 0.25)',
+                        'apple-hover': '0 8px 30px rgba(93, 92, 222, 0.2)',
+                        'apple-dark-hover': '0 8px 30px rgba(93, 92, 222, 0.3)'
                     },
                     animation: {
                         'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'slide-up': 'slideUp 0.4s ease-out',
                         'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
                     },
                     keyframes: {
@@ -34,10 +39,17 @@
                             '0%': { opacity: '0' },
                             '100%': { opacity: '1' }
                         },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
                         pulse: {
                             '0%, 100%': { opacity: '1' },
                             '50%': { opacity: '.5' }
                         }
+                    },
+                    backgroundImage: {
+                        'gradient-title': 'linear-gradient(to right, #5D5CDE, #8046DB)'
                     }
                 }
             },
@@ -110,6 +122,15 @@
             }
         }
         
+        /* 渐变文字 */
+        .gradient-text {
+            background: linear-gradient(to right, #5D5CDE, #8046DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
         /* 标签页样式 */
         .tab-button.active {
             color: #5D5CDE;
@@ -123,6 +144,29 @@
         
         .dark .theme-card-selected {
             border-color: #7A79E5;
+        }
+        
+        /* 美化输入框焦点样式 */
+        input:focus, textarea:focus, select:focus {
+            box-shadow: 0 0 0 3px rgba(93, 92, 222, 0.3);
+        }
+        
+        .dark input:focus, .dark textarea:focus, .dark select:focus {
+            box-shadow: 0 0 0 3px rgba(122, 121, 229, 0.3);
+        }
+        
+        /* 美化卡片和按钮悬停效果 */
+        .hover-card-effect {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-card-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(93, 92, 222, 0.2);
+        }
+        
+        .dark .hover-card-effect:hover {
+            box-shadow: 0 10px 25px rgba(93, 92, 222, 0.3);
         }
         
         /* 滚动条样式 */
@@ -156,6 +200,22 @@
         .dark ::-webkit-scrollbar-thumb:hover {
             background: #7a7a7a;
         }
+        
+        /* 美化按钮样式 */
+        .btn-primary {
+            background-image: linear-gradient(to right, #5D5CDE, #8046DB);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-image: linear-gradient(to right, #4a49b7, #6a3ab8);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(93, 92, 222, 0.25);
+        }
+        
+        .dark .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(93, 92, 222, 0.4);
+        }
     </style>
     
     <!-- 文章主题样式 -->
@@ -165,23 +225,26 @@
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
     <div class="container mx-auto px-4 py-8 max-w-7xl">
         <!-- 顶部标题区域 -->
-        <div class="text-center mb-8">
+        <div class="text-center mb-8 animate-slide-up">
             <div class="flex justify-center items-center">
                 <svg class="w-12 h-12 mr-3" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="512" height="512" rx="128" fill="#5D5CDE"/>
+                    <rect width="512" height="512" rx="128" fill="url(#grad)"/>
                     <path d="M343.74 139.056C359.34 139.056 372 151.82 372 167.557V343.941C372 359.679 359.34 372.443 343.74 372.443H235.934L176.97 428.869C175.05 430.723 171.705 429.377 171.705 426.769V372.443H168.26C152.659 372.443 140 359.679 140 343.941V167.557C140 151.82 152.659 139.056 168.26 139.056H343.74Z" fill="white"/>
-                    <path d="M205.188 255.817C205.188 244.757 205.188 239.226 208.426 235.935C211.663 232.644 217.126 232.644 228.052 232.644H283.948C294.874 232.644 300.337 232.644 303.574 235.935C306.812 239.226 306.812 244.757 306.812 255.817C306.812 266.876 306.812 272.407 303.574 275.698C300.337 278.989 294.874 278.989 283.948 278.989H228.052C217.126 278.989 211.663 278.989 208.426 275.698C205.188 272.407 205.188 266.876 205.188 255.817Z" fill="#5D5CDE"/>
-                    <path d="M205.188 193.216C205.188 182.157 205.188 176.626 208.426 173.335C211.663 170.044 217.126 170.044 228.052 170.044H283.948C294.874 170.044 300.337 170.044 303.574 173.335C306.812 176.626 306.812 182.157 306.812 193.216C306.812 204.275 306.812 209.806 303.574 213.097C300.337 216.388 294.874 216.388 283.948 216.388H228.052C217.126 216.388 211.663 216.388 208.426 213.097C205.188 209.806 205.188 204.275 205.188 193.216Z" fill="#5D5CDE"/>
-                    <path d="M205.188 318.417C205.188 307.358 205.188 301.827 208.426 298.536C211.663 295.245 217.126 295.245 228.052 295.245H283.948C294.874 295.245 300.337 295.245 303.574 298.536C306.812 301.827 306.812 307.358 306.812 318.417C306.812 329.476 306.812 335.007 303.574 338.298C300.337 341.589 294.874 341.589 283.948 341.589H228.052C217.126 341.589 211.663 341.589 208.426 338.298C205.188 335.007 205.188 329.476 205.188 318.417Z" fill="#5D5CDE"/>
+                    <defs>
+                        <linearGradient id="grad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#5D5CDE"/>
+                            <stop offset="1" stop-color="#8046DB"/>
+                        </linearGradient>
+                    </defs>
                 </svg>
-                <h1 class="text-3xl font-bold text-apple-blue dark:text-apple-darkblue">AI文章创作助手</h1>
+                <h1 class="text-3xl font-bold gradient-text">AI文章创作室</h1>
             </div>
             <p class="mt-2 text-gray-600 dark:text-gray-400">使用人工智能技术生成专业、有深度的文章内容</p>
         </div>
         
         <!-- 标签式导航 -->
-        <div id="app-tabs" class="flex justify-center mb-6">
-            <nav class="flex space-x-2 bg-white dark:bg-apple-darkgray rounded-xl p-1 shadow-sm">
+        <div id="app-tabs" class="flex justify-center mb-6 animate-fade-in">
+            <nav class="flex space-x-2 bg-white dark:bg-apple-darkgray rounded-xl p-1 shadow-apple dark:shadow-apple-dark">
                 <button class="tab-button active px-4 py-2 rounded-lg text-sm font-medium bg-white dark:bg-gray-800 shadow-sm text-apple-blue dark:text-apple-darkblue" data-tab="content">
                     <i class="fas fa-pen-fancy mr-2"></i>内容创作
                 </button>
@@ -199,7 +262,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 space-y-6">
                     <!-- 基本信息 -->
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark hover-card-effect">
                         <h2 class="text-xl font-semibold mb-4 flex items-center">
                             <i class="fas fa-file-alt mr-3 text-apple-blue dark:text-apple-darkblue"></i>基本信息
                         </h2>
@@ -250,7 +313,7 @@
                     </div>
                     
                     <!-- 参考资料 -->
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark hover-card-effect">
                         <h2 class="text-xl font-semibold mb-4 flex items-center">
                             <i class="fas fa-link mr-3 text-apple-blue dark:text-apple-darkblue"></i>参考资料
                             <span class="ml-2 text-xs text-gray-500 dark:text-gray-400 font-normal">(可选)</span>
@@ -276,7 +339,7 @@
                                 <div class="space-y-3">
                                     <div class="flex items-start space-x-2">
                                         <input type="text" id="scrapeUrl" placeholder="输入要导入内容的网页URL" class="flex-1 p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                        <button id="fetchContentBtn" class="whitespace-nowrap px-4 py-3 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-sm font-medium transition">
+                                        <button id="fetchContentBtn" class="whitespace-nowrap px-4 py-3 btn-primary text-white rounded-xl text-sm font-medium transition">
                                             <i class="fas fa-download mr-1.5"></i>获取内容
                                         </button>
                                     </div>
@@ -314,7 +377,7 @@
                 
                 <!-- 图片设置 -->
                 <div class="space-y-6">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark hover-card-effect">
                         <h2 class="text-xl font-semibold mb-4 flex items-center">
                             <i class="fas fa-images mr-3 text-apple-blue dark:text-apple-darkblue"></i>图片设置
                         </h2>
@@ -410,7 +473,7 @@
                     
                     <!-- 生成按钮 -->
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
-                        <button id="generateBtn" class="w-full py-4 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-base font-medium flex items-center justify-center transition">
+                        <button id="generateBtn" class="w-full py-4 btn-primary text-white rounded-xl text-base font-medium flex items-center justify-center transition">
                             <i class="fas fa-magic mr-2"></i>创作精彩文章
                         </button>
                     </div>
@@ -450,7 +513,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             <!-- OpenAI -->
                             <div class="api-provider-card">
-                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition hover-card-effect">
                                     <div class="flex items-center h-5">
                                         <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
                                             <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
@@ -466,7 +529,7 @@
                             
                             <!-- Anthropic -->
                             <div class="api-provider-card">
-                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition hover-card-effect">
                                     <div class="flex items-center h-5">
                                         <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
                                             <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
@@ -482,7 +545,7 @@
                             
                             <!-- Poe API -->
                             <div class="api-provider-card">
-                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition hover-card-effect">
                                     <div class="flex items-center h-5">
                                         <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
                                             <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
@@ -498,7 +561,7 @@
                             
                             <!-- DeepSeek -->
                             <div class="api-provider-card">
-                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition hover-card-effect">
                                     <div class="flex items-center h-5">
                                         <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
                                             <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
@@ -514,7 +577,7 @@
                             
                             <!-- 文心一言 -->
                             <div class="api-provider-card">
-                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition hover-card-effect">
                                     <div class="flex items-center h-5">
                                         <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
                                             <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
@@ -530,7 +593,7 @@
                             
                             <!-- 月之暗面 -->
                             <div class="api-provider-card">
-                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition hover-card-effect">
                                     <div class="flex items-center h-5">
                                         <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
                                             <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
@@ -641,7 +704,7 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
-                                <input type="password" id="deepseek-api-key" placeholder="sk-..." value="sk-ce3a707aa48b41a5911ca0c9cfbc2e84" 
+                                <input type="password" id="deepseek-api-key" placeholder="sk-..." 
                                     class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                             </div>
                             
@@ -649,8 +712,8 @@
                                 <div>
                                     <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
                                     <select id="deepseek-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                        <option value="deepseek-chat">DeepSeek Chat</option>
-                                        <option value="deepseek-coder">DeepSeek Coder</option>
+                                        <option value="deepseek-chat">DeepSeek-V3</option>
+                                        <option value="deepseek-reasoner">DeepSeek-R1</option>
                                     </select>
                                 </div>
                             </div>
@@ -781,13 +844,13 @@
                     </div>
                     
                     <div class="mt-6">
-                        <button id="saveApiSettingsBtn" class="w-full py-4 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-base font-medium flex items-center justify-center transition">
+                        <button id="saveApiSettingsBtn" class="w-full py-4 btn-primary text-white rounded-xl text-base font-medium flex items-center justify-center transition">
                             <i class="fas fa-save mr-2"></i>保存API配置
                         </button>
                     </div>
                 </div>
                 
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark mt-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark mt-6 hover-card-effect">
                     <h2 class="text-xl font-semibold mb-4 flex items-center">
                         <i class="fas fa-info-circle mr-3 text-apple-blue dark:text-apple-darkblue"></i>网站部署说明
                     </h2>
@@ -815,7 +878,7 @@
         
         <!-- 预览排版面板 -->
         <div id="preview-tab" class="tab-content hidden space-y-6">
-            <div id="themeShowcase" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            <div id="themeShowcase" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             
             <div id="generationStatus" class="flex items-center justify-center p-10 bg-white dark:bg-gray-800 rounded-2xl shadow-apple dark:shadow-apple-dark hidden">
                 <div class="flex flex-col items-center">
@@ -840,7 +903,7 @@
                 
                 <!-- 操作按钮 -->
                 <div class="flex flex-wrap gap-3 justify-center">
-                    <button id="copyBtn" class="px-5 py-3 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-sm font-medium flex items-center transition">
+                    <button id="copyBtn" class="px-5 py-3 btn-primary text-white rounded-xl text-sm font-medium flex items-center transition">
                         <i class="fas fa-copy mr-1.5"></i>复制文章
                     </button>
                     <button id="editArticleBtn" class="px-5 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 transition">
@@ -855,8 +918,8 @@
         
         <!-- 底部版权信息 -->
         <div class="mt-12 text-center text-gray-500 dark:text-gray-400 text-sm">
-            <p id="app-version">版本 1.1.1</p>
-            <p class="mt-1">© 2024 AI文章创作助手 - 使用先进AI技术创建专业内容</p>
+            <p id="app-version">版本 1.2.0</p>
+            <p class="mt-1">© 2024 AI文章创作室 - 使用先进AI技术创建专业内容</p>
         </div>
     </div>
     
@@ -899,7 +962,7 @@
                 <button id="cancelEditBtn" class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                     取消
                 </button>
-                <button id="saveEditBtn" class="px-4 py-2 bg-apple-blue hover:bg-blue-600 text-white rounded-lg transition">
+                <button id="saveEditBtn" class="px-4 py-2 btn-primary text-white rounded-lg transition">
                     保存更改
                 </button>
             </div>
