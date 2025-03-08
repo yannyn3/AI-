@@ -1,909 +1,268 @@
 /* 文章主题样式 */
+
+/* 基础样式 - 所有主题共享 */
+[class^="theme-"] {
+    @apply font-sans;
+}
+
+[class^="theme-"] h1 {
+    @apply text-3xl font-bold mb-6 mt-2;
+}
+
+[class^="theme-"] h2 {
+    @apply text-2xl font-semibold mb-4 mt-6;
+}
+
+[class^="theme-"] h3 {
+    @apply text-xl font-medium mb-3 mt-5;
+}
+
+[class^="theme-"] p {
+    @apply mb-4 leading-relaxed;
+}
+
+[class^="theme-"] ul, 
+[class^="theme-"] ol {
+    @apply mb-4 pl-6;
+}
+
+[class^="theme-"] li {
+    @apply mb-1;
+}
+
+[class^="theme-"] a {
+    @apply text-purple-600 dark:text-purple-400;
+}
+
+[class^="theme-"] blockquote {
+    @apply italic border-l-4 pl-4 py-1 my-4;
+}
+
+[class^="theme-"] img {
+    @apply mx-auto my-6 max-w-full h-auto rounded-lg;
+}
+
+[class^="theme-"] pre {
+    @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg my-4 overflow-x-auto;
+}
+
+[class^="theme-"] code {
+    @apply bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm;
+}
+
 /* 现代简约风 */
-.theme-modern {
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
-    line-height: 1.7;
-    color: #333;
-}
-
-.dark .theme-modern {
-    color: #e0e0e0;
-}
-
 .theme-modern h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.3;
+    @apply text-3xl sm:text-4xl font-bold mb-6 text-center;
 }
 
 .theme-modern h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: #0071e3;
-}
-
-.dark .theme-modern h2 {
-    color: #0077ED;
-}
-
-.theme-modern h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    @apply text-2xl font-semibold mb-4 mt-8 border-b border-gray-200 dark:border-gray-700 pb-2;
 }
 
 .theme-modern p {
-    margin-bottom: 1.2rem;
-    font-size: 1.05rem;
-}
-
-.theme-modern img {
-    border-radius: 12px;
-    margin: 1.5rem 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.dark .theme-modern img {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    @apply text-base sm:text-lg leading-relaxed;
 }
 
 .theme-modern blockquote {
-    border-left: 4px solid #0071e3;
-    padding: 0.8rem 1rem;
-    background-color: rgba(0,113,227,0.05);
-    margin: 1.5rem 0;
-    border-radius: 0 8px 8px 0;
+    @apply border-l-4 border-gray-300 dark:border-gray-600;
 }
 
-.dark .theme-modern blockquote {
-    background-color: rgba(0,119,237,0.1);
-}
-
-/* 杂志风格 */
-.theme-magazine {
-    font-family: Georgia, Times, 'Times New Roman', 'Noto Sans SC', serif;
-    line-height: 1.6;
-    color: #222;
-}
-
-.dark .theme-magazine {
-    color: #f0f0f0;
-}
-
+/* 杂志风格排版 */
 .theme-magazine h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    @apply text-4xl sm:text-5xl font-black mb-4 leading-tight;
 }
 
 .theme-magazine h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
-    border-bottom: 2px solid #333;
-    padding-bottom: 0.3rem;
+    @apply text-2xl sm:text-3xl font-bold mb-4 mt-8;
 }
 
-.dark .theme-magazine h2 {
-    border-bottom-color: #666;
-}
-
-.theme-magazine h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 1.8rem;
-    margin-bottom: 1rem;
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+.theme-magazine h2::after {
+    content: "";
+    @apply block w-16 h-1 bg-purple-600 dark:bg-purple-400 mt-2;
 }
 
 .theme-magazine p {
-    margin-bottom: 1.2rem;
-    font-size: 1.1rem;
-    line-height: 1.8;
-}
-
-.theme-magazine p:first-of-type::first-letter {
-    font-size: 3.5rem;
-    float: left;
-    line-height: 0.8;
-    margin-right: 0.2rem;
-    font-weight: bold;
-}
-
-.theme-magazine img {
-    margin: 2rem 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.dark .theme-magazine img {
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    @apply text-lg leading-relaxed;
 }
 
 .theme-magazine blockquote {
-    font-style: italic;
-    padding: 1.2rem 1.5rem;
-    background-color: #f7f7f7;
-    margin: 1.5rem 0;
-    border-radius: 8px;
-    position: relative;
-    font-size: 1.15rem;
-}
-
-.dark .theme-magazine blockquote {
-    background-color: #2a2a2a;
-}
-
-.theme-magazine blockquote::before {
-    content: '"';
-    font-size: 4rem;
-    color: #ccc;
-    position: absolute;
-    left: 10px;
-    top: -15px;
+    @apply border-l-4 border-purple-600 dark:border-purple-400 bg-purple-50 dark:bg-purple-900/20 p-4 rounded-r-lg text-xl font-medium italic my-6;
 }
 
 /* 科技风格 */
-.theme-tech {
-    font-family: 'SF Pro Display', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.7;
-    color: #333;
-}
-
-.dark .theme-tech {
-    color: #e0e0e0;
-}
-
 .theme-tech h1 {
-    font-size: 2.4rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(90deg, #0071e3, #00c6fb);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    line-height: 1.3;
+    @apply text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 dark:from-purple-400 dark:to-blue-300 bg-clip-text text-transparent mb-6;
 }
 
 .theme-tech h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: #0071e3;
+    @apply text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4 mt-6;
 }
 
-.theme-tech h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    color: #444;
-}
-
-.dark .theme-tech h3 {
-    color: #ccc;
+.theme-tech h2::before {
+    content: "// ";
+    @apply text-purple-600 dark:text-purple-400 font-mono;
 }
 
 .theme-tech p {
-    margin-bottom: 1.2rem;
-    font-size: 1.05rem;
+    @apply leading-relaxed;
 }
 
-.theme-tech img {
-    border-radius: 12px;
-    margin: 1.5rem 0;
-    box-shadow: 0 8px 30px rgba(0,113,227,0.2);
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.dark .theme-tech img {
-    box-shadow: 0 8px 30px rgba(0,119,237,0.3);
-    border: 1px solid rgba(255,255,255,0.1);
+.theme-tech pre {
+    @apply border border-gray-200 dark:border-gray-700;
 }
 
 .theme-tech blockquote {
-    border-left: 4px solid #0071e3;
-    padding: 1rem 1.2rem;
-    background-color: rgba(0,113,227,0.07);
-    margin: 1.5rem 0;
-    border-radius: 8px;
+    @apply border-l-4 border-blue-500 dark:border-blue-400;
 }
 
-.dark .theme-tech blockquote {
-    background-color: rgba(0,119,237,0.15);
-}
-
-.theme-tech code {
-    background-color: #f0f0f0;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-family: 'SF Mono', Menlo, monospace;
-    font-size: 0.9em;
-}
-
-.dark .theme-tech code {
-    background-color: #2a2a2a;
-}
-
-/* 优雅商务风 */
-.theme-business {
-    font-family: 'Georgia', 'Noto Sans SC', serif;
-    line-height: 1.6;
-    color: #333;
-}
-
-.dark .theme-business {
-    color: #e0e0e0;
-}
-
+/* 商务风格 */
 .theme-business h1 {
-    font-size: 2.4rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #2c3e50;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.5rem;
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
-}
-
-.dark .theme-business h1 {
-    color: #e0e0e0;
-    border-bottom-color: #555;
+    @apply text-3xl sm:text-4xl font-bold mb-6 border-b-2 border-gray-300 dark:border-gray-600 pb-4;
 }
 
 .theme-business h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: #2c3e50;
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
-}
-
-.dark .theme-business h2 {
-    color: #e0e0e0;
-}
-
-.theme-business h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    color: #34495e;
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
-}
-
-.dark .theme-business h3 {
-    color: #ccc;
+    @apply text-2xl font-semibold mb-4 mt-8 border-b border-gray-200 dark:border-gray-700 pb-2 text-purple-700 dark:text-purple-300;
 }
 
 .theme-business p {
-    margin-bottom: 1.2rem;
-    font-size: 1.1rem;
-    line-height: 1.8;
+    @apply text-base leading-relaxed;
 }
 
-.theme-business img {
-    border-radius: 4px;
-    margin: 1.5rem 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.theme-business ul {
+    @apply list-disc;
 }
 
-.dark .theme-business img {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+.theme-business ol {
+    @apply list-decimal;
 }
 
 .theme-business blockquote {
-    border-left: 3px solid #7f8c8d;
-    padding: 1rem 1.2rem;
-    background-color: rgba(0,0,0,0.02);
-    margin: 1.5rem 0;
-    font-style: italic;
-}
-
-.dark .theme-business blockquote {
-    background-color: rgba(255,255,255,0.05);
+    @apply border-l-4 border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 p-4;
 }
 
 /* 创意设计风 */
-.theme-creative {
-    font-family: 'Montserrat', 'Avenir Next', 'Noto Sans SC', sans-serif;
-    line-height: 1.7;
-    color: #333;
-}
-
-.dark .theme-creative {
-    color: #f0f0f0;
-}
-
 .theme-creative h1 {
-    font-size: 2.6rem;
-    font-weight: 800;
-    margin-bottom: 1.8rem;
-    color: #ff3366;
-    line-height: 1.2;
-}
-
-.dark .theme-creative h1 {
-    color: #ff4d7d;
+    @apply text-4xl sm:text-5xl font-extrabold mb-8 text-center;
+    letter-spacing: -0.5px;
 }
 
 .theme-creative h2 {
-    font-size: 1.9rem;
-    font-weight: 700;
-    margin-top: 2.5rem;
-    margin-bottom: 1.2rem;
-    color: #ff3366;
-    border-bottom: 2px dashed rgba(255,51,102,0.3);
-    padding-bottom: 0.3rem;
-    display: inline-block;
-}
-
-.dark .theme-creative h2 {
-    color: #ff4d7d;
-    border-bottom-color: rgba(255,77,125,0.3);
-}
-
-.theme-creative h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 1.8rem;
-    margin-bottom: 1rem;
-    color: #555;
-}
-
-.dark .theme-creative h3 {
-    color: #ddd;
+    @apply text-2xl sm:text-3xl font-bold mb-5 mt-10 text-purple-600 dark:text-purple-400;
 }
 
 .theme-creative p {
-    margin-bottom: 1.3rem;
-    font-size: 1.05rem;
-    line-height: 1.8;
-}
-
-.theme-creative img {
-    border-radius: 20px;
-    margin: 2rem auto;
-    display: block;
-    box-shadow: 0 10px 30px rgba(255,51,102,0.15);
-    border: 3px solid white;
-}
-
-.dark .theme-creative img {
-    box-shadow: 0 10px 30px rgba(255,77,125,0.2);
-    border-color: #333;
+    @apply text-lg leading-loose;
 }
 
 .theme-creative blockquote {
-    border: none;
-    padding: 1.5rem;
-    background-color: rgba(255,51,102,0.05);
-    margin: 1.8rem 0;
-    border-radius: 15px;
-    position: relative;
+    @apply italic border-l-4 border-purple-500 dark:border-purple-400 pl-6 py-3 my-6 text-xl;
 }
 
-.dark .theme-creative blockquote {
-    background-color: rgba(255,77,125,0.1);
+.theme-creative img {
+    @apply rounded-xl shadow-lg;
 }
 
-.theme-creative blockquote::before {
-    content: """;
-    font-size: 5rem;
-    position: absolute;
-    left: 10px;
-    top: -20px;
-    color: rgba(255,51,102,0.2);
-    font-family: Georgia, serif;
-}
-
-.dark .theme-creative blockquote::before {
-    color: rgba(255,77,125,0.2);
-}
-
-/* 学术论文风 */
-.theme-academic {
-    font-family: 'Times New Roman', Times, 'Noto Sans SC', serif;
-    line-height: 1.6;
-    color: #222;
-}
-
-.dark .theme-academic {
-    color: #eee;
-}
-
-.theme-academic h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-    text-align: center;
-}
-
-.theme-academic h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 0.3rem;
-}
-
-.dark .theme-academic h2 {
-    border-bottom-color: #555;
-}
-
-.theme-academic h3 {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-top: 1.5rem;
-    margin-bottom: 0.8rem;
-    font-style: italic;
-}
-
-.theme-academic p {
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    text-align: justify;
-    text-indent: 2em;
-}
-
-.theme-academic p:first-of-type {
-    text-indent: 0;
-}
-
-.theme-academic img {
-    margin: 1.5rem auto;
-    display: block;
-    max-width: 90%;
-    border: 1px solid #ddd;
-}
-
-.dark .theme-academic img {
-    border-color: #555;
-}
-
-.theme-academic blockquote {
-    border-left: 3px solid #666;
-    padding: 0.8rem 1rem;
-    background-color: rgba(0,0,0,0.03);
-    margin: 1.5rem 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-.dark .theme-academic blockquote {
-    background-color: rgba(255,255,255,0.03);
-}
-
-/* 自媒体风格 */
-.theme-media {
-    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
-    line-height: 1.8;
-    color: #333;
-    letter-spacing: 0.5px;
-}
-
-.dark .theme-media {
-    color: #eee;
-}
-
-.theme-media h1 {
-    font-size: 2.3rem;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-    text-align: center;
-    line-height: 1.4;
-    color: #333;
-}
-
-.dark .theme-media h1 {
-    color: #fff;
-}
-
-.theme-media h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin: 1.8rem 0 1rem;
-    padding-left: 1rem;
-    border-left: 4px solid #07C160;
-    line-height: 1.4;
-}
-
-.dark .theme-media h2 {
-    border-left-color: #07C160;
-}
-
-.theme-media h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin: 1.5rem 0 1rem;
-    color: #07C160;
-}
-
-.dark .theme-media h3 {
-    color: #07C160;
-}
-
-.theme-media p {
-    margin-bottom: 1.2rem;
-    font-size: 1.05rem;
-    line-height: 1.8;
-}
-
-.theme-media img {
-    border-radius: 8px;
-    margin: 1.5rem auto;
-    display: block;
-    max-width: 100%;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.dark .theme-media img {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.theme-media blockquote {
-    margin: 1.5rem 0;
-    padding: 1rem 1.2rem;
-    background-color: #f2f7f2;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.7;
-}
-
-.dark .theme-media blockquote {
-    background-color: #2a3a2a;
-    color: #ccc;
-}
-
-.theme-media ul, .theme-media ol {
-    margin-bottom: 1.2rem;
-    padding-left: 1.5rem;
-}
-
-.theme-media ul li, .theme-media ol li {
-    margin-bottom: 0.5rem;
-}
-
-.theme-media strong {
-    color: #07C160;
-    font-weight: 600;
-}
-
-.dark .theme-media strong {
-    color: #07C160;
-}
-
-/* 教程类主题 - 新增 */
-.theme-tutorial {
-    font-family: 'SF Pro Text', 'Noto Sans SC', -apple-system, sans-serif;
-    line-height: 1.7;
-    color: #333;
-}
-
-.dark .theme-tutorial {
-    color: #e0e0e0;
-}
-
+/* 教程指南风格 */
 .theme-tutorial h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #2563eb;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #2563eb;
-}
-
-.dark .theme-tutorial h1 {
-    color: #3b82f6;
-    border-bottom-color: #3b82f6;
+    @apply text-3xl font-bold mb-6 pb-2 border-b-2 border-purple-500 dark:border-purple-400;
 }
 
 .theme-tutorial h2 {
-    font-size: 1.6rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: #2563eb;
-    background-color: #f0f7ff;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-}
-
-.dark .theme-tutorial h2 {
-    color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.15);
+    @apply text-2xl font-semibold mb-4 mt-8 bg-purple-100 dark:bg-purple-900/30 px-3 py-2 rounded-lg;
 }
 
 .theme-tutorial h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    color: #2563eb;
-}
-
-.dark .theme-tutorial h3 {
-    color: #3b82f6;
+    @apply text-xl font-medium mb-3 mt-6 text-purple-700 dark:text-purple-300;
 }
 
 .theme-tutorial p {
-    margin-bottom: 1.2rem;
-    font-size: 1.05rem;
-}
-
-.theme-tutorial ul, .theme-tutorial ol {
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
-}
-
-.theme-tutorial li {
-    margin-bottom: 0.5rem;
-}
-
-.theme-tutorial code {
-    background-color: #f1f5f9;
-    color: #0f172a;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-family: 'SF Mono', Menlo, Monaco, Consolas, monospace;
-    font-size: 0.9em;
-}
-
-.dark .theme-tutorial code {
-    background-color: #1e293b;
-    color: #e2e8f0;
-}
-
-.theme-tutorial pre {
-    background-color: #f1f5f9;
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin-bottom: 1.5rem;
-}
-
-.dark .theme-tutorial pre {
-    background-color: #1e293b;
-}
-
-.theme-tutorial pre code {
-    background: none;
-    padding: 0;
+    @apply leading-relaxed;
 }
 
 .theme-tutorial blockquote {
-    border-left: 4px solid #2563eb;
-    padding: 1rem 1.2rem;
-    background-color: #f0f7ff;
-    margin: 1.5rem 0;
-    border-radius: 0 8px 8px 0;
+    @apply border-l-4 border-yellow-500 dark:border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-r-lg;
 }
 
-.dark .theme-tutorial blockquote {
-    background-color: rgba(59, 130, 246, 0.15);
-}
-
-.theme-tutorial .note {
-    background-color: #fffbeb;
-    border-left: 4px solid #f59e0b;
-    padding: 1rem;
-    margin: 1.5rem 0;
-    border-radius: 0 8px 8px 0;
-}
-
-.dark .theme-tutorial .note {
-    background-color: rgba(245, 158, 11, 0.15);
+.theme-tutorial pre {
+    @apply border-l-4 border-gray-500 dark:border-gray-400;
 }
 
 .theme-tutorial .tip {
-    background-color: #ecfdf5;
-    border-left: 4px solid #10b981;
-    padding: 1rem;
-    margin: 1.5rem 0;
-    border-radius: 0 8px 8px 0;
+    @apply bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border-l-4 border-blue-500 dark:border-blue-400 my-4;
 }
 
-.dark .theme-tutorial .tip {
-    background-color: rgba(16, 185, 129, 0.15);
+.theme-tutorial .warning {
+    @apply bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border-l-4 border-yellow-500 dark:border-yellow-400 my-4;
 }
 
-.theme-tutorial img {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    margin: 1.5rem 0;
-    max-width: 100%;
-}
-
-.dark .theme-tutorial img {
-    border-color: #374151;
-}
-
-/* 娱乐风格主题 - 新增 */
-.theme-entertainment {
-    font-family: 'Comic Sans MS', 'Noto Sans SC', sans-serif;
-    line-height: 1.7;
-    color: #333;
-    background-color: #fff;
-}
-
-.dark .theme-entertainment {
-    color: #f0f0f0;
-    background-color: #111;
-}
-
+/* 娱乐风格 */
 .theme-entertainment h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #ff3366;
-    text-align: center;
-    text-shadow: 2px 2px 0px #ffcc66;
-    letter-spacing: 0.05em;
-}
-
-.dark .theme-entertainment h1 {
-    color: #ff4d7d;
-    text-shadow: 2px 2px 0px #664400;
+    @apply text-4xl sm:text-5xl font-extrabold mb-6 text-center bg-gradient-to-r from-pink-500 to-purple-600 dark:from-pink-400 dark:to-purple-400 bg-clip-text text-transparent;
 }
 
 .theme-entertainment h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: #6600cc;
-    background: linear-gradient(90deg, #ff9966, #ff5e62);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    padding: 0.5rem 0;
-}
-
-.dark .theme-entertainment h2 {
-    background: linear-gradient(90deg, #ff9966, #ff5e62);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-}
-
-.theme-entertainment h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    color: #00cc99;
-}
-
-.dark .theme-entertainment h3 {
-    color: #00ffcc;
+    @apply text-2xl sm:text-3xl font-bold mb-4 mt-8 text-pink-600 dark:text-pink-400;
 }
 
 .theme-entertainment p {
-    margin-bottom: 1.2rem;
-    font-size: 1.1rem;
-}
-
-.theme-entertainment ul li {
-    list-style-type: '🌟 ';
-    margin-bottom: 0.8rem;
-}
-
-.theme-entertainment ol {
-    counter-reset: li-counter;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.theme-entertainment ol li {
-    position: relative;
-    list-style-type: none;
-    margin-bottom: 0.8rem;
-    padding-left: 3rem;
-}
-
-.theme-entertainment ol li:before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    content: counter(li-counter);
-    counter-increment: li-counter;
-    width: 2rem;
-    height: 2rem;
-    background-color: #ff3366;
-    color: white;
-    font-weight: bold;
-    font-size: 1rem;
-    text-align: center;
-    line-height: 2rem;
-    border-radius: 50%;
-}
-
-.theme-entertainment img {
-    border-radius: 20px;
-    margin: 2rem auto;
-    display: block;
-    max-width: 100%;
-    border: 5px solid #ffcc66;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    transform: rotate(-2deg);
-}
-
-.dark .theme-entertainment img {
-    border-color: #aa7700;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-}
-
-.theme-entertainment img:nth-of-type(even) {
-    transform: rotate(2deg);
+    @apply text-lg leading-relaxed;
 }
 
 .theme-entertainment blockquote {
-    background-color: #e6f7ff;
-    border: 2px dashed #66ccff;
-    border-radius: 15px;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    position: relative;
+    @apply border-l-4 border-purple-500 dark:border-purple-400 bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg;
 }
 
-.dark .theme-entertainment blockquote {
-    background-color: #001a33;
-    border-color: #004080;
+.theme-entertainment img {
+    @apply rounded-xl shadow-lg;
 }
 
-.theme-entertainment blockquote:before {
-    content: "💬";
-    font-size: 2.5rem;
-    position: absolute;
-    top: -15px;
-    left: 20px;
+/* 学术论文风格 */
+.theme-academic h1 {
+    @apply text-3xl font-bold mb-6 text-center;
 }
 
-.theme-entertainment a {
-    color: #ff3366;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 0 0.2rem;
-    transition: all 0.3s ease;
-    position: relative;
+.theme-academic h2 {
+    @apply text-2xl font-semibold mb-4 mt-10 pb-1 border-b border-gray-300 dark:border-gray-600;
 }
 
-.theme-entertainment a:after {
+.theme-academic h3 {
+    @apply text-xl font-medium mb-3 mt-6;
+}
+
+.theme-academic p {
+    @apply text-base leading-relaxed;
+}
+
+.theme-academic blockquote {
+    @apply border-l-4 border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 p-4 text-sm;
+}
+
+.theme-academic .citation {
+    @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+/* 自媒体风格 */
+.theme-media h1 {
+    @apply text-4xl sm:text-5xl font-extrabold mb-6 leading-tight;
+}
+
+.theme-media h2 {
+    @apply text-2xl sm:text-3xl font-bold mb-4 mt-8 text-green-600 dark:text-green-400;
+}
+
+.theme-media h2::after {
     content: "";
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #ff3366;
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s ease;
+    @apply block w-12 h-1 bg-green-500 dark:bg-green-400 mt-1;
 }
 
-.theme-entertainment a:hover:after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
+.theme-media p {
+    @apply text-lg leading-loose;
 }
 
-.dark .theme-entertainment a {
-    color: #ff4d7d;
+.theme-media blockquote {
+    @apply border-l-4 border-green-500 dark:border-green-400 bg-green-50 dark:bg-green-900/20 p-4 rounded-r-lg text-lg italic my-6;
 }
 
-.dark .theme-entertainment a:after {
-    background-color: #ff4d7d;
+.theme-media img {
+    @apply rounded-xl shadow-lg;
 }
