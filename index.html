@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AI文章创作室</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="使用AI技术自动创作高质量文章，支持多种语言模型和排版主题">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMjgiIGZpbGw9IiM1RDVDREUiLz48cGF0aCBkPSJNMzQzLjc0IDEzOS4wNTZDMzU5LjM0IDEzOS4wNTYgMzcyIDE1MS44MiAzNzIgMTY3LjU1N1YzNDMuOTQxQzM3MiAzNTkuNjc5IDM1OS4zNCAzNzIuNDQzIDM0My43NCAzNzIuNDQzSDIzNS45MzRMMTc2Ljk3IDQyOC44NjlDMTc1LjA1IDQzMC43MjMgMTcxLjcwNSA0MjkuMzc3IDE3MS43MDUgNDI2Ljc2OVYzNzIuNDQzSDE2OC4yNkMxNTIuNjU5IDM3Mi40NDMgMTQwIDM1OS42NzkgMTQwIDM0My45NDFWMTY3LjU1N0MxNDAgMTUxLjgyIDE1Mi42NTkgMTM5LjA1NiAxNjguMjYgMTM5LjA1NkgzNDMuNzRaIiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik0yMDUuMTg4IDI1NS44MTdDMjA1LjE4OCAyNDQuNzU3IDIwNS4xODggMjM5LjIyNiAyMDguNDI2IDIzNS45MzVDMjExLjY2MyAyMzIuNjQ0IDIxNy4xMjYgMjMyLjY0NCAyMjguMDUyIDIzMi42NDRIMjgzLjk0OEMyOTQuODc0IDIzMi42NDQgMzAwLjMzNyAyMzIuNjQ0IDMwMy41NzQgMjM1LjkzNUMzMDYuODEyIDIzOS4yMjYgMzA2LjgxMiAyNDQuNzU3IDMwNi44MTIgMjU1LjgxN0MzMDYuODEyIDI2Ni44NzYgMzA2LjgxMiAyNzIuNDA3IDMwMy41NzQgMjc1LjY5OEMzMDAuMzM3IDI3OC45ODkgMjk0Ljg3NCAyNzguOTg5IDI4My45NDggMjc4Ljk4OUgyMjguMDUyQzIxNy4xMjYgMjc4Ljk4OSAyMTEuNjYzIDI3OC45ODkgMjA4LjQyNiAyNzUuNjk4QzIwNS4xODggMjcyLjQwNyAyMDUuMTg4IDI2Ni44NzYgMjA1LjE4OCAyNTUuODE3WiIgZmlsbD0iIzVENUNERSIvPjxwYXRoIGQ9Ik0yMDUuMTg4IDE5My4yMTZDMjA1LjE4OCAxODIuMTU3IDIwNS4xODggMTc2LjYyNiAyMDguNDI2IDE3My4zMzVDMjExLjY2MyAxNzAuMDQ0IDIxNy4xMjYgMTcwLjA0NCAyMjguMDUyIDE3MC4wNDRIMjgzLjk0OEMyOTQuODc0IDE3MC4wNDQgMzAwLjMzNyAxNzAuMDQ0IDMwMy41NzQgMTczLjMzNUMzMDYuODEyIDE3Ni42MjYgMzA2LjgxMiAxODIuMTU3IDMwNi44MTIgMTkzLjIxNkMzMDYuODEyIDIwNC4yNzUgMzA2LjgxMiAyMDkuODA2IDMwMy41NzQgMjEzLjA5N0MzMDAuMzM3IDIxNi4zODggMjk0Ljg3NCAyMTYuMzg4IDI4My45NDggMjE2LjM4OEgyMjguMDUyQzIxNy4xMjYgMjE2LjM4OCAyMTEuNjYzIDIxNi4zODggMjA4LjQyNiAyMTMuMDk3QzIwNS4xODggMjA5LjgwNiAyMDUuMTg4IDIwNC4yNzUgMjA1LjE4OCAxOTMuMjE2WiIgZmlsbD0iIzVENUNERSIvPjxwYXRoIGQ9Ik0yMDUuMTg4IDMxOC40MTdDMjA1LjE4OCAzMDcuMzU4IDIwNS4xODggMzAxLjgyNyAyMDguNDI2IDI5OC41MzZDMjExLjY2MyAyOTUuMjQ1IDIxNy4xMjYgMjk1LjI0NSAyMjguMDUyIDI5NS4yNDVIMjgzLjk0OEMyOTQuODc0IDI5NS4yNDUgMzAwLjMzNyAyOTUuMjQ1IDMwMy41NzQgMjk4LjUzNkMzMDYuODEyIDMwMS44MjcgMzA2LjgxMiAzMDcuMzU4IDMwNi44MTIgMzE4LjQxN0MzMDYuODEyIDMyOS40NzYgMzA2LjgxMiAzMzUuMDA3IDMwMy41NzQgMzM4LjI5OEMzMDAuMzM3IDM0MS41ODkgMjk0Ljg3NCAzNDEuNTg5IDI4My45NDggMzQxLjU4OUgyMjguMDUyQzIxNy4xMjYgMzQxLjU4OSAyMTEuNjYzIDM0MS41ODkgMjA4LjQyNiAzMzguMjk4QzIwNS4xODggMzM1LjAwNyAyMDUuMTg4IDMyOS40NzYgMjA1LjE4OCAzMTguNDE3WiIgZmlsbD0iIzVENUNERSIvPjwvc3ZnPg==">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,426 +15,562 @@
             theme: {
                 extend: {
                     colors: {
-                        apple: {
-                            blue: '#0071e3',
-                            darkblue: '#0077ED',
-                            gray: '#f5f5f7',
-                            darkgray: '#1d1d1f',
-                            midgray: '#86868b',
-                            lightgray: '#f2f2f2'
-                        }
-                    },
-                    fontFamily: {
-                        apple: ['-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
-                    },
-                    borderRadius: {
-                        'xl': '1rem',
-                        '2xl': '1.5rem',
+                        'apple-blue': '#5D5CDE',
+                        'apple-darkblue': '#7A79E5',
+                        'apple-gray': '#f2f2f7',
+                        'apple-darkgray': '#1c1c1e',
+                        'apple-lightgray': '#f9f9fb'
                     },
                     boxShadow: {
-                        'apple': '0 4px 16px rgba(0, 0, 0, 0.12)',
-                        'apple-dark': '0 4px 16px rgba(255, 255, 255, 0.08)'
+                        'apple': '0 4px 14px rgba(0, 0, 0, 0.08)',
+                        'apple-dark': '0 4px 14px rgba(0, 0, 0, 0.25)'
                     },
-                    backdropBlur: {
-                        'apple': '20px'
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        pulse: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '.5' }
+                        }
                     }
                 }
-            }
+            },
+            plugins: [
+                // typography插件 - 让你的Markdown内容更漂亮
+                function({ addComponents }) {
+                    addComponents({
+                        '.prose': {
+                            maxWidth: '65ch',
+                            color: '#374151',
+                            lineHeight: '1.75',
+                            'h1': {
+                                color: '#111827',
+                                fontWeight: '800',
+                                fontSize: '2.25em',
+                                marginTop: '0',
+                                marginBottom: '0.9em',
+                                lineHeight: '1.2'
+                            },
+                            'h2': {
+                                color: '#111827',
+                                fontWeight: '700',
+                                fontSize: '1.5em',
+                                marginTop: '2em',
+                                marginBottom: '1em',
+                                lineHeight: '1.3333'
+                            },
+                            // 可以继续添加其他元素样式...
+                        },
+                        '.dark .prose': {
+                            color: '#d1d5db',
+                            'h1': {
+                                color: '#f3f4f6'
+                            },
+                            'h2': {
+                                color: '#f3f4f6'
+                            },
+                            // 黑暗模式下的其他元素样式...
+                        }
+                    })
+                }
+            ]
         }
     </script>
-    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- 自定义样式 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        /* 加载旋转器 */
+        .apple-spinner {
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(79, 70, 229, 0.2);
+            border-radius: 50%;
+            border-top-color: #5D5CDE;
+            animation: spinner 0.8s linear infinite;
+        }
+        
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* 标签页样式 */
+        .tab-button.active {
+            color: #5D5CDE;
+            font-weight: 500;
+        }
+        
+        /* 卡片样式 */
+        .theme-card-selected {
+            border: 2px solid #5D5CDE;
+        }
+        
+        .dark .theme-card-selected {
+            border-color: #7A79E5;
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #5d5d5d;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #7a7a7a;
+        }
+    </style>
+    
+    <!-- 文章主题样式 -->
     <link rel="stylesheet" href="css/themes.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://unpkg.com/dompurify@3.0.5/dist/purify.min.js"></script>
-    <script src="https://unpkg.com/turndown@7.1.2/dist/turndown.js"></script>
 </head>
-<body class="min-h-screen bg-apple-gray dark:bg-apple-darkgray text-black dark:text-white font-apple transition-colors duration-300">
-    <div class="container mx-auto p-4 max-w-6xl">
-        <!-- 标题区 -->
-        <header class="text-center py-8 mb-8">
-            <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-apple-blue to-purple-500 inline-block text-transparent bg-clip-text">
-                AI 文章创作室
-            </h1>
-            <p class="text-apple-midgray dark:text-gray-400 text-lg">使用先进AI技术，创造专业精美的内容</p>
-        </header>
 
-        <!-- 主内容区 -->
-        <main class="space-y-8">
-            <!-- 标签式导航 -->
-            <div id="app-tabs" class="flex justify-center mb-6">
-                <nav class="flex space-x-2 bg-white dark:bg-apple-darkgray rounded-xl p-1 shadow-sm">
-                    <button class="tab-button active px-4 py-2 rounded-lg text-sm font-medium" data-tab="content">
-                        <i class="fas fa-pen-fancy mr-2"></i>内容创作
-                    </button>
-                    <button class="tab-button px-4 py-2 rounded-lg text-sm font-medium" data-tab="api">
-                        <i class="fas fa-cog mr-2"></i>API配置
-                    </button>
-                    <button class="tab-button px-4 py-2 rounded-lg text-sm font-medium" data-tab="preview">
-                        <i class="fas fa-eye mr-2"></i>预览排版
-                    </button>
-                </nav>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- 顶部标题区域 -->
+        <div class="text-center mb-8">
+            <div class="flex justify-center items-center">
+                <svg class="w-12 h-12 mr-3" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="512" height="512" rx="128" fill="#5D5CDE"/>
+                    <path d="M343.74 139.056C359.34 139.056 372 151.82 372 167.557V343.941C372 359.679 359.34 372.443 343.74 372.443H235.934L176.97 428.869C175.05 430.723 171.705 429.377 171.705 426.769V372.443H168.26C152.659 372.443 140 359.679 140 343.941V167.557C140 151.82 152.659 139.056 168.26 139.056H343.74Z" fill="white"/>
+                    <path d="M205.188 255.817C205.188 244.757 205.188 239.226 208.426 235.935C211.663 232.644 217.126 232.644 228.052 232.644H283.948C294.874 232.644 300.337 232.644 303.574 235.935C306.812 239.226 306.812 244.757 306.812 255.817C306.812 266.876 306.812 272.407 303.574 275.698C300.337 278.989 294.874 278.989 283.948 278.989H228.052C217.126 278.989 211.663 278.989 208.426 275.698C205.188 272.407 205.188 266.876 205.188 255.817Z" fill="#5D5CDE"/>
+                    <path d="M205.188 193.216C205.188 182.157 205.188 176.626 208.426 173.335C211.663 170.044 217.126 170.044 228.052 170.044H283.948C294.874 170.044 300.337 170.044 303.574 173.335C306.812 176.626 306.812 182.157 306.812 193.216C306.812 204.275 306.812 209.806 303.574 213.097C300.337 216.388 294.874 216.388 283.948 216.388H228.052C217.126 216.388 211.663 216.388 208.426 213.097C205.188 209.806 205.188 204.275 205.188 193.216Z" fill="#5D5CDE"/>
+                    <path d="M205.188 318.417C205.188 307.358 205.188 301.827 208.426 298.536C211.663 295.245 217.126 295.245 228.052 295.245H283.948C294.874 295.245 300.337 295.245 303.574 298.536C306.812 301.827 306.812 307.358 306.812 318.417C306.812 329.476 306.812 335.007 303.574 338.298C300.337 341.589 294.874 341.589 283.948 341.589H228.052C217.126 341.589 211.663 341.589 208.426 338.298C205.188 335.007 205.188 329.476 205.188 318.417Z" fill="#5D5CDE"/>
+                </svg>
+                <h1 class="text-3xl font-bold text-apple-blue dark:text-apple-darkblue">AI文章创作助手</h1>
             </div>
-
-            <!-- 内容创作面板 -->
-            <div id="content-tab" class="tab-content">
-                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
-                    <h2 class="text-xl font-semibold mb-4 flex items-center">
-                        <i class="fas fa-file-alt mr-2 text-apple-blue dark:text-apple-darkblue"></i>
-                        文章信息
-                    </h2>
-                    
-                    <div class="mb-4">
-                        <label for="articleTitle" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章标题</label>
-                        <input type="text" id="articleTitle" placeholder="输入引人注目的标题..." 
-                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="articlePrompt" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章提示词</label>
-                        <textarea id="articlePrompt" rows="3" placeholder="描述您希望生成的文章风格、内容、结构等..." 
-                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章长度</label>
-                            <div class="flex flex-wrap gap-2">
-                                <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                                    <input type="radio" name="articleLength" value="short" class="hidden peer" checked>
-                                    <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
-                                    </div>
-                                    <span>短文 (800-1200字)</span>
-                                </label>
-                                <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                                    <input type="radio" name="articleLength" value="medium" class="hidden peer">
-                                    <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
-                                    </div>
-                                    <span>中等 (1500-2500字)</span>
-                                </label>
-                                <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                                    <input type="radio" name="articleLength" value="long" class="hidden peer">
-                                    <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
-                                    </div>
-                                    <span>长文 (3000字以上)</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">排版主题</label>
-                            <select id="articleTheme" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                             <option value="modern">现代简约风</option>
-                                <option value="magazine">杂志排版风</option>
-                                <option value="tech">科技风格</option>
-                                <option value="business">优雅商务风</option>
-                                <option value="creative">创意设计风</option>
-                                <option value="tutorial">教程指南风</option>
-                                <option value="entertainment">娱乐风格</option>
-                                <option value="academic">学术论文风</option>
-                                <option value="media">自媒体风格</option>
-                            </select>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
-                    <h2 class="text-xl font-semibold mb-4 flex items-center">
-                        <i class="fas fa-book mr-2 text-apple-blue dark:text-apple-darkblue"></i>
-                        参考资料
-                    </h2>
-                    
-                    <div class="mb-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <label for="referenceLinks" class="font-medium text-gray-700 dark:text-gray-300">参考链接 (每行一个)</label>
-                            <button id="validateLinksBtn" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline flex items-center">
-                                <i class="fas fa-check-circle mr-1"></i>验证链接
-                            </button>
-                        </div>
-                        <textarea id="referenceLinks" rows="2" placeholder="https://example.com/article1&#10;https://example.com/article2" 
-                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
-                        <div id="linkValidationResult" class="mt-1 hidden"></div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="referenceText" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考文本</label>
-                        <textarea id="referenceText" rows="4" placeholder="粘贴参考文章文本..." 
-                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
-                    </div>
-
-                    <div class="mb-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="font-medium text-gray-700 dark:text-gray-300">网页导入工具</label>
-                            <div class="flex gap-2">
-                                <button id="fetchContentBtn" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline flex items-center">
-                                    <i class="fas fa-download mr-1"></i>抓取内容
-                                </button>
-                                <span class="text-gray-400">|</span>
-                                <button id="clearResultsBtn" class="text-xs text-red-500 hover:underline flex items-center">
-                                    <i class="fas fa-trash mr-1"></i>清空结果
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="scrapeUrl" placeholder="输入要抓取的网页URL" 
-                                class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                        </div>
-                        <div id="scrapeResult" class="mt-2 hidden p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 max-h-40 overflow-auto"></div>
-                    </div>
-                    
-                    <div class="mb-2">
-                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考文件</label>
-                        <label for="referenceFiles" class="w-full flex items-center justify-center p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-apple-lightgray dark:hover:bg-gray-800 transition">
-                            <div class="text-center">
-                                <i class="fas fa-cloud-upload-alt text-xl text-apple-blue dark:text-apple-darkblue mb-2"></i>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">点击上传文件或拖拽文件到此处</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">支持 .txt, .docx, .pdf 等文本文件</p>
-                            </div>
-                            <input id="referenceFiles" type="file" multiple class="hidden">
-                        </label>
-                        <div id="uploadedFiles" class="mt-2 space-y-1 text-sm"></div>
-                    </div>
-                </section>
-
-                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
-                    <h2 class="text-xl font-semibold mb-4 flex items-center">
-                        <i class="fas fa-image mr-2 text-apple-blue dark:text-apple-darkblue"></i>
-                        图片设置
-                    </h2>
-                    
-                    <div class="mb-4">
-                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片来源</label>
-                        <div class="flex flex-wrap gap-2">
-                            <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                                <input type="radio" name="imageSource" value="extract" class="hidden peer" checked>
-                                <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
-                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
-                                </div>
-                                <span>从参考链接提取</span>
-                            </label>
-                            <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                                <input type="radio" name="imageSource" value="generate" class="hidden peer">
-                                <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
-                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
-                                </div>
-                                <span>AI生成图片</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div id="imageExtractSettings" class="mb-4">
-                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片插入方式</label>
-                        <div class="flex flex-wrap gap-2">
-                            <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                                <input type="radio" name="imageInsertMode" value="even" class="hidden peer" checked>
-                                <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
-                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
-                                </div>
-                                <span>均匀分布</span>
-                            </label>
-                            <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                                <input type="radio" name="imageInsertMode" value="random" class="hidden peer">
-                                <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
-                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
-                                </div>
-                                <span>随机分布</span>
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div id="imageGenerateSettings" class="hidden">
-                        <div class="mb-4">
-                            <label for="imagePrompt" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片提示词</label>
-                            <textarea id="imagePrompt" rows="2" placeholder="描述您希望生成的图片内容、风格等..." 
-                                class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p class="mt-2 text-gray-600 dark:text-gray-400">使用人工智能技术生成专业、有深度的文章内容</p>
+        </div>
+        
+        <!-- 标签式导航 -->
+        <div id="app-tabs" class="flex justify-center mb-6">
+            <nav class="flex space-x-2 bg-white dark:bg-apple-darkgray rounded-xl p-1 shadow-sm">
+                <button class="tab-button active px-4 py-2 rounded-lg text-sm font-medium bg-white dark:bg-gray-800 shadow-sm text-apple-blue dark:text-apple-darkblue" data-tab="content">
+                    <i class="fas fa-pen-fancy mr-2"></i>内容创作
+                </button>
+                <button class="tab-button px-4 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400" data-tab="api">
+                    <i class="fas fa-cog mr-2"></i>API配置
+                </button>
+                <button class="tab-button px-4 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400" data-tab="preview">
+                    <i class="fas fa-eye mr-2"></i>预览排版
+                </button>
+            </nav>
+        </div>
+        
+        <!-- 内容创作面板 -->
+        <div id="content-tab" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- 基本信息 -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-file-alt mr-3 text-apple-blue dark:text-apple-darkblue"></i>基本信息
+                        </h2>
+                        <div class="space-y-4">
                             <div>
-                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片比例</label>
-                                <select id="imageAspectRatio" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                    <option value="4:3">4:3 (标准)</option>
-                                    <option value="1:1">1:1 (正方形)</option>
-                                    <option value="16:9">16:9 (宽屏)</option>
-                                    <option value="3:4">3:4 (竖屏)</option>
-                                    <option value="9:16">9:16 (手机屏)</option>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章标题</label>
+                                <input type="text" id="articleTitle" placeholder="输入文章标题" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">创作提示词</label>
+                                <textarea id="articlePrompt" rows="3" placeholder="描述您希望文章包含的要点和风格，越具体效果越好" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章长度</label>
+                                <div class="flex flex-wrap items-center space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="articleLength" value="short" class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                        <span class="ml-2">短文 (800-1200字)</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="articleLength" value="medium" checked class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                        <span class="ml-2">中等 (1500-2500字)</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="articleLength" value="long" class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                        <span class="ml-2">长文 (3000字以上)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章主题</label>
+                                <select id="articleTheme" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                    <option value="modern">现代简约风</option>
+                                    <option value="magazine">杂志排版风</option>
+                                    <option value="tech">科技风格</option>
+                                    <option value="business">优雅商务风</option>
+                                    <option value="creative">创意设计风</option>
+                                    <option value="tutorial">教程指南风</option>
+                                    <option value="entertainment">娱乐风格</option>
+                                    <option value="academic">学术论文风</option>
+                                    <option value="media">自媒体风格</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div>
-                            <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片数量</label>
-                            <select id="imageCount" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                <option value="1">1张</option>
-                                <option value="2">2张</option>
-                                <option value="3" selected>3张</option>
-                                <option value="4">4张</option>
-                                <option value="5">5张</option>
-                                <option value="0">不使用图片</option>
-                            </select>
+                    <!-- 参考资料 -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-link mr-3 text-apple-blue dark:text-apple-darkblue"></i>参考资料
+                            <span class="ml-2 text-xs text-gray-500 dark:text-gray-400 font-normal">(可选)</span>
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考链接</label>
+                                <div class="flex items-start space-x-2">
+                                    <textarea id="referenceLinks" rows="3" placeholder="输入参考链接，每行一个" class="flex-1 p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                                    <button id="validateLinksBtn" class="whitespace-nowrap px-4 py-3 bg-apple-lightgray dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                                        <i class="fas fa-check-circle mr-1.5"></i>验证链接
+                                    </button>
+                                </div>
+                                <div id="linkValidationResult" class="mt-2 hidden"></div>
+                            </div>
+                            
+                            <div class="p-4 bg-apple-lightgray dark:bg-gray-700 rounded-xl">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-globe mr-2 text-apple-blue dark:text-apple-darkblue"></i>
+                                    <h3 class="font-medium">网页导入工具</h3>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="flex items-start space-x-2">
+                                        <input type="text" id="scrapeUrl" placeholder="输入要导入内容的网页URL" class="flex-1 p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <button id="fetchContentBtn" class="whitespace-nowrap px-4 py-3 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-sm font-medium transition">
+                                            <i class="fas fa-download mr-1.5"></i>获取内容
+                                        </button>
+                                    </div>
+                                    <div id="scrapeResult" class="hidden"></div>
+                                    <button id="clearResultsBtn" class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition">
+                                        <i class="fas fa-trash-alt mr-1"></i>清除结果
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考文本</label>
+                                <textarea id="referenceText" rows="4" placeholder="粘贴您的参考文本内容，可以是您之前写的草稿或其他素材" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考文件</label>
+                                <input type="file" id="referenceFiles" multiple class="hidden">
+                                <div class="flex flex-col space-y-3">
+                                    <div class="relative">
+                                        <label for="referenceFiles" class="flex items-center justify-center p-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                            <div class="text-center">
+                                                <i class="fas fa-cloud-upload-alt text-apple-blue dark:text-apple-darkblue text-xl mb-1"></i>
+                                                <p class="text-sm text-gray-700 dark:text-gray-300">点击上传文件或拖放文件至此</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">支持 PDF, DOCX, TXT (最大 10MB)</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div id="uploadedFiles" class="space-y-2"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </section>
-
-                <!-- 行动按钮 -->
-                <div class="flex justify-center">
-                    <button id="generateBtn" class="py-3 px-8 bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-full font-medium text-lg transition-colors shadow-md hover:shadow-lg flex items-center">
-                        <i class="fas fa-magic mr-2"></i>
-                        创作精彩文章
-                    </button>
+                </div>
+                
+                <!-- 图片设置 -->
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                        <h2 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-images mr-3 text-apple-blue dark:text-apple-darkblue"></i>图片设置
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片来源</label>
+                                <div class="flex flex-col space-y-2">
+                                    <label class="inline-flex items-center p-3 bg-apple-lightgray dark:bg-gray-700 rounded-xl cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                                        <input type="radio" name="imageSource" value="extract" class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                        <span class="ml-2">从参考链接提取图片</span>
+                                    </label>
+                                    <label class="inline-flex items-center p-3 bg-apple-lightgray dark:bg-gray-700 rounded-xl cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                                        <input type="radio" name="imageSource" value="generate" checked class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                        <span class="ml-2">AI生成精美配图</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div id="imageExtractSettings" class="space-y-4 hidden">
+                                <div>
+                                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片数量</label>
+                                    <select id="imageCount" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="0">不使用图片</option>
+                                        <option value="1">1张</option>
+                                        <option value="2">2张</option>
+                                        <option value="3" selected>3张</option>
+                                        <option value="4">4张</option>
+                                        <option value="5">5张</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">插入方式</label>
+                                    <div class="flex flex-col space-y-2">
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="imageInsertMode" value="even" checked class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                            <span class="ml-2">均匀分布在文章中</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="imageInsertMode" value="random" class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                            <span class="ml-2">随机分布在文章中</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="imageGenerateSettings" class="space-y-4">
+                                <div>
+                                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片数量</label>
+                                    <select id="imageCount" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="0">不使用图片</option>
+                                        <option value="1">1张</option>
+                                        <option value="2">2张</option>
+                                        <option value="3" selected>3张</option>
+                                        <option value="4">4张</option>
+                                        <option value="5">5张</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片提示词</label>
+                                    <textarea id="imagePrompt" rows="3" placeholder="描述您希望生成的图片风格和内容" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">适合文章的精美配图，高质量，专业，逼真</textarea>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">宽高比例</label>
+                                    <select id="imageAspectRatio" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="4:3" selected>4:3 (标准)</option>
+                                        <option value="16:9">16:9 (宽屏)</option>
+                                        <option value="1:1">1:1 (正方形)</option>
+                                        <option value="3:4">3:4 (垂直)</option>
+                                        <option value="2:3">2:3 (垂直)</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">插入方式</label>
+                                    <div class="flex flex-col space-y-2">
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="imageInsertMode" value="even" checked class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                            <span class="ml-2">均匀分布在文章中</span>
+                                        </label>
+                                        <label class="inline-flex items-center">
+                                            <input type="radio" name="imageInsertMode" value="random" class="form-radio text-apple-blue focus:ring-apple-blue dark:focus:ring-apple-darkblue">
+                                            <span class="ml-2">随机分布在文章中</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 生成按钮 -->
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                        <button id="generateBtn" class="w-full py-4 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-base font-medium flex items-center justify-center transition">
+                            <i class="fas fa-magic mr-2"></i>创作精彩文章
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <!-- API配置面板 -->
-            <div id="api-tab" class="tab-content hidden">
-                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
-                    <h2 class="text-xl font-semibold mb-4 flex items-center">
-                        <i class="fas fa-plug mr-2 text-apple-blue dark:text-apple-darkblue"></i>
-                        API配置
-                    </h2>
+        </div>
+        
+        <!-- API配置面板 -->
+        <div id="api-tab" class="tab-content hidden">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark">
+                <h2 class="text-xl font-semibold mb-4 flex items-center">
+                    <i class="fas fa-key mr-3 text-apple-blue dark:text-apple-darkblue"></i>API配置
+                </h2>
+                
+                <div class="mb-6">
+                    <p class="text-gray-700 dark:text-gray-300 mb-3">选择API服务商并配置API密钥，以启用AI文章创作功能。</p>
                     
-                    <!-- 说明信息 -->
-                    <div class="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 rounded-xl p-4 mb-6">
-                        <div class="flex items-start">
-                            <i class="fas fa-info-circle mt-1 mr-3 text-lg"></i>
-                            <div>
-                                <p class="mb-2">配置API密钥后，本应用可以在您的网站上独立工作，无需依赖第三方服务。</p>
-                                <p>所有API密钥仅存储在您的浏览器中，不会传输到任何服务器。</p>
+                    <div id="apiTestResult" class="hidden my-4"></div>
+                    
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 mb-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-info-circle text-yellow-600 dark:text-yellow-400 mt-1"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-yellow-600 dark:text-yellow-400">提示</h3>
+                                <div class="mt-2 text-sm text-yellow-600 dark:text-yellow-400">
+                                    <p>配置API密钥后，本应用可以在您的网站上独立工作，无需依赖第三方服务。</p>
+                                    <p class="mt-1">所有API密钥仅存储在您的浏览器中，不会传输到任何服务器。</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- API 服务商选择 -->
+                    
                     <div class="mb-6">
-                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">选择API服务商</h3>
+                        <label class="block mb-3 font-medium text-gray-700 dark:text-gray-300">选择API服务商</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- OpenAI -->
                             <div class="api-provider-card">
-                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                    <input type="radio" name="apiProvider" value="openai" class="hidden" checked>
-                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-apple-blue dark:border-apple-darkblue flex items-center justify-center provider-radio">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue provider-radio-dot"></div>
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                    <div class="flex items-center h-5">
+                                        <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
+                                            <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
+                                        </div>
+                                        <input type="radio" name="apiProvider" value="openai" class="absolute opacity-0 w-5 h-5 cursor-pointer">
                                     </div>
-                                    <h4 class="font-medium mb-1">OpenAI</h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">GPT-4/3.5等模型</p>
-                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                        <a href="https://platform.openai.com/api-keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                        </a>
+                                    <div class="ml-3 text-sm">
+                                        <span class="font-medium text-gray-700 dark:text-gray-300">OpenAI</span>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">GPT-4/3.5等模型</p>
                                     </div>
                                 </label>
                             </div>
                             
+                            <!-- Anthropic -->
                             <div class="api-provider-card">
-                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                    <input type="radio" name="apiProvider" value="anthropic" class="hidden">
-                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                    <div class="flex items-center h-5">
+                                        <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
+                                            <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
+                                        </div>
+                                        <input type="radio" name="apiProvider" value="anthropic" class="absolute opacity-0 w-5 h-5 cursor-pointer">
                                     </div>
-                                    <h4 class="font-medium mb-1">Anthropic</h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Claude系列模型</p>
-                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                        <a href="https://console.anthropic.com/account/keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                        </a>
+                                    <div class="ml-3 text-sm">
+                                        <span class="font-medium text-gray-700 dark:text-gray-300">Anthropic</span>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">Claude系列模型</p>
                                     </div>
                                 </label>
                             </div>
                             
+                            <!-- Poe API -->
                             <div class="api-provider-card">
-                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                    <input type="radio" name="apiProvider" value="poe" class="hidden">
-                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                    <div class="flex items-center h-5">
+                                        <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
+                                            <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
+                                        </div>
+                                        <input type="radio" name="apiProvider" value="poe" class="absolute opacity-0 w-5 h-5 cursor-pointer">
                                     </div>
-                                    <h4 class="font-medium mb-1">Poe API</h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Poe平台多种模型</p>
-                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                        <a href="https://poe.com/api_key" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                        </a>
+                                    <div class="ml-3 text-sm">
+                                        <span class="font-medium text-gray-700 dark:text-gray-300">Poe API</span>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">Poe平台多种模型</p>
                                     </div>
                                 </label>
                             </div>
-
+                            
+                            <!-- DeepSeek -->
                             <div class="api-provider-card">
-                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                    <input type="radio" name="apiProvider" value="deepseek" class="hidden">
-                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                    <div class="flex items-center h-5">
+                                        <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
+                                            <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
+                                        </div>
+                                        <input type="radio" name="apiProvider" value="deepseek" class="absolute opacity-0 w-5 h-5 cursor-pointer">
                                     </div>
-                                    <h4 class="font-medium mb-1">DeepSeek</h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">深度求索中文大模型</p>
-                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                        <a href="https://platform.deepseek.com/" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                        </a>
+                                    <div class="ml-3 text-sm">
+                                        <span class="font-medium text-gray-700 dark:text-gray-300">DeepSeek</span>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">深度求索中文大模型</p>
                                     </div>
                                 </label>
                             </div>
-
+                            
+                            <!-- 文心一言 -->
                             <div class="api-provider-card">
-                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                    <input type="radio" name="apiProvider" value="baidu" class="hidden">
-                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                    <div class="flex items-center h-5">
+                                        <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
+                                            <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
+                                        </div>
+                                        <input type="radio" name="apiProvider" value="baidu" class="absolute opacity-0 w-5 h-5 cursor-pointer">
                                     </div>
-                                    <h4 class="font-medium mb-1">文心一言</h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">百度大模型</p>
-                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                        <a href="https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Dlyfpqnlh" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                        </a>
+                                    <div class="ml-3 text-sm">
+                                        <span class="font-medium text-gray-700 dark:text-gray-300">文心一言</span>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">百度大模型</p>
                                     </div>
                                 </label>
                             </div>
-
+                            
+                            <!-- 月之暗面 -->
                             <div class="api-provider-card">
-                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                    <input type="radio" name="apiProvider" value="moonshot" class="hidden">
-                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
-                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                <label class="flex items-start p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition">
+                                    <div class="flex items-center h-5">
+                                        <div class="provider-radio relative flex items-center justify-center w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded-full">
+                                            <div class="provider-radio-dot w-2.5 h-2.5 bg-apple-blue rounded-full hidden"></div>
+                                        </div>
+                                        <input type="radio" name="apiProvider" value="moonshot" class="absolute opacity-0 w-5 h-5 cursor-pointer">
                                     </div>
-                                    <h4 class="font-medium mb-1">月之暗面</h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Moonshot系列模型</p>
-                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                        <a href="https://platform.moonshot.cn/console/api-keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                        </a>
+                                    <div class="ml-3 text-sm">
+                                        <span class="font-medium text-gray-700 dark:text-gray-300">月之暗面</span>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">Moonshot系列模型</p>
                                     </div>
                                 </label>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- 各个提供商的设置区域 -->
                     <!-- OpenAI API设置 -->
                     <div id="openai-settings" class="api-settings mb-6">
                         <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">OpenAI设置</h3>
                         <div class="space-y-4">
                             <div>
                                 <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
-                                <input type="password" id="openai-api-key" placeholder="sk-..." 
-                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                <input type="password" id="openai-api-key" placeholder="sk-..." class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">文章模型</label>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">文本模型</label>
                                     <select id="openai-text-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                        <option value="gpt-4o">GPT-4o (推荐)</option>
+                                        <option value="gpt-4o">GPT-4o</option>
                                         <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                        <option value="gpt-4">GPT-4</option>
                                         <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
                                     </select>
                                 </div>
                                 
                                 <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">图像模型</label>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">图片模型</label>
                                     <select id="openai-image-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                        <option value="dall-e-3">DALL·E 3</option>
-                                        <option value="dall-e-2">DALL·E 2</option>
+                                        <option value="dall-e-3">DALL-E 3</option>
+                                        <option value="dall-e-2">DALL-E 2</option>
                                     </select>
                                 </div>
                             </div>
@@ -439,209 +578,340 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
-                                    <input type="number" id="openai-temperature" min="0" max="2" step="0.1" value="0.7" 
-                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                    <input type="number" id="openai-temperature" min="0" max="2" step="0.1" value="0.7" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                                 </div>
                                 
                                 <div>
                                     <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
-                                    <input type="number" id="openai-max-tokens" min="100" max="16000" step="100" value="4000" 
-                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                    <input type="number" id="openai-max-tokens" min="100" max="16000" step="100" value="4000" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                                 </div>
                                 
                                 <div>
                                     <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API代理 (可选)</label>
-                                    <input type="text" id="openai-api-proxy" placeholder="https://your-proxy-url.com" 
-                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                    <input type="text" id="openai-api-proxy" placeholder="https://your-proxy-url.com" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Anthropic API设置 -->
-                    <div id="anthropic-settings" class="api-settings mb-6 hidden">
-                        <!-- Anthropic设置内容 -->
-                    </div>
-                    
                     <!-- Poe API设置 -->
                     <div id="poe-settings" class="api-settings mb-6 hidden">
-                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">Poe API设置</h3>
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">Poe设置</h3>
                         <div class="space-y-4">
                             <div>
                                 <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
-                                <input type="password" id="poe-api-key" placeholder="您的Poe API密钥..." 
+                                <input type="password" id="poe-api-key" placeholder="Poe API密钥" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                    可在<a href="https://poe.com/api_key" target="_blank" class="text-apple-blue dark:text-apple-darkblue hover:underline">Poe API Key页面</a>获取
+                                </p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">文本模型</label>
+                                    <select id="poe-text-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="Claude-3-Opus-200k">Claude-3-Opus-200k</option>
+                                        <option value="Claude-3.7-Sonnet" selected>Claude-3.7-Sonnet</option>
+                                        <option value="Claude-3.5-Sonnet">Claude-3.5-Sonnet</option>
+                                        <option value="Claude-3-Haiku">Claude-3-Haiku</option>
+                                        <option value="GPT-4o">GPT-4o</option>
+                                        <option value="GPT-4">GPT-4</option>
+                                        <option value="Mixtral-8x7B">Mixtral-8x7B</option>
+                                        <option value="Llama-3-70b">Llama-3-70b</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">图片模型</label>
+                                    <select id="poe-image-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="FLUX-pro-1.1" selected>FLUX-pro-1.1</option>
+                                        <option value="FLUX-pro">FLUX-pro</option>
+                                        <option value="FLUX-Text-to-Image">FLUX-Text-to-Image</option>
+                                        <option value="dalle-3">DALL-E 3</option>
+                                        <option value="Midjourney">Midjourney</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- DeepSeek API设置 -->
+                    <div id="deepseek-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">DeepSeek设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="deepseek-api-key" placeholder="sk-..." value="sk-ce3a707aa48b41a5911ca0c9cfbc2e84" 
                                     class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">文章模型</label>
-                                    <select id="poe-text-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                        <option value="Claude-3.7-Sonnet">Claude-3.7-Sonnet (推荐)</option>
-                                        <option value="Claude-3-Opus">Claude-3-Opus</option>
-                                        <option value="GPT-4o">GPT-4o</option>
-                                        <option value="Claude-3-Haiku">Claude-3-Haiku</option>
-                                        <option value="GPT-3.5-Turbo">GPT-3.5-Turbo</option>
-                                    </select>
-                                </div>
-                                
-                                <div>
-                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">图像模型</label>
-                                    <select id="poe-image-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
-                                        <option value="FLUX-pro-1.1">FLUX-pro-1.1 (推荐)</option>
-                                        <option value="DALLE-3">DALL·E 3</option>
-                                        <option value="Midjourney">Midjourney</option>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="deepseek-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="deepseek-chat">DeepSeek Chat</option>
+                                        <option value="deepseek-coder">DeepSeek Coder</option>
                                     </select>
                                 </div>
                             </div>
                             
-                            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl">
-                                <div class="flex">
-                                    <i class="fas fa-info-circle mt-1 mr-2"></i>
-                                    <div>
-                                        <p class="text-sm mb-2">获取Poe API Token的步骤：</p>
-                                        <ol class="text-sm list-decimal ml-4 space-y-1">
-                                            <li>登录 <a href="https://poe.com" target="_blank" class="underline">poe.com</a></li>
-                                            <li>访问 <a href="https://poe.com/api_key" target="_blank" class="underline">https://poe.com/api_key</a></li>
-                                            <li>复制生成的API密钥</li>
-                                            <li>粘贴到上方的输入框中</li>
-                                        </ol>
-                                    </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="deepseek-temperature" min="0" max="2" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
+                                    <input type="number" id="deepseek-max-tokens" min="100" max="16000" step="100" value="4000" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API代理 (可选)</label>
+                                    <input type="text" id="deepseek-api-proxy" placeholder="https://your-proxy-url.com" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- DeepSeek API设置 -->
-                    <div id="deepseek-settings" class="api-settings mb-6 hidden">
-                        <!-- DeepSeek设置内容 -->
+                    <!-- Anthropic API设置 -->
+                    <div id="anthropic-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">Anthropic设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="anthropic-api-key" placeholder="sk-ant-..." 
+                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="anthropic-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                                        <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
+                                        <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="anthropic-temperature" min="0" max="1" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
+                                    <input type="number" id="anthropic-max-tokens" min="100" max="100000" step="100" value="4000" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- 其他API设置... -->
+                    <!-- 文心一言API设置 -->
+                    <div id="baidu-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">文心一言设置</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API Key</label>
+                                    <input type="password" id="baidu-api-key" placeholder="您的API Key" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Secret Key</label>
+                                    <input type="password" id="baidu-secret-key" placeholder="您的Secret Key" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="baidu-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="ernie-bot-4">文心一言4.0</option>
+                                        <option value="ernie-bot-turbo">文心一言TURBO</option>
+                                        <option value="ernie-bot">文心一言标准版</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="baidu-temperature" min="0" max="1" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 月之暗面API设置 -->
+                    <div id="moonshot-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">月之暗面设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="moonshot-api-key" placeholder="sk-..." 
+                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="moonshot-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="moonshot-v1-8k">月之暗面 v1 8K</option>
+                                        <option value="moonshot-v1-32k">月之暗面 v1 32K</option>
+                                        <option value="moonshot-v1-128k">月之暗面 v1 128K</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="moonshot-temperature" min="0" max="1" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <!-- 自部署说明 -->
-                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 mb-6">
-                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center">
-                            <i class="fas fa-server mr-2 text-apple-blue dark:text-apple-darkblue"></i>
-                            网站部署说明
-                        </h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">本应用可以轻松部署到您自己的网站上：</p>
-                        <ol class="text-sm text-gray-600 dark:text-gray-400 space-y-2 pl-5 list-decimal">
+                    <div class="mt-6">
+                        <button id="saveApiSettingsBtn" class="w-full py-4 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-base font-medium flex items-center justify-center transition">
+                            <i class="fas fa-save mr-2"></i>保存API配置
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-apple dark:shadow-apple-dark mt-6">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-info-circle mr-3 text-apple-blue dark:text-apple-darkblue"></i>网站部署说明
+                    </h2>
+                    
+                    <div class="space-y-4 text-gray-700 dark:text-gray-300">
+                        <p>本应用可以轻松部署到您自己的网站上：</p>
+                        
+                        <ol class="list-decimal pl-5 space-y-2">
                             <li>将所有文件上传到您的GitHub仓库</li>
                             <li>启用GitHub Pages服务</li>
                             <li>或者上传到您的服务器/静态网站托管平台</li>
                             <li>访问您的网站并配置API密钥</li>
                         </ol>
-                    </div>
-                    
-                    <div class="flex justify-center">
-                        <button id="saveApiSettingsBtn" class="py-2 px-6 bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-full font-medium transition-colors shadow-md hover:shadow-lg">
-                            保存API配置
-                        </button>
-                    </div>
-
-                    <!-- API测试状态 -->
-                    <div id="apiTestResult" class="mt-4 hidden"></div>
-                </section>
-            </div>
-
-            <!-- 预览排版面板 -->
-            <div id="preview-tab" class="tab-content hidden">
-                <!-- 生成状态 -->
-                <div id="generationStatus" class="py-4 px-6 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl text-center mb-6 hidden">
-                    <div class="flex items-center justify-center space-x-3">
-                        <div class="apple-spinner"></div>
-                        <span id="statusText">正在创作精彩内容...</span>
-                    </div>
-                </div>
-
-                <!-- 排版主题展示 -->
-                <div id="themeShowcase" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <!-- 主题卡片 -->
-                </div>
-
-                <!-- 输出预览 -->
-                <section id="outputSection" class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 hidden">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-semibold flex items-center">
-                            <i class="fas fa-newspaper mr-2 text-apple-blue dark:text-apple-darkblue"></i>
-                            文章预览
-                        </h2>
-                        <div class="flex gap-2">
-                            <button id="editArticleBtn" class="py-1.5 px-3 text-sm bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors flex items-center">
-                                <i class="fas fa-edit mr-1.5"></i>编辑
-                            </button>
-                            <button id="regenerateBtn" class="py-1.5 px-3 text-sm bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors flex items-center">
-                                <i class="fas fa-sync-alt mr-1.5"></i>重新生成
-                            </button>
-                            <button id="copyBtn" class="py-1.5 px-3 text-sm bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center">
-                                <i class="fas fa-copy mr-1.5"></i>复制文章
-                            </button>
+                        
+                        <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-sm">
+                            <p class="font-medium mb-1 text-blue-700 dark:text-blue-300">
+                                <i class="fas fa-shield-alt mr-1.5"></i>隐私说明
+                            </p>
+                            <p class="text-blue-600 dark:text-blue-400">所有API密钥仅存储在您的浏览器中，不会传输到任何服务器。</p>
                         </div>
                     </div>
-                    
-                    <div id="articleOutput" class="theme-modern prose dark:prose-invert max-w-none border border-gray-100 dark:border-gray-800 p-6 rounded-xl bg-white dark:bg-gray-950 overflow-auto"></div>
-                    
-                    <!-- 生成的图片区域 -->
-                    <div id="generatedImages" class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 hidden">
-                        <h3 class="text-lg font-semibold col-span-full mb-2 flex items-center">
-                            <i class="fas fa-images mr-2 text-apple-blue dark:text-apple-darkblue"></i>生成的图片
-                        </h3>
-                        <!-- 生成的图片将在这里显示 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 预览排版面板 -->
+        <div id="preview-tab" class="tab-content hidden space-y-6">
+            <div id="themeShowcase" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            
+            <div id="generationStatus" class="flex items-center justify-center p-10 bg-white dark:bg-gray-800 rounded-2xl shadow-apple dark:shadow-apple-dark hidden">
+                <div class="flex flex-col items-center">
+                    <div class="relative">
+                        <div class="w-16 h-16 border-4 border-apple-blue dark:border-apple-darkblue border-opacity-40 dark:border-opacity-40 rounded-full"></div>
+                        <div class="absolute top-0 left-0 w-16 h-16 border-4 border-apple-blue dark:border-apple-darkblue rounded-full animate-spin border-t-transparent dark:border-t-transparent"></div>
                     </div>
-                </section>
+                    <span id="statusText" class="mt-4 text-gray-700 dark:text-gray-300 font-medium">正在生成文章内容...</span>
+                </div>
+            </div>
+            
+            <div id="outputSection" class="hidden space-y-6">
+                <!-- 文章输出区域 -->
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="md:flex-1">
+                        <div id="articleOutput" class="theme-modern prose dark:prose-invert max-w-none border border-gray-100 dark:border-gray-800 p-6 rounded-xl bg-white dark:bg-gray-950 overflow-auto h-[60vh]"></div>
+                    </div>
+                </div>
                 
-                <!-- 编辑文章对话框 -->
-                <div id="editArticleModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
-                    <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-auto shadow-xl animate-fade-in">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-xl font-semibold">编辑文章内容</h3>
-                            <button id="closeEditBtn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-                                <i class="fas fa-times text-lg"></i>
-                            </button>
-                        </div>
-                        <div class="mb-4">
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="font-medium text-gray-700 dark:text-gray-300">Markdown 编辑</label>
-                                <div class="flex gap-2">
-                                    <button id="formatBoldBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
-                                        <i class="fas fa-bold"></i>
-                                    </button>
-                                    <button id="formatItalicBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
-                                        <i class="fas fa-italic"></i>
-                                    </button>
-                                    <button id="formatLinkBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
-                                        <i class="fas fa-link"></i>
-                                    </button>
-                                    <button id="formatH2Btn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
-                                        <i class="fas fa-heading"></i>
-                                    </button>
-                                    <button id="formatQuoteBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
-                                        <i class="fas fa-quote-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <textarea id="articleEditArea" rows="20" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition font-mono"></textarea>
-                        </div>
-                        <div class="flex justify-end gap-3">
-                            <button id="cancelEditBtn" class="py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors">
-                                取消
-                            </button>
-                            <button id="saveEditBtn" class="py-2 px-4 bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-lg transition-colors">
-                                保存更改
-                            </button>
-                        </div>
-                    </div>
+                <!-- 生成的图片 -->
+                <div id="generatedImages" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 hidden"></div>
+                
+                <!-- 操作按钮 -->
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <button id="copyBtn" class="px-5 py-3 bg-apple-blue hover:bg-blue-600 text-white rounded-xl text-sm font-medium flex items-center transition">
+                        <i class="fas fa-copy mr-1.5"></i>复制文章
+                    </button>
+                    <button id="editArticleBtn" class="px-5 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <i class="fas fa-edit mr-1.5"></i>编辑文章
+                    </button>
+                    <button id="regenerateBtn" class="px-5 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium flex items-center hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <i class="fas fa-sync-alt mr-1.5"></i>重新生成
+                    </button>
                 </div>
             </div>
-        </main>
-
-        <footer class="mt-12 text-center text-apple-midgray dark:text-gray-500 text-sm py-4">
-            <p>© 2024 AI文章创作室 - 使用先进AI技术创建专业内容</p>
-        </footer>
+        </div>
+        
+        <!-- 底部版权信息 -->
+        <div class="mt-12 text-center text-gray-500 dark:text-gray-400 text-sm">
+            <p id="app-version">版本 1.1.1</p>
+            <p class="mt-1">© 2024 AI文章创作助手 - 使用先进AI技术创建专业内容</p>
+        </div>
     </div>
-
-    <!-- 脚本引用 -->
+    
+    <!-- 编辑文章模态框 -->
+    <div id="editArticleModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 backdrop-blur-sm hidden">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-7xl w-full h-[90vh] flex flex-col shadow-xl animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">编辑文章</h3>
+                <button id="closeEditBtn" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex justify-between items-center mb-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-xl">
+                <div class="flex space-x-2">
+                    <button id="formatBoldBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="加粗">
+                        <i class="fas fa-bold"></i>
+                    </button>
+                    <button id="formatItalicBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="斜体">
+                        <i class="fas fa-italic"></i>
+                    </button>
+                    <button id="formatLinkBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="链接">
+                        <i class="fas fa-link"></i>
+                    </button>
+                    <button id="formatH2Btn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="二级标题">
+                        <i class="fas fa-heading"></i>
+                    </button>
+                    <button id="formatQuoteBtn" class="editor-btn p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title="引用">
+                        <i class="fas fa-quote-right"></i>
+                    </button>
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">
+                    使用 Markdown 语法
+                </div>
+            </div>
+            
+            <textarea id="articleEditArea" class="flex-1 w-full p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none resize-none transition"></textarea>
+            
+            <div class="flex justify-end space-x-3 mt-4">
+                <button id="cancelEditBtn" class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    取消
+                </button>
+                <button id="saveEditBtn" class="px-4 py-2 bg-apple-blue hover:bg-blue-600 text-white rounded-lg transition">
+                    保存更改
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载核心JS库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/turndown@7.0.0/dist/turndown.min.js"></script>
+    
+    <!-- 加载应用脚本 -->
     <script src="js/utils.js"></script>
     <script src="js/api.js"></script>
     <script src="js/article.js"></script>
