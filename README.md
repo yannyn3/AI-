@@ -25,7 +25,7 @@
 
 1. 下载本仓库所有文件
 2. 上传到任何静态网站托管服务（Netlify, Vercel, Cloudflare Pages等）
-3. 部署到netlify [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/你的用户名/api-proxy-repo)
+3. 部署到netlify [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/yannyn3/api-proxy-repo)
 
 ### 方法3: 部署到自己的服务器
 
