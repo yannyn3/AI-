@@ -17,6 +17,52 @@ const CORS_PROXIES = {
 // 默认代理 - 默认设为"none"即无代理模式
 let currentProxy = 'none';
 
+/**
+ * 通过Vercel代理发送API请求
+ */
+async function sendViaProxy(targetUrl, options = {}) {
+  // 替换为您的Vercel代理URL
+  const PROXY_URL = "https://your-api-proxy.vercel.app/api/proxy";
+  
+  try {
+    console.log(`通过代理发送请求到: ${targetUrl}`);
+    
+    // 组装代理请求数据
+    const proxyData = {
+      targetUrl,
+      method: options.method || "POST",
+      headers: options.headers || {},
+      body: options.body || null
+    };
+    
+    // 发送请求到代理
+    const response = await fetch(PROXY_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(proxyData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`代理请求失败: ${response.status}`);
+    }
+    
+    // 解析代理响应
+    const proxyResponse = await response.json();
+    
+    // 检查代理返回的状态
+    if (proxyResponse.status >= 400) {
+      throw new Error(`API错误: ${proxyResponse.status} ${proxyResponse.statusText}`);
+    }
+    
+    return proxyResponse.data;
+  } catch (error) {
+    console.error("代理请求失败:", error);
+    throw error;
+  }
+}
+
 // 设置当前使用的代理
 function setCorsProxy(proxyName) {
     if (CORS_PROXIES.hasOwnProperty(proxyName)) {
