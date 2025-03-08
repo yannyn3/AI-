@@ -129,6 +129,183 @@ if (directAPITestBtn) {
         }
     });
 }
+
+// 在main.js中添加进度条功能
+function showProgress(message, progress = 0) {
+    // 检查是否已经存在进度条
+    let progressBar = document.getElementById('generation-progress-bar');
+    let progressContainer = document.getElementById('generation-progress-container');
+    
+    if (!progressContainer) {
+        // 创建进度条容器
+        progressContainer = document.createElement('div');
+        progressContainer.id = 'generation-progress-container';
+        progressContainer.className = 'fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md p-4 z-50 flex flex-col items-center';
+        
+        // 创建进度条消息
+        const progressMessage = document.createElement('div');
+        progressMessage.id = 'generation-progress-message';
+        progressMessage.className = 'text-gray-800 dark:text-gray-200 text-center mb-2';
+        progressContainer.appendChild(progressMessage);
+        
+        // 创建进度条
+        const progressBarContainer = document.createElement('div');
+        progressBarContainer.className = 'w-full max-w-xl bg-gray-200 dark:bg-gray-700 rounded-full h-2.5';
+        
+        progressBar = document.createElement('div');
+        progressBar.id = 'generation-progress-bar';
+        progressBar.className = 'bg-apple-blue dark:bg-apple-darkblue h-2.5 rounded-full transition-all duration-300 ease-in-out';
+        progressBar.style.width = '0%';
+        
+        progressBarContainer.appendChild(progressBar);
+        progressContainer.appendChild(progressBarContainer);
+        
+        document.body.prepend(progressContainer);
+    }
+    
+    // 更新进度条消息
+    const progressMessage = document.getElementById('generation-progress-message');
+    if (progressMessage) {
+        progressMessage.textContent = message;
+    }
+    
+    // 更新进度条
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+    }
+}
+
+// 隐藏进度条
+function hideProgress() {
+    const progressContainer = document.getElementById('generation-progress-container');
+    if (progressContainer) {
+        // 使用淡出动画
+        progressContainer.classList.add('animate-fade-out');
+        setTimeout(() => {
+            if (progressContainer.parentNode) {
+                progressContainer.parentNode.removeChild(progressContainer);
+            }
+        }, 500);
+    }
+}
+
+// 修改handleArticleGeneration函数，添加进度条功能
+async function handleArticleGeneration() {
+    // 获取用户输入
+    const title = document.getElementById('articleTitle').value;
+    const userPrompt = document.getElementById('articlePrompt').value;
+    const referenceText = document.getElementById('referenceText').value;
+    const referenceLinks = document.getElementById('referenceLinks').value;
+    const length = document.querySelector('input[name="articleLength"]:checked')?.value || 'medium';
+    const theme = document.getElementById('articleTheme').value;
+    
+    // 验证必要输入
+    if (!title.trim()) {
+        showAlert('warning', '标题不能为空', '请输入文章标题以继续生成。');
+        return;
+    }
+    
+    try {
+        // 显示进度条并初始化为10%
+        showProgress('正在准备生成文章...', 10);
+        
+        // 切换到预览标签页
+        const previewTabButton = document.querySelector('[data-tab="preview"]');
+        if (previewTabButton) {
+            previewTabButton.click();
+        }
+        
+        // 示显示生成状态
+        const generationStatus = document.getElementById('generationStatus');
+        const statusText = document.getElementById('statusText');
+        if (generationStatus && statusText) {
+            generationStatus.classList.remove('hidden');
+            statusText.textContent = '正在生成文章内容...';
+        }
+        
+        // 尝试图片处理
+        showProgress('正在处理图片...', 20);
+        await handleImageGeneration();
+        
+        // 生成文章内容
+        showProgress('正在创作文章...', 30);
+        
+        // 分阶段更新进度
+        const progressInterval = setInterval(() => {
+            const currentProgress = parseInt(document.getElementById('generation-progress-bar').style.width);
+            if (currentProgress < 80) {
+                showProgress('正在创作文章...', currentProgress + 5);
+            }
+        }, 1000);
+        
+        const articleContent = await generateArticle({
+            title,
+            userPrompt,
+            referenceText, 
+            referenceLinks,
+            length,
+            theme
+        });
+        
+        // 清除进度更新
+        clearInterval(progressInterval);
+        
+        // 更新进度
+        showProgress('正在排版文章...', 90);
+        
+        // 更新状态文本
+        if (statusText) {
+            statusText.textContent = '正在渲染文章...';
+        }
+        
+        // 显示生成的文章
+        renderArticle(articleContent, theme);
+        
+        // 完成进度
+        showProgress('文章生成完成!', 100);
+        
+        // 隐藏生成状态，显示输出区域
+        if (generationStatus) {
+            generationStatus.classList.add('hidden');
+        }
+        const outputSection = document.getElementById('outputSection');
+        if (outputSection) {
+            outputSection.classList.remove('hidden');
+        }
+        
+        // 延迟后隐藏进度条
+        setTimeout(hideProgress, 1500);
+        
+    } catch (error) {
+        console.error("文章生成出错:", error);
+        
+        // 显示错误进度
+        showProgress('文章生成失败!', 100);
+        document.getElementById('generation-progress-bar').style.backgroundColor = '#EF4444';
+        
+        // 显示错误提示
+        showAlert(
+            'error',
+            '文章生成失败',
+            '生成文章内容时出现错误。',
+            error.message,
+            [
+                '请检查API密钥是否正确',
+                '检查网络连接',
+                '尝试使用不同的API提供商',
+                '如果使用代理，尝试切换到直接连接'
+            ]
+        );
+        
+        // 隐藏生成状态
+        if (generationStatus) {
+            generationStatus.classList.add('hidden');
+        }
+        
+        // 延迟后隐藏进度条
+        setTimeout(hideProgress, 3000);
+    }
+}
     
     // 确保至少有一个标签被激活 - 直接调用强制激活功能
     forceActivateFirstTab();
