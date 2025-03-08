@@ -7,21 +7,22 @@ const API_CONFIG_KEY = 'ai_writer_api_config_v2'; // 更新版本号以避免旧
 
 // 提供多个CORS代理选项
 const CORS_PROXIES = {
+    none: '', // 无代理直接调用(默认模式)
     allorigins: 'https://api.allorigins.win/raw?url=',
     corsproxy: 'https://corsproxy.io/?',
     corsanywhere: 'https://cors-anywhere.herokuapp.com/',
-    thingproxy: 'https://thingproxy.freeboard.io/fetch/',
-    local: '' // 无代理直接调用(本地测试模式)
+    thingproxy: 'https://thingproxy.freeboard.io/fetch/'
 };
 
-// 默认代理
-let currentProxy = 'allorigins';
+// 默认代理 - 默认设为"none"即无代理模式
+let currentProxy = 'none';
 
 // 设置当前使用的代理
 function setCorsProxy(proxyName) {
-    if (CORS_PROXIES[proxyName]) {
+    if (CORS_PROXIES.hasOwnProperty(proxyName)) {
         currentProxy = proxyName;
         localStorage.setItem('preferred_cors_proxy', proxyName);
+        console.log(`代理设置已更改为: ${proxyName} ${proxyName === 'none' ? '(直接连接)' : ''}`);
         return true;
     }
     return false;
@@ -30,41 +31,83 @@ function setCorsProxy(proxyName) {
 // 初始化代理设置
 function initCorsProxy() {
     const savedProxy = localStorage.getItem('preferred_cors_proxy');
-    if (savedProxy && CORS_PROXIES[savedProxy]) {
+    if (savedProxy && CORS_PROXIES.hasOwnProperty(savedProxy)) {
         currentProxy = savedProxy;
+    } else {
+        // 默认设为无代理模式
+        currentProxy = 'none';
+        localStorage.setItem('preferred_cors_proxy', 'none');
     }
-    
-    // 如果网站运行在localhost或127.0.0.1，自动切换到本地模式
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        currentProxy = 'local';
-    }
+    console.log(`当前代理模式: ${currentProxy} ${currentProxy === 'none' ? '(直接连接)' : ''}`);
 }
 
 // 检测URL是否需要加代理前缀
 function addCorsProxy(url) {
     try {
-        // 本地模式不添加代理
-        if (currentProxy === 'local') {
+        // 如果设置为无代理模式，直接返回原始URL
+        if (currentProxy === 'none') {
             return url;
         }
         
-        const hostname = new URL(url).hostname;
-        // 如果是外部API URL且不是常见CDN，添加当前选择的代理
-        if (!hostname.includes('localhost') && 
-            !hostname.includes('127.0.0.1') && 
-            !hostname.endsWith('github.io') &&
-            !hostname.includes('jsdelivr.net') &&
-            !hostname.includes('cloudflare.com') &&
-            !hostname.includes('unpkg.com') &&
-            !hostname.includes('tailwindcss.com')) {
-            console.log(`使用CORS代理: ${currentProxy} 访问: ${url}`);
-            return `${CORS_PROXIES[currentProxy]}${encodeURIComponent(url)}`;
-        }
-        return url;
+        // 使用当前选择的代理
+        return `${CORS_PROXIES[currentProxy]}${encodeURIComponent(url)}`;
     } catch (e) {
         console.error('添加CORS代理出错:', e);
         return url;
     }
+}
+
+// 直接请求API而不使用代理
+async function directApiRequest(url, options = {}) {
+    try {
+        console.log('尝试直接API请求:', url);
+        const response = await fetch(url, options);
+        return response;
+    } catch (error) {
+        console.error('直接API请求失败:', error);
+        throw error;
+    }
+}
+
+// 带回退策略的API请求
+// 先尝试直接请求，失败后尝试代理
+async function apiRequestWithFallback(url, options = {}, preferredProxies = ['none', 'allorigins', 'corsproxy']) {
+    let lastError = null;
+    
+    // 先尝试直接连接，再尝试依次使用各代理
+    for (const proxy of preferredProxies) {
+        try {
+            let proxyUrl = url;
+            
+            // 应用当前代理
+            if (proxy !== 'none') {
+                proxyUrl = `${CORS_PROXIES[proxy]}${encodeURIComponent(url)}`;
+            }
+            
+            console.log(`使用${proxy === 'none' ? '直接连接' : proxy + '代理'}尝试请求:`, proxyUrl);
+            const response = await fetch(proxyUrl, options);
+            
+            if (response.ok) {
+                console.log(`请求成功(使用${proxy === 'none' ? '直接连接' : proxy})`);
+                // 记住成功的代理以便将来使用
+                if (currentProxy !== proxy) {
+                    setCorsProxy(proxy);
+                }
+                return response;
+            } else {
+                console.warn(`请求返回非成功状态码: ${response.status} (${proxy})`);
+                lastError = new Error(`HTTP错误: ${response.status}`);
+                // 继续尝试下一个代理
+            }
+        } catch (error) {
+            console.warn(`使用${proxy}请求失败:`, error);
+            lastError = error;
+            // 继续尝试下一个代理
+        }
+    }
+    
+    // 所有尝试都失败
+    throw lastError || new Error('所有API连接方式都失败');
 }
 
 // 始终返回false，强制使用真实API
