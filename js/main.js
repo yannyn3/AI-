@@ -73,239 +73,11 @@ document.addEventListener('DOMContentLoaded', function() {
         initApiProviderSelection();
     }
     
-    // 扩展编辑器功能
-    extendMarkdownHelper();
-    
     // 初始化事件监听器
     setupEventListeners();
-    // 初始化事件监听器中添加:
-const directAPITestBtn = document.getElementById('directAPITestBtn');
-if (directAPITestBtn) {
-    directAPITestBtn.addEventListener('click', async function() {
-        // 设置为无代理模式
-        setCorsProxy('none');
-        
-        const directTestResult = document.getElementById('directTestResult');
-        if (directTestResult) {
-            directTestResult.innerHTML = `
-                <div class="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg flex items-center">
-                    <div class="apple-spinner mr-2"></div>
-                    <span>测试直接API连接中...</span>
-                </div>
-            `;
-        }
-        
-        try {
-            // 测试DeepSeek的连接 - 可以根据当前选择的API提供商修改
-            const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
-            const provider = apiConfig.provider || 'deepseek';
-            
-            // 直接创建简单的测试请求
-            const testUrl = 'https://api.deepseek.com/v1/models';
-            const response = await directApiRequest(testUrl);
-            
-            if (response.ok) {
-                directTestResult.innerHTML = `
-                    <div class="p-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg flex items-center">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <span>直接API连接成功！无需使用代理。</span>
-                    </div>
-                `;
-                // 保存直接连接设置
-                setCorsProxy('none');
-            } else {
-                throw new Error(`HTTP错误: ${response.status}`);
-            }
-        } catch (error) {
-            console.error("直接API连接测试失败:", error);
-            directTestResult.innerHTML = `
-                <div class="p-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg flex items-center">
-                    <i class="fas fa-times-circle mr-2"></i>
-                    <span>直接连接失败: ${error.message}。将尝试使用代理。</span>
-                </div>
-            `;
-            // 自动切换回代理模式
-            setCorsProxy('allorigins');
-        }
-    });
-}
-
-// 在main.js中添加进度条功能
-function showProgress(message, progress = 0) {
-    // 检查是否已经存在进度条
-    let progressBar = document.getElementById('generation-progress-bar');
-    let progressContainer = document.getElementById('generation-progress-container');
     
-    if (!progressContainer) {
-        // 创建进度条容器
-        progressContainer = document.createElement('div');
-        progressContainer.id = 'generation-progress-container';
-        progressContainer.className = 'fixed top-0 left-0 right-0 bg-white dark:bg-gray-900 shadow-md p-4 z-50 flex flex-col items-center';
-        
-        // 创建进度条消息
-        const progressMessage = document.createElement('div');
-        progressMessage.id = 'generation-progress-message';
-        progressMessage.className = 'text-gray-800 dark:text-gray-200 text-center mb-2';
-        progressContainer.appendChild(progressMessage);
-        
-        // 创建进度条
-        const progressBarContainer = document.createElement('div');
-        progressBarContainer.className = 'w-full max-w-xl bg-gray-200 dark:bg-gray-700 rounded-full h-2.5';
-        
-        progressBar = document.createElement('div');
-        progressBar.id = 'generation-progress-bar';
-        progressBar.className = 'bg-apple-blue dark:bg-apple-darkblue h-2.5 rounded-full transition-all duration-300 ease-in-out';
-        progressBar.style.width = '0%';
-        
-        progressBarContainer.appendChild(progressBar);
-        progressContainer.appendChild(progressBarContainer);
-        
-        document.body.prepend(progressContainer);
-    }
-    
-    // 更新进度条消息
-    const progressMessage = document.getElementById('generation-progress-message');
-    if (progressMessage) {
-        progressMessage.textContent = message;
-    }
-    
-    // 更新进度条
-    if (progressBar) {
-        progressBar.style.width = `${progress}%`;
-    }
-}
-
-// 隐藏进度条
-function hideProgress() {
-    const progressContainer = document.getElementById('generation-progress-container');
-    if (progressContainer) {
-        // 使用淡出动画
-        progressContainer.classList.add('animate-fade-out');
-        setTimeout(() => {
-            if (progressContainer.parentNode) {
-                progressContainer.parentNode.removeChild(progressContainer);
-            }
-        }, 500);
-    }
-}
-
-// 修改handleArticleGeneration函数，添加进度条功能
-async function handleArticleGeneration() {
-    // 获取用户输入
-    const title = document.getElementById('articleTitle').value;
-    const userPrompt = document.getElementById('articlePrompt').value;
-    const referenceText = document.getElementById('referenceText').value;
-    const referenceLinks = document.getElementById('referenceLinks').value;
-    const length = document.querySelector('input[name="articleLength"]:checked')?.value || 'medium';
-    const theme = document.getElementById('articleTheme').value;
-    
-    // 验证必要输入
-    if (!title.trim()) {
-        showAlert('warning', '标题不能为空', '请输入文章标题以继续生成。');
-        return;
-    }
-    
-    try {
-        // 显示进度条并初始化为10%
-        showProgress('正在准备生成文章...', 10);
-        
-        // 切换到预览标签页
-        const previewTabButton = document.querySelector('[data-tab="preview"]');
-        if (previewTabButton) {
-            previewTabButton.click();
-        }
-        
-        // 示显示生成状态
-        const generationStatus = document.getElementById('generationStatus');
-        const statusText = document.getElementById('statusText');
-        if (generationStatus && statusText) {
-            generationStatus.classList.remove('hidden');
-            statusText.textContent = '正在生成文章内容...';
-        }
-        
-        // 尝试图片处理
-        showProgress('正在处理图片...', 20);
-        await handleImageGeneration();
-        
-        // 生成文章内容
-        showProgress('正在创作文章...', 30);
-        
-        // 分阶段更新进度
-        const progressInterval = setInterval(() => {
-            const currentProgress = parseInt(document.getElementById('generation-progress-bar').style.width);
-            if (currentProgress < 80) {
-                showProgress('正在创作文章...', currentProgress + 5);
-            }
-        }, 1000);
-        
-        const articleContent = await generateArticle({
-            title,
-            userPrompt,
-            referenceText, 
-            referenceLinks,
-            length,
-            theme
-        });
-        
-        // 清除进度更新
-        clearInterval(progressInterval);
-        
-        // 更新进度
-        showProgress('正在排版文章...', 90);
-        
-        // 更新状态文本
-        if (statusText) {
-            statusText.textContent = '正在渲染文章...';
-        }
-        
-        // 显示生成的文章
-        renderArticle(articleContent, theme);
-        
-        // 完成进度
-        showProgress('文章生成完成!', 100);
-        
-        // 隐藏生成状态，显示输出区域
-        if (generationStatus) {
-            generationStatus.classList.add('hidden');
-        }
-        const outputSection = document.getElementById('outputSection');
-        if (outputSection) {
-            outputSection.classList.remove('hidden');
-        }
-        
-        // 延迟后隐藏进度条
-        setTimeout(hideProgress, 1500);
-        
-    } catch (error) {
-        console.error("文章生成出错:", error);
-        
-        // 显示错误进度
-        showProgress('文章生成失败!', 100);
-        document.getElementById('generation-progress-bar').style.backgroundColor = '#EF4444';
-        
-        // 显示错误提示
-        showAlert(
-            'error',
-            '文章生成失败',
-            '生成文章内容时出现错误。',
-            error.message,
-            [
-                '请检查API密钥是否正确',
-                '检查网络连接',
-                '尝试使用不同的API提供商',
-                '如果使用代理，尝试切换到直接连接'
-            ]
-        );
-        
-        // 隐藏生成状态
-        if (generationStatus) {
-            generationStatus.classList.add('hidden');
-        }
-        
-        // 延迟后隐藏进度条
-        setTimeout(hideProgress, 3000);
-    }
-}
+    // 预加载Marked和DOMPurify库
+    ensureLibrariesLoaded();
     
     // 确保至少有一个标签被激活 - 直接调用强制激活功能
     forceActivateFirstTab();
@@ -318,48 +90,30 @@ async function handleArticleGeneration() {
     debug('应用初始化完成');
 });
 
-// 扩展Markdown编辑助手功能
-function extendMarkdownHelper() {
-    if (typeof markdownHelper !== 'object') {
-        debug('markdownHelper对象不存在，无法扩展');
-        return;
+// 确保关键库已加载
+function ensureLibrariesLoaded() {
+    if (typeof marked === 'undefined') {
+        console.warn('Marked库未加载，尝试动态加载');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js';
+        script.async = true;
+        document.head.appendChild(script);
     }
     
-    // 添加图片插入功能
-    if (!markdownHelper.formatImage) {
-        markdownHelper.formatImage = function(textarea) {
-            const imageUrl = prompt('请输入图片URL:', 'https://example.com/image.jpg');
-            if (imageUrl) {
-                const altText = prompt('请输入图片描述:', '图片描述');
-                this.wrapSelectedText(textarea, `![${altText || '图片'}](`, `${imageUrl})`);
-            }
-        };
+    if (typeof DOMPurify === 'undefined') {
+        console.warn('DOMPurify库未加载，尝试动态加载');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/dompurify@3.0.3/dist/purify.min.js';
+        script.async = true;
+        document.head.appendChild(script);
     }
     
-    // 添加列表功能
-    if (!markdownHelper.formatList) {
-        markdownHelper.formatList = function(textarea) {
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            const selectedText = textarea.value.substring(start, end);
-            
-            if (selectedText.trim()) {
-                // 处理已选中文本，将每一行变成列表项
-                const listItems = selectedText.split('\n')
-                    .map(line => line.trim() ? `- ${line}` : line)
-                    .join('\n');
-                
-                textarea.value = textarea.value.substring(0, start) + listItems + textarea.value.substring(end);
-                textarea.focus();
-                textarea.setSelectionRange(start, start + listItems.length);
-            } else {
-                // 没有选中文本时，插入列表模板
-                const listTemplate = `- 列表项1\n- 列表项2\n- 列表项3`;
-                textarea.value = textarea.value.substring(0, start) + listTemplate + textarea.value.substring(end);
-                textarea.focus();
-                textarea.setSelectionRange(start, start + listTemplate.length);
-            }
-        };
+    if (typeof TurndownService === 'undefined') {
+        console.warn('Turndown库未加载，尝试动态加载');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/turndown@7.1.2/dist/turndown.min.js';
+        script.async = true;
+        document.head.appendChild(script);
     }
 }
 
@@ -446,8 +200,25 @@ function initTabs() {
     document.querySelectorAll('.tab-button').forEach(button => {
         debug(`设置标签按钮事件: ${button.textContent.trim()}`);
         
+        // 添加波纹效果
         button.addEventListener('click', function(e) {
             debug(`点击了标签: ${this.textContent.trim()}`);
+            
+            // 创建波纹效果
+            const circle = document.createElement('span');
+            const diameter = Math.max(this.clientWidth, this.clientHeight);
+            const radius = diameter / 2;
+            
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${e.clientX - this.offsetLeft - radius}px`;
+            circle.style.top = `${e.clientY - this.offsetTop - radius}px`;
+            circle.classList.add('tab-button-ripple');
+            
+            this.appendChild(circle);
+            
+            setTimeout(() => {
+                circle.remove();
+            }, 600);
             
             // 获取目标标签ID
             const tabId = this.getAttribute('data-tab');
@@ -480,6 +251,7 @@ function initTabs() {
             
             // 显示当前内容
             targetContent.classList.remove('hidden');
+            targetContent.classList.add('animate-fade-in');
             debug(`标签内容显示成功: #${tabId}-tab`);
         });
     });
@@ -514,7 +286,7 @@ function initThemeShowcase() {
     // 添加主题卡片
     themes.forEach(theme => {
         const card = document.createElement('div');
-        card.className = `theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-apple-blue dark:ring-apple-darkblue transition-shadow hover-card-effect ${theme.id === 'modern' ? 'theme-card-selected' : ''}`;
+        card.className = `theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-purple-600 dark:ring-purple-400 transition-shadow hover-card-effect ${theme.id === 'modern' ? 'theme-card-selected' : ''}`;
         card.setAttribute('data-theme', theme.id);
         
         card.innerHTML = `
@@ -601,6 +373,9 @@ function setupEventListeners() {
                 } else if (this.value === 'generate' && imageExtractSettings && imageGenerateSettings) {
                     imageExtractSettings.classList.add('hidden');
                     imageGenerateSettings.classList.remove('hidden');
+                } else if (this.value === 'none') {
+                    if (imageExtractSettings) imageExtractSettings.classList.add('hidden');
+                    if (imageGenerateSettings) imageGenerateSettings.classList.add('hidden');
                 }
             });
         });
@@ -648,7 +423,7 @@ function setupEventListeners() {
                 fileItem.className = 'flex items-center justify-between py-1.5 px-3 bg-apple-lightgray dark:bg-gray-800 rounded-lg';
                 fileItem.innerHTML = `
                     <div class="flex items-center">
-                        <i class="fas fa-file-alt text-apple-blue dark:text-apple-darkblue mr-2"></i>
+                        <i class="fas fa-file-alt text-purple-600 dark:text-purple-400 mr-2"></i>
                         <span class="text-sm truncate max-w-[200px]">${file.name}</span>
                         <span class="text-xs text-gray-500 ml-2">(${(file.size / 1024).toFixed(1)} KB)</span>
                     </div>
@@ -671,10 +446,45 @@ function setupEventListeners() {
         });
     }
     
-    // 生成文章按钮
+    // 生成文章按钮 - 特别增强错误处理
     const generateBtn = document.getElementById('generateBtn');
-    if (generateBtn && typeof handleArticleGeneration === 'function') {
-        generateBtn.addEventListener('click', handleArticleGeneration);
+    if (generateBtn) {
+        generateBtn.addEventListener('click', function() {
+            console.log('生成按钮被点击');
+            try {
+                if (typeof handleArticleGeneration === 'function') {
+                    handleArticleGeneration().catch(error => {
+                        console.error('生成文章处理错误:', error);
+                        hideProgress();
+                        showAlert(
+                            'error',
+                            '生成文章失败',
+                            '生成过程中发生错误',
+                            error.message,
+                            ['请检查浏览器控制台获取详细错误信息']
+                        );
+                    });
+                } else {
+                    console.error('handleArticleGeneration函数未定义');
+                    showAlert(
+                        'error',
+                        '生成文章失败',
+                        'handleArticleGeneration函数未定义',
+                        '这可能是由于JavaScript文件未正确加载。',
+                        ['尝试刷新页面', '检查浏览器控制台是否有错误']
+                    );
+                }
+            } catch (error) {
+                console.error('生成按钮点击处理异常:', error);
+                showAlert(
+                    'error',
+                    '操作错误',
+                    '处理生成请求时出现异常',
+                    error.message,
+                    ['尝试刷新页面', '检查浏览器控制台是否有错误']
+                );
+            }
+        });
     }
     
     // 复制按钮
@@ -743,8 +553,60 @@ function setupEventListeners() {
             
             // 点击生成按钮
             const generateBtn = document.getElementById('generateBtn');
-            if (generateBtn && typeof handleArticleGeneration === 'function') {
+            if (generateBtn) {
                 generateBtn.click();
+            }
+        });
+    }
+    
+    // 直接API测试按钮
+    const directAPITestBtn = document.getElementById('directAPITestBtn');
+    if (directAPITestBtn) {
+        directAPITestBtn.addEventListener('click', async function() {
+            // 设置为无代理模式
+            setCorsProxy('none');
+            
+            const directTestResult = document.getElementById('directTestResult');
+            if (directTestResult) {
+                directTestResult.innerHTML = `
+                    <div class="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg flex items-center">
+                        <div class="apple-spinner mr-2"></div>
+                        <span>测试直接API连接中...</span>
+                    </div>
+                `;
+            }
+            
+            try {
+                // 获取当前选择的API提供商
+                const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
+                const provider = apiConfig.provider || 'deepseek';
+                
+                // 直接创建简单的测试请求
+                const testUrl = 'https://api.deepseek.com/v1/models';
+                const response = await directApiRequest(testUrl);
+                
+                if (response.ok) {
+                    directTestResult.innerHTML = `
+                        <div class="p-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span>直接API连接成功！无需使用代理。</span>
+                        </div>
+                    `;
+                    // 保存直接连接设置
+                    setCorsProxy('none');
+                } else {
+                    throw new Error(`HTTP错误: ${response.status}`);
+                }
+            } catch (error) {
+                console.error("直接API连接测试失败:", error);
+                directTestResult.innerHTML = `
+                    <div class="p-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg flex items-center">
+                        <i class="fas fa-times-circle mr-2"></i>
+                        <span>直接连接失败: ${error.message}。将尝试使用代理。</span>
+                    </div>
+                `;
+                // 自动切换回代理模式
+                setCorsProxy('allorigins');
             }
         });
     }
@@ -832,6 +694,16 @@ function setupEditArticleModal() {
             // 检查是否存在TurndownService
             if (typeof TurndownService !== 'function') {
                 console.error('TurndownService未定义，无法转换HTML到Markdown');
+                
+                // 动态加载TurndownService
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/turndown@7.1.2/dist/turndown.min.js';
+                script.onload = function() {
+                    console.log('TurndownService库已加载');
+                    // 重新尝试打开编辑器
+                    editArticleBtn.click();
+                };
+                document.head.appendChild(script);
                 return;
             }
             
@@ -926,39 +798,61 @@ function setupEditArticleModal() {
                 localStorage.removeItem('article_draft');
                 
                 // 检查是否存在marked和DOMPurify
-                if (typeof marked === 'object' && typeof DOMPurify === 'object') {
-                    // 扩展marked选项以支持更多格式
-                    const renderer = new marked.Renderer();
-                    renderer.image = function(href, title, text) {
-                        return `<img src="${href}" alt="${text}" title="${title || ''}" class="mx-auto my-4 max-w-full h-auto rounded-lg shadow-md">`;
+                if (typeof marked === 'undefined') {
+                    console.error('marked库未加载，尝试动态加载');
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js';
+                    script.onload = function() {
+                        console.log('marked库已加载');
+                        saveEditBtn.click();
                     };
-                    
-                    marked.setOptions({
-                        renderer: renderer,
-                        gfm: true,
-                        breaks: true,
-                        headerIds: true
-                    });
-                    
-                    articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(markdownContent));
-                    
-                    // 添加成功提示
-                    const successToast = document.createElement('div');
-                    successToast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
-                    successToast.innerHTML = '<i class="fas fa-check-circle mr-2"></i>文章已成功更新';
-                    document.body.appendChild(successToast);
-                    
-                    setTimeout(() => {
-                        successToast.classList.add('animate-fade-out');
-                        setTimeout(() => {
-                            document.body.removeChild(successToast);
-                        }, 300);
-                    }, 2000);
-                    
-                    editModal.classList.add('hidden');
-                } else {
-                    console.error('marked或DOMPurify未定义，无法安全解析Markdown');
+                    document.head.appendChild(script);
+                    return;
                 }
+                
+                if (typeof DOMPurify === 'undefined') {
+                    console.error('DOMPurify库未加载，尝试动态加载');
+                    const script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/dompurify@3.0.3/dist/purify.min.js';
+                    script.onload = function() {
+                        console.log('DOMPurify库已加载');
+                        saveEditBtn.click();
+                    };
+                    document.head.appendChild(script);
+                    return;
+                }
+                
+                // 扩展marked选项以支持更多格式
+                const renderer = new marked.Renderer();
+                renderer.image = function(href, title, text) {
+                    return `<img src="${href}" alt="${text}" title="${title || ''}" class="mx-auto my-4 max-w-full h-auto rounded-lg shadow-md">`;
+                };
+                
+                marked.setOptions({
+                    renderer: renderer,
+                    gfm: true,
+                    breaks: true,
+                    headerIds: true
+                });
+                
+                articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(markdownContent));
+                
+                // 添加成功提示
+                const successToast = document.createElement('div');
+                successToast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
+                successToast.innerHTML = '<i class="fas fa-check-circle mr-2"></i>文章已成功更新';
+                document.body.appendChild(successToast);
+                
+                setTimeout(() => {
+                    successToast.classList.add('animate-fade-out');
+                    setTimeout(() => {
+                        if (document.body.contains(successToast)) {
+                            document.body.removeChild(successToast);
+                        }
+                    }, 300);
+                }, 2000);
+                
+                editModal.classList.add('hidden');
             }
         });
     }
