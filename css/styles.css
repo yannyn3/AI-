@@ -1,0 +1,94 @@
+/* 基础样式 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* 苹果风格磨砂玻璃效果 */
+.apple-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.dark .apple-glass {
+    background: rgba(30, 30, 32, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* 加载动画 */
+.apple-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(0, 113, 227, 0.3);
+    border-radius: 50%;
+    border-top-color: #0071e3;
+    animation: spin 1s ease-in-out infinite;
+}
+
+.dark .apple-spinner {
+    border: 2px solid rgba(0, 113, 227, 0.2);
+    border-top-color: #0077ED;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 标签页相关样式 */
+.tab-button.active {
+    background-color: white;
+    color: black;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.dark .tab-button.active {
+    background-color: #1d1d1f;
+    color: white;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    
+    header {
+        padding-top: 16px;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
+    
+    header h1 {
+        font-size: 1.75rem;
+    }
+    
+    main {
+        gap: 16px;
+    }
+    
+    .tab-button {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .tab-content section {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+}
