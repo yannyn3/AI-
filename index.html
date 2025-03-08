@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI文章创作室</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/dompurify@3.0.5/dist/purify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/turndown@7.1.2/dist/turndown.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        apple: {
+                            blue: '#0071e3',
+                            darkblue: '#0077ED',
+                            gray: '#f5f5f7',
+                            darkgray: '#1d1d1f',
+                            midgray: '#86868b',
+                            lightgray: '#f2f2f2'
+                        }
+                    },
+                    fontFamily: {
+                        apple: ['-apple-system', 'BlinkMacSystemFont', 'San Francisco', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                    },
+                    boxShadow: {
+                        'apple': '0 4px 16px rgba(0, 0, 0, 0.12)',
+                        'apple-dark': '0 4px 16px rgba(255, 255, 255, 0.08)'
+                    },
+                    backdropBlur: {
+                        'apple': '20px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* 基础样式 */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* 苹果风格磨砂玻璃效果 */
+        .apple-glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .dark .apple-glass {
+            background: rgba(30, 30, 32, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        /* 加载动画 */
+        .apple-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0, 113, 227, 0.3);
+            border-radius: 50%;
+            border-top-color: #0071e3;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        .dark .apple-spinner {
+            border: 2px solid rgba(0, 113, 227, 0.2);
+            border-top-color: #0077ED;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 文章主题样式 */
+        /* 现代简约风 */
+        .theme-modern {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        .dark .theme-modern {
+            color: #e0e0e0;
+        }
+        
+        .theme-modern h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .theme-modern h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #0071e3;
+        }
+        
+        .dark .theme-modern h2 {
+            color: #0077ED;
+        }
+        
+        .theme-modern h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .theme-modern p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+        
+        .theme-modern img {
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .dark .theme-modern img {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .theme-modern blockquote {
+            border-left: 4px solid #0071e3;
+            padding: 0.8rem 1rem;
+            background-color: rgba(0,113,227,0.05);
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .dark .theme-modern blockquote {
+            background-color: rgba(0,119,237,0.1);
+        }
+        
+        /* 杂志风格 */
+        .theme-magazine {
+            font-family: Georgia, Times, 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #222;
+        }
+        
+        .dark .theme-magazine {
+            color: #f0f0f0;
+        }
+        
+        .theme-magazine h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .theme-magazine h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif;
+            border-bottom: 2px solid #333;
+            padding-bottom: 0.3rem;
+        }
+        
+        .dark .theme-magazine h2 {
+            border-bottom-color: #666;
+        }
+        
+        .theme-magazine h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1.8rem;
+            margin-bottom: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .theme-magazine p {
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .theme-magazine p:first-of-type::first-letter {
+            font-size: 3.5rem;
+            float: left;
+            line-height: 0.8;
+            margin-right: 0.2rem;
+            font-weight: bold;
+        }
+        
+        .theme-magazine img {
+            margin: 2rem 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .dark .theme-magazine img {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .theme-magazine blockquote {
+            font-style: italic;
+            padding: 1.2rem 1.5rem;
+            background-color: #f7f7f7;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            position: relative;
+            font-size: 1.15rem;
+        }
+        
+        .dark .theme-magazine blockquote {
+            background-color: #2a2a2a;
+        }
+        
+        .theme-magazine blockquote::before {
+            content: '"';
+            font-size: 4rem;
+            color: #ccc;
+            position: absolute;
+            left: 10px;
+            top: -15px;
+        }
+        
+        /* 科技风格 */
+        .theme-tech {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: #333;
+        }
+        
+        .dark .theme-tech {
+            color: #e0e0e0;
+        }
+        
+        .theme-tech h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #0071e3, #00c6fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .theme-tech h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #0071e3;
+        }
+        
+        .theme-tech h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: #444;
+        }
+        
+        .dark .theme-tech h3 {
+            color: #ccc;
+        }
+        
+        .theme-tech p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+        
+        .theme-tech img {
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 30px rgba(0,113,227,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .dark .theme-tech img {
+            box-shadow: 0 8px 30px rgba(0,119,237,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .theme-tech blockquote {
+            border-left: 4px solid #0071e3;
+            padding: 1rem 1.2rem;
+            background-color: rgba(0,113,227,0.07);
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+        
+        .dark .theme-tech blockquote {
+            background-color: rgba(0,119,237,0.15);
+        }
+        
+        .theme-tech code {
+            background-color: #f0f0f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'SF Mono', Menlo, monospace;
+            font-size: 0.9em;
+        }
+        
+        .dark .theme-tech code {
+            background-color: #2a2a2a;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-apple-gray dark:bg-apple-darkgray text-black dark:text-white font-apple transition-colors duration-300">
+    <div class="container mx-auto p-4 max-w-6xl">
+        <!-- 标题区 -->
+        <header class="text-center py-8 mb-8">
+            <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-apple-blue to-purple-500 inline-block text-transparent bg-clip-text">
+                AI 文章创作室
+            </h1>
+            <p class="text-apple-midgray dark:text-gray-400 text-lg">使用先进AI技术，创造专业精美的内容</p>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="space-y-8">
+            <!-- 标签式导航 -->
+            <div id="app-tabs" class="flex justify-center mb-6">
+                <nav class="flex space-x-2 bg-white dark:bg-apple-darkgray rounded-xl p-1 shadow-sm">
+                    <button class="tab-button active px-4 py-2 rounded-lg text-sm font-medium" data-tab="content">
+                        <i class="fas fa-pen-fancy mr-2"></i>内容创作
+                    </button>
+                    <button class="tab-button px-4 py-2 rounded-lg text-sm font-medium" data-tab="api">
+                        <i class="fas fa-cog mr-2"></i>API配置
+                    </button>
+                    <button class="tab-button px-4 py-2 rounded-lg text-sm font-medium" data-tab="preview">
+                        <i class="fas fa-eye mr-2"></i>预览排版
+                    </button>
+                </nav>
+            </div>
+
+            <!-- 内容创作面板 -->
+            <div id="content-tab" class="tab-content">
+                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-file-alt mr-2 text-apple-blue dark:text-apple-darkblue"></i>
+                        文章信息
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <label for="articleTitle" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章标题</label>
+                        <input type="text" id="articleTitle" placeholder="输入引人注目的标题..." 
+                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="articlePrompt" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章提示词</label>
+                        <textarea id="articlePrompt" rows="3" placeholder="描述您希望生成的文章风格、内容、结构等..." 
+                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">文章长度</label>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                                    <input type="radio" name="articleLength" value="short" class="hidden peer" checked>
+                                    <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
+                                    </div>
+                                    <span>短文 (800-1200字)</span>
+                                </label>
+                                <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                                    <input type="radio" name="articleLength" value="medium" class="hidden peer">
+                                    <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
+                                    </div>
+                                    <span>中等 (1500-2500字)</span>
+                                </label>
+                                <label class="inline-flex items-center px-3 py-2 bg-apple-lightgray dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                                    <input type="radio" name="articleLength" value="long" class="hidden peer">
+                                    <div class="w-4 h-4 mr-2 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:border-apple-blue dark:peer-checked:border-apple-darkblue">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden peer-checked:block"></div>
+                                    </div>
+                                    <span>长文 (3000字以上)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">排版主题</label>
+                            <select id="articleTheme" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                <option value="modern">现代简约风</option>
+                                <option value="magazine">杂志排版风</option>
+                                <option value="tech">科技风格</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-book mr-2 text-apple-blue dark:text-apple-darkblue"></i>
+                        参考资料
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <label for="referenceLinks" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考链接 (每行一个)</label>
+                        <textarea id="referenceLinks" rows="2" placeholder="https://example.com/article1&#10;https://example.com/article2" 
+                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="referenceText" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考文本</label>
+                        <textarea id="referenceText" rows="4" placeholder="粘贴参考文章文本..." 
+                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                    </div>
+                    
+                    <div class="mb-2">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考文件</label>
+                        <label for="referenceFiles" class="w-full flex items-center justify-center p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl cursor-pointer hover:bg-apple-lightgray dark:hover:bg-gray-800 transition">
+                            <div class="text-center">
+                                <i class="fas fa-cloud-upload-alt text-xl text-apple-blue dark:text-apple-darkblue mb-2"></i>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">点击上传文件或拖拽文件到此处</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">支持 .txt, .docx, .pdf 等文本文件</p>
+                            </div>
+                            <input id="referenceFiles" type="file" multiple class="hidden">
+                        </label>
+                        <div id="uploadedFiles" class="mt-2 space-y-1 text-sm"></div>
+                    </div>
+                </section>
+
+                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-image mr-2 text-apple-blue dark:text-apple-darkblue"></i>
+                        图片设置
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <label for="imagePrompt" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片提示词</label>
+                        <textarea id="imagePrompt" rows="2" placeholder="描述您希望生成的图片内容、风格等..." 
+                            class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片数量</label>
+                            <select id="imageCount" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                <option value="1">1张</option>
+                                <option value="2">2张</option>
+                                <option value="3" selected>3张</option>
+                                <option value="4">4张</option>
+                                <option value="5">5张</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">图片比例</label>
+                            <select id="imageAspectRatio" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                <option value="4:3">4:3 (标准)</option>
+                                <option value="1:1">1:1 (正方形)</option>
+                                <option value="16:9">16:9 (宽屏)</option>
+                                <option value="3:4">3:4 (竖屏)</option>
+                                <option value="9:16">9:16 (手机屏)</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 行动按钮 -->
+                <div class="flex justify-center">
+                    <button id="generateBtn" class="py-3 px-8 bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-full font-medium text-lg transition-colors shadow-md hover:shadow-lg flex items-center">
+                        <i class="fas fa-magic mr-2"></i>
+                        创作精彩文章
+                    </button>
+                </div>
+            </div>
+
+            <!-- API配置面板 -->
+            <div id="api-tab" class="tab-content hidden">
+                <section class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 mb-6">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-plug mr-2 text-apple-blue dark:text-apple-darkblue"></i>
+                        API模型配置
+                    </h2>
+                    
+                    <!-- 文本模型配置 -->
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">文章生成模型</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer api-model-selected">
+                                <input type="radio" name="textModel" value="Claude-3.7-Sonnet" class="hidden" checked>
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-apple-blue dark:border-apple-darkblue flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">Claude-3.7-Sonnet</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Anthropic 先进通用大模型</p>
+                            </div>
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer">
+                                <input type="radio" name="textModel" value="GPT-4o" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">GPT-4o</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">OpenAI 功能全面的大模型</p>
+                            </div>
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer">
+                                <input type="radio" name="textModel" value="Claude-3-Opus" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">Claude-3-Opus</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Anthropic 顶级大模型</p>
+                            </div>
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer">
+                                <input type="radio" name="textModel" value="ERNIE-Bot" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">文心一言</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">百度中文大模型</p>
+                            </div>
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer">
+                                <input type="radio" name="textModel" value="Custom" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">自定义大模型</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">使用您指定的其他LLM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 图像模型配置 -->
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">图片生成模型</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer api-model-selected">
+                                <input type="radio" name="imageModel" value="FLUX-pro-1.1" class="hidden" checked>
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-apple-blue dark:border-apple-darkblue flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">FLUX-pro-1.1</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">高品质图像生成模型</p>
+                            </div>
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer">
+                                <input type="radio" name="imageModel" value="DALLE-3" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">DALL·E 3</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">OpenAI 图像创作能力</p>
+                            </div>
+                            <div class="api-model-card relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl transition-all hover:shadow-md cursor-pointer">
+                                <input type="radio" name="imageModel" value="Midjourney" class="hidden">
+                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
+                                </div>
+                                <h4 class="font-medium mb-1">Midjourney</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">艺术创作型图像模型</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 自定义API参数 -->
+                    <div id="customApiSection" class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">自定义API参数</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型名称</label>
+                                <input type="text" id="customModelName" placeholder="例如: llama3-70b-8192" 
+                                    class="w-full p-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-apple-lightgray dark:bg-gray-800 text-sm">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API端点</label>
+                                <input type="text" id="customApiEndpoint" placeholder="https://api.example.com/v1/chat" 
+                                    class="w-full p-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-apple-lightgray dark:bg-gray-800 text-sm">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                            <input type="password" id="customApiKey" placeholder="sk-..." 
+                                class="w-full p-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-apple-lightgray dark:bg-gray-800 text-sm">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                <input type="number" id="customTemperature" min="0" max="2" step="0.1" value="0.7" 
+                                    class="w-full p-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-apple-lightgray dark:bg-gray-800 text-sm">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
+                                <input type="number" id="customMaxTokens" min="100" step="100" value="4000" 
+                                    class="w-full p-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-apple-lightgray dark:bg-gray-800 text-sm">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Top P</label>
+                                <input type="number" id="customTopP" min="0" max="1" step="0.05" value="0.95" 
+                                    class="w-full p-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-apple-lightgray dark:bg-gray-800 text-sm">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <button id="saveApiSettingsBtn" class="py-2 px-6 bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-full font-medium transition-colors shadow-md hover:shadow-lg">
+                            保存配置
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 预览排版面板 -->
+            <div id="preview-tab" class="tab-content hidden">
+                <!-- 生成状态 -->
+                <div id="generationStatus" class="py-4 px-6 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl text-center mb-6 hidden">
+                    <div class="flex items-center justify-center space-x-3">
+                        <div class="apple-spinner"></div>
+                        <span id="statusText">正在创作精彩内容...</span>
+                    </div>
+                </div>
+
+                <!-- 排版主题展示 -->
+                <div id="themeShowcase" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-apple-blue dark:ring-apple-darkblue transition-shadow theme-card-selected" data-theme="modern">
+                        <div class="p-4 border-b border-gray-100 dark:border-gray-800 font-medium">现代简约风</div>
+                        <div class="p-4 h-48 overflow-hidden">
+                            <div class="theme-modern scale-[0.6] origin-top-left">
+                                <h1>现代简约风格标题</h1>
+                                <p>这是一款专为现代数字体验设计的排版风格，特点是清晰的层次结构和优雅的视觉表现。</p>
+                                <h2>小标题展示</h2>
+                                <p>简洁的段落文字与优雅的间距搭配，让阅读体验更加舒适。适合各类专业文章和技术内容。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-apple-blue dark:ring-apple-darkblue transition-shadow" data-theme="magazine">
+                        <div class="p-4 border-b border-gray-100 dark:border-gray-800 font-medium">杂志排版风</div>
+                        <div class="p-4 h-48 overflow-hidden">
+                            <div class="theme-magazine scale-[0.6] origin-top-left">
+                                <h1>杂志风格大标题</h1>
+                                <p>杂志风格的排版设计灵感来源于印刷媒体，强调优雅的文字处理和精致的细节。</p>
+                                <h2>精致的小标题</h2>
+                                <p>这种风格特别适合长篇故事和深度报道，首字下沉效果增添了专业感和阅读趣味。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="theme-card bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark overflow-hidden cursor-pointer hover:ring-2 ring-apple-blue dark:ring-apple-darkblue transition-shadow" data-theme="tech">
+                        <div class="p-4 border-b border-gray-100 dark:border-gray-800 font-medium">科技风格</div>
+                        <div class="p-4 h-48 overflow-hidden">
+                            <div class="theme-tech scale-[0.6] origin-top-left">
+                                <h1>科技风格醒目标题</h1>
+                                <p>科技风格采用现代感十足的渐变色彩和清晰的字体层次，展现前沿科技的视觉效果。</p>
+                                <h2>功能性小标题</h2>
+                                <p>特别适合科技博客、产品介绍和技术文档，内置代码样式和专业的引用框设计。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 输出预览 -->
+                <section id="outputSection" class="bg-white dark:bg-gray-900 rounded-2xl shadow-apple dark:shadow-apple-dark p-6 hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-semibold flex items-center">
+                            <i class="fas fa-newspaper mr-2 text-apple-blue dark:text-apple-darkblue"></i>
+                            文章预览
+                        </h2>
+                        <div class="flex gap-2">
+                            <button id="editArticleBtn" class="py-1.5 px-3 text-sm bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors flex items-center">
+                                <i class="fas fa-edit mr-1.5"></i>编辑
+                            </button>
+                            <button id="regenerateBtn" class="py-1.5 px-3 text-sm bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors flex items-center">
+                                <i class="fas fa-sync-alt mr-1.5"></i>重新生成
+                            </button>
+                            <button id="copyBtn" class="py-1.5 px-3 text-sm bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center">
+                                <i class="fas fa-copy mr-1.5"></i>复制文章
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="articleOutput" class="theme-modern prose dark:prose-invert max-w-none border border-gray-100 dark:border-gray-800 p-6 rounded-xl bg-white dark:bg-gray-950 overflow-auto"></div>
+                    
+                    <!-- 生成的图片区域 -->
+                    <div id="generatedImages" class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 hidden">
+                        <h3 class="text-lg font-semibold col-span-full mb-2 flex items-center">
+                            <i class="fas fa-images mr-2 text-apple-blue dark:text-apple-darkblue"></i>生成的图片
+                        </h3>
+                        <!-- 生成的图片将在这里显示 -->
+                    </div>
+                </section>
+                
+                <!-- 编辑文章对话框 -->
+                <div id="editArticleModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-auto shadow-xl animate-fade-in">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold">编辑文章内容</h3>
+                            <button id="closeEditBtn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                                <i class="fas fa-times text-lg"></i>
+                            </button>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="font-medium text-gray-700 dark:text-gray-300">Markdown 编辑</label>
+                                <div class="flex gap-2">
+                                    <button id="formatBoldBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
+                                        <i class="fas fa-bold"></i>
+                                    </button>
+                                    <button id="formatItalicBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
+                                        <i class="fas fa-italic"></i>
+                                    </button>
+                                    <button id="formatLinkBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <button id="formatH2Btn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
+                                        <i class="fas fa-heading"></i>
+                                    </button>
+                                    <button id="formatQuoteBtn" class="p-1.5 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded">
+                                        <i class="fas fa-quote-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <textarea id="articleEditArea" rows="20" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition font-mono"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-3">
+                            <button id="cancelEditBtn" class="py-2 px-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors">
+                                取消
+                            </button>
+                            <button id="saveEditBtn" class="py-2 px-4 bg-apple-blue hover:bg-blue-600 dark:bg-apple-darkblue dark:hover:bg-blue-700 text-white rounded-lg transition-colors">
+                                保存更改
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-12 text-center text-apple-midgray dark:text-gray-500 text-sm py-4">
+            <p>© 2023 AI文章创作室 - 使用先进AI技术创建专业内容</p>
+        </footer>
+    </div>
+
+    <script>
+        // 检测暗色模式
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // 标签页切换
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有active类
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active', 'bg-white', 'dark:bg-gray-800', 'shadow-sm');
+                    btn.classList.add('text-gray-500', 'dark:text-gray-400');
+                });
+                
+                // 隐藏所有内容
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // 激活当前标签
+                button.classList.add('active', 'bg-white', 'dark:bg-gray-800', 'shadow-sm');
+                button.classList.remove('text-gray-500', 'dark:text-gray-400');
+                
+                // 显示当前内容
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+            });
+        });
+        
+        // API模型卡片选择
+        document.querySelectorAll('.api-model-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const radioInput = this.querySelector('input[type="radio"]');
+                const modelType = radioInput.name; // textModel 或 imageModel
+                
+                // 取消选中同类型的所有卡片
+                document.querySelectorAll(`input[name="${modelType}"]`).forEach(input => {
+                    const card = input.closest('.api-model-card');
+                    card.classList.remove('api-model-selected', 'border-apple-blue', 'dark:border-apple-darkblue');
+                    
+                    const radioIndicator = card.querySelector('.w-4.h-4');
+                    radioIndicator.classList.remove('border-apple-blue', 'dark:border-apple-darkblue');
+                    radioIndicator.classList.add('border-gray-300', 'dark:border-gray-600');
+                    
+                    const radioFill = card.querySelector('.w-2.h-2');
+                    radioFill.classList.add('hidden');
+                });
+                
+                // 选中当前卡片
+                radioInput.checked = true;
+                this.classList.add('api-model-selected', 'border-apple-blue', 'dark:border-apple-darkblue');
+                
+                const radioIndicator = this.querySelector('.w-4.h-4');
+                radioIndicator.classList.remove('border-gray-300', 'dark:border-gray-600');
+                radioIndicator.classList.add('border-apple-blue', 'dark:border-apple-darkblue');
+                
+                const radioFill = this.querySelector('.w-2.h-2');
+                radioFill.classList.remove('hidden');
+                
+                // 显示/隐藏自定义API设置
+                if (modelType === 'textModel' && radioInput.value === 'Custom') {
+                    document.getElementById('customApiSection').classList.remove('hidden');
+                } else if (modelType === 'textModel') {
+                    document.getElementById('customApiSection').classList.add('hidden');
+                }
+            });
+        });
+        
+        // 主题卡片选择
+        document.querySelectorAll('.theme-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // 取消所有卡片选择
+                document.querySelectorAll('.theme-card').forEach(c => {
+                    c.classList.remove('theme-card-selected', 'ring-2');
+                });
+                
+                // 选中当前卡片
+                this.classList.add('theme-card-selected', 'ring-2');
+                
+                // 更新主题选择下拉框
+                const themeValue = this.getAttribute('data-theme');
+                document.getElementById('articleTheme').value = themeValue;
+                
+                // 更新文章预览区域的主题
+                if (document.getElementById('articleOutput')) {
+                    document.getElementById('articleOutput').className = '';
+                    document.getElementById('articleOutput').classList.add(
+                        `theme-${themeValue}`, 
+                        'prose', 'dark:prose-invert', 'max-w-none', 
+                        'border', 'border-gray-100', 'dark:border-gray-800', 
+                        'p-6', 'rounded-xl', 'bg-white', 'dark:bg-gray-950', 
+                        'overflow-auto'
+                    );
+                }
+            });
+        });
+        
+        // 下拉框主题选择与卡片联动
+        document.getElementById('articleTheme').addEventListener('change', function() {
+            const selectedTheme = this.value;
+            
+            // 更新主题卡片选择
+            document.querySelectorAll('.theme-card').forEach(card => {
+                if (card.getAttribute('data-theme') === selectedTheme) {
+                    card.click();
+                }
+            });
+        });
+
+        // 文件上传处理
+        document.getElementById('referenceFiles').addEventListener('change', function(e) {
+            const uploadedFilesDiv = document.getElementById('uploadedFiles');
+            uploadedFilesDiv.innerHTML = '';
+            
+            Array.from(this.files).forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'flex items-center justify-between py-1.5 px-3 bg-apple-lightgray dark:bg-gray-800 rounded-lg';
+                fileItem.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-file-alt text-apple-blue dark:text-apple-darkblue mr-2"></i>
+                        <span class="text-sm truncate max-w-[200px]">${file.name}</span>
+                        <span class="text-xs text-gray-500 ml-2">(${(file.size / 1024).toFixed(1)} KB)</span>
+                    </div>
+                    <button class="remove-file text-gray-400 hover:text-red-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                uploadedFilesDiv.appendChild(fileItem);
+            });
+            
+            // 为移除按钮添加事件
+            document.querySelectorAll('.remove-file').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('div').remove();
+                });
+            });
+        });
+
+        // Markdown编辑工具栏功能
+        function wrapSelectedText(textarea, beforeText, afterText) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            const replacement = beforeText + selectedText + afterText;
+            
+            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+            
+            // 恢复选择区域
+            textarea.focus();
+            textarea.setSelectionRange(start + beforeText.length, start + beforeText.length + selectedText.length);
+        }
+        
+        document.getElementById('formatBoldBtn')?.addEventListener('click', function() {
+            const textarea = document.getElementById('articleEditArea');
+            wrapSelectedText(textarea, '**', '**');
+        });
+        
+        document.getElementById('formatItalicBtn')?.addEventListener('click', function() {
+            const textarea = document.getElementById('articleEditArea');
+            wrapSelectedText(textarea, '*', '*');
+        });
+        
+        document.getElementById('formatLinkBtn')?.addEventListener('click', function() {
+            const textarea = document.getElementById('articleEditArea');
+            wrapSelectedText(textarea, '[', '](https://example.com)');
+        });
+        
+        document.getElementById('formatH2Btn')?.addEventListener('click', function() {
+            const textarea = document.getElementById('articleEditArea');
+            const start = textarea.selectionStart;
+            const lineStart = textarea.value.lastIndexOf('\n', start - 1) + 1;
+            const beforeText = textarea.value.substring(0, lineStart);
+            const afterText = textarea.value.substring(lineStart);
+            
+            textarea.value = beforeText + '## ' + afterText;
+            textarea.focus();
+            textarea.setSelectionRange(lineStart + 3, lineStart + 3);
+        });
+        
+        document.getElementById('formatQuoteBtn')?.addEventListener('click', function() {
+            const textarea = document.getElementById('articleEditArea');
+            const start = textarea.selectionStart;
+            const lineStart = textarea.value.lastIndexOf('\n', start - 1) + 1;
+            const beforeText = textarea.value.substring(0, lineStart);
+            const afterText = textarea.value.substring(lineStart);
+            
+            textarea.value = beforeText + '> ' + afterText;
+            textarea.focus();
+            textarea.setSelectionRange(lineStart + 2, lineStart + 2);
+        });
+
+        // 生成文章功能
+        document.getElementById('generateBtn')?.addEventListener('click', async function() {
+            const generationStatus = document.getElementById('generationStatus');
+            const statusText = document.getElementById('statusText');
+            const outputSection = document.getElementById('outputSection');
+            
+            // 切换到预览标签页
+            document.querySelector('[data-tab="preview"]').click();
+            
+            // 显示生成状态
+            generationStatus.classList.remove('hidden');
+            statusText.textContent = '正在收集创作素材...';
+            outputSection.classList.add('hidden');
+            
+            this.disabled = true;
+            this.innerHTML = '<div class="apple-spinner mr-2"></div>创作中...';
+            
+            try {
+                // 收集表单数据
+                const textModel = document.querySelector('input[name="textModel"]:checked').value;
+                const title = document.getElementById('articleTitle').value;
+                const articlePrompt = document.getElementById('articlePrompt').value;
+                const referenceLinks = document.getElementById('referenceLinks').value;
+                const referenceText = document.getElementById('referenceText').value;
+                const articleLength = document.querySelector('input[name="articleLength"]:checked').value;
+                const articleTheme = document.getElementById('articleTheme').value;
+                
+                // 准备提示词
+                let prompt = `@${textModel} 我需要你帮我写一篇专业的文章`;
+                
+                if (title) {
+                    prompt += `，标题是：${title}`;
+                }
+                
+                prompt += `\n\n我希望这篇文章是`;
+                switch (articleLength) {
+                    case 'short': prompt += '短文（800-1200字）'; break;
+                    case 'medium': prompt += '中等长度（1500-2500字）'; break;
+                    case 'long': prompt += '长文（3000字以上）'; break;
+                }
+                
+                if (articlePrompt) {
+                    prompt += `\n\n文章需求：${articlePrompt}`;
+                }
+                
+                if (referenceLinks || referenceText) {
+                    prompt += '\n\n以下是参考资料：\n';
+                    
+                    if (referenceLinks) {
+                        prompt += `\n参考链接：\n${referenceLinks}\n`;
+                    }
+                    
+                    if (referenceText) {
+                        prompt += `\n参考文本：\n${referenceText}\n`;
+                    }
+                }
+                
+                prompt += `\n请按照以下要求输出：
+1. 使用Markdown格式
+2. 正文内容包含引人入胜的开头、清晰的论点和总结
+3. 加入小标题和分段，使文章结构清晰
+4. 适当加入引用、列表等元素增加可读性
+5. 不需要顶部标题，我会单独处理`;
+
+                // 使用Poe API发送请求
+                statusText.textContent = '正在创作文章内容...';
+                
+                // 注册处理程序
+                window.Poe.registerHandler("article-handler", async (result) => {
+                    if (result.status === "error") {
+                        generationStatus.classList.add('hidden');
+                        alert("生成文章时出错: " + result.responses[0]?.statusText || "未知错误");
+                        document.getElementById('generateBtn').disabled = false;
+                        document.getElementById('generateBtn').innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
+                        return;
+                    }
+                    
+                    const response = result.responses[0];
+                    
+                    if (response.status === "complete") {
+                        // 添加标题
+                        let content = response.content;
+                        if (title && !content.startsWith('# ')) {
+                            content = `# ${title}\n\n${content}`;
+                        }
+                        
+                        // 显示文章内容
+                        const articleOutput = document.getElementById('articleOutput');
+                        articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(content));
+                        
+                        // 应用选中的主题
+                        articleOutput.className = '';
+                        articleOutput.classList.add(
+                            `theme-${articleTheme}`, 
+                            'prose', 'dark:prose-invert', 'max-w-none', 
+                            'border', 'border-gray-100', 'dark:border-gray-800', 
+                            'p-6', 'rounded-xl', 'bg-white', 'dark:bg-gray-950', 
+                            'overflow-auto'
+                        );
+                        
+                        outputSection.classList.remove('hidden');
+                        
+                        // 生成图片
+                        await generateImages();
+                        
+                        generationStatus.classList.add('hidden');
+                        document.getElementById('generateBtn').disabled = false;
+                        document.getElementById('generateBtn').innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
+                        
+                        // 滚动到输出部分
+                        outputSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+                
+                // 发送消息
+                await window.Poe.sendUserMessage(prompt, {
+                    handler: "article-handler",
+                    stream: false,
+                    openChat: false
+                });
+                
+            } catch (error) {
+                generationStatus.classList.add('hidden');
+                alert("发生错误: " + error.message);
+                document.getElementById('generateBtn').disabled = false;
+                document.getElementById('generateBtn').innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
+            }
+        });
+
+        // 生成图片
+        async function generateImages() {
+            const imageModel = document.querySelector('input[name="imageModel"]:checked').value;
+            const imagePrompt = document.getElementById('imagePrompt').value || "适合文章的精美配图，高质量，专业，逼真";
+            const imageCount = parseInt(document.getElementById('imageCount').value);
+            const aspectRatio = document.getElementById('imageAspectRatio').value;
+            const statusText = document.getElementById('statusText');
+            const generatedImages = document.getElementById('generatedImages');
+            
+            if (imageCount <= 0) return;
+            
+            // 清空之前的图片
+            generatedImages.innerHTML = '<h3 class="text-lg font-semibold col-span-full mb-2 flex items-center"><i class="fas fa-images mr-2 text-apple-blue dark:text-apple-darkblue"></i>生成的图片</h3>';
+            generatedImages.classList.remove('hidden');
+            
+            // 显示生成状态
+            document.getElementById('generationStatus').classList.remove('hidden');
+            statusText.textContent = '正在创作精美图片...';
+            
+            // 创建占位符
+            for (let i = 0; i < imageCount; i++) {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'bg-gray-100 dark:bg-gray-800 rounded-xl aspect-[4/3] animate-pulse flex items-center justify-center';
+                placeholder.id = `img-placeholder-${i}`;
+                placeholder.innerHTML = '<div class="text-gray-400 dark:text-gray-500 flex flex-col items-center"><i class="fas fa-image mb-2 text-xl"></i><span>生成中...</span></div>';
+                generatedImages.appendChild(placeholder);
+            }
+            
+            // 注册处理程序
+            window.Poe.registerHandler("image-handler", (result, context) => {
+                if (result.status === "error") {
+                    document.getElementById('generationStatus').classList.add('hidden');
+                    return;
+                }
+                
+                const response = result.responses[0];
+                const index = context.index;
+                
+                if (response.status === "complete" && response.attachments?.length > 0) {
+                    const imageUrl = response.attachments[0].url;
+                    const placeholder = document.getElementById(`img-placeholder-${index}`);
+                    
+                    if (placeholder) {
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        img.className = 'w-full h-auto rounded-xl transition-all duration-300';
+                        img.alt = `生成的图片 ${index + 1}`;
+                        
+                        const container = document.createElement('div');
+                        container.className = 'relative group overflow-hidden rounded-xl';
+                        
+                        const overlay = document.createElement('div');
+                        overlay.className = 'absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-300';
+                        
+                        const btnContainer = document.createElement('div');
+                        btnContainer.className = 'flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0';
+                        
+                        const insertBtn = document.createElement('button');
+                        insertBtn.className = 'bg-apple-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium';
+                        insertBtn.innerHTML = '<i class="fas fa-plus mr-1"></i>插入';
+                        insertBtn.addEventListener('click', () => {
+                            // 在文章末尾插入图片
+                            const articleContent = document.getElementById('articleOutput');
+                            const imgElement = document.createElement('img');
+                            imgElement.src = imageUrl;
+                            imgElement.alt = '文章配图';
+                            imgElement.className = 'mx-auto my-4 max-w-full h-auto';
+                            articleContent.appendChild(imgElement);
+                        });
+                        
+                        const downloadBtn = document.createElement('button');
+                        downloadBtn.className = 'bg-white hover:bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-medium';
+                        downloadBtn.innerHTML = '<i class="fas fa-download mr-1"></i>保存';
+                        downloadBtn.addEventListener('click', () => {
+                            // 提示用户如何保存图片
+                            alert('请在图片上右键点击并选择"图片另存为..."以保存图片。');
+                        });
+                        
+                        btnContainer.appendChild(insertBtn);
+                        btnContainer.appendChild(downloadBtn);
+                        overlay.appendChild(btnContainer);
+                        container.appendChild(img);
+                        container.appendChild(overlay);
+                        
+                        placeholder.replaceWith(container);
+                    }
+                    
+                    // 检查是否所有图片都已生成完毕
+                    if (!document.querySelectorAll('[id^="img-placeholder-"]').length) {
+                        document.getElementById('generationStatus').classList.add('hidden');
+                    }
+                }
+            });
+            
+            // 为每个图片发送请求
+            for (let i = 0; i < imageCount; i++) {
+                try {
+                    const finalPrompt = `@${imageModel} ${imagePrompt} --aspect ${aspectRatio}`;
+                    await window.Poe.sendUserMessage(finalPrompt, {
+                        handler: "image-handler",
+                        stream: false,
+                        openChat: false,
+                        handlerContext: { index: i }
+                    });
+                } catch (error) {
+                    console.error("生成图片错误:", error);
+                    // 继续生成其他图片
+                }
+            }
+        }
+
+        // 复制按钮
+        document.getElementById('copyBtn')?.addEventListener('click', function() {
+            const articleOutput = document.getElementById('articleOutput');
+            
+            // 创建一个临时元素用于选择和复制
+            const tempElement = document.createElement('div');
+            tempElement.innerHTML = articleOutput.innerHTML;
+            
+            document.body.appendChild(tempElement);
+            tempElement.style.position = 'absolute';
+            tempElement.style.left = '-9999px';
+            tempElement.style.opacity = '0';
+            
+            // 选择并复制
+            const range = document.createRange();
+            range.selectNodeContents(tempElement);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            
+            // 清理
+            selection.removeAllRanges();
+            document.body.removeChild(tempElement);
+            
+            // 显示成功提示
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-check mr-1.5"></i>已复制!';
+            setTimeout(() => {
+                this.innerHTML = originalText;
+            }, 2000);
+        });
+
+        // 编辑文章模态框
+        const editModal = document.getElementById('editArticleModal');
+        
+        document.getElementById('editArticleBtn')?.addEventListener('click', function() {
+            const articleOutput = document.getElementById('articleOutput');
+            const turndownService = new TurndownService();
+            const markdown = turndownService.turndown(articleOutput.innerHTML);
+            
+            document.getElementById('articleEditArea').value = markdown;
+            editModal.classList.remove('hidden');
+        });
+        
+        document.getElementById('closeEditBtn')?.addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+        
+        document.getElementById('cancelEditBtn')?.addEventListener('click', () => {
+            editModal.classList.add('hidden');
+        });
+        
+        document.getElementById('saveEditBtn')?.addEventListener('click', function() {
+            const articleOutput = document.getElementById('articleOutput');
+            const markdownContent = document.getElementById('articleEditArea').value;
+            articleOutput.innerHTML = DOMPurify.sanitize(marked.parse(markdownContent));
+            editModal.classList.add('hidden');
+        });
+        
+        // 重新生成按钮
+        document.getElementById('regenerateBtn')?.addEventListener('click', function() {
+            // 切换到内容创作页面
+            document.querySelector('[data-tab="content"]').click();
+            // 点击生成按钮
+            document.getElementById('generateBtn').click();
+        });
+        
+        // 保存API设置按钮
+        document.getElementById('saveApiSettingsBtn')?.addEventListener('click', function() {
+            // 显示成功提示
+            const originalText = this.textContent;
+            this.innerHTML = '<i class="fas fa-check mr-2"></i>设置已保存';
+            this.classList.add('bg-green-600', 'dark:bg-green-700');
+            
+            setTimeout(() => {
+                this.textContent = originalText;
+                this.classList.remove('bg-green-600', 'dark:bg-green-700');
+            }, 2000);
+            
+            // 切换到内容创作页面
+            document.querySelector('[data-tab="content"]').click();
+        });
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始设置为第一个标签页激活
+            document.querySelector('.tab-button').click();
+        });
+    </script>
+</body>
+</html>
