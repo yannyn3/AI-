@@ -334,43 +334,42 @@ async function testApiConnection(provider) {
                 throw error;
             }
         }
-        
+
         // Poe API测试
-        else if (provider === 'poe') {
-            const poeKey = apiConfig.poe?.apiKey;
-            if (!poeKey) {
-                throw new Error("未配置Poe API密钥");
+else if (provider === 'poe') {
+    const poeKey = apiConfig.poe?.apiKey;
+    if (!poeKey) {
+        throw new Error("未配置Poe API密钥");
+    }
+    
+    const proxyUrl = 'https://ai-yannyn3.vercel.app/api/proxy';
+    console.log(`使用代理服务测试Poe连接`);
+    
+    // 使用代理服务发送请求
+    try {
+        const result = await sendViaProxy(
+            'https://api.poe.com/api/settings',
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${poeKey}`,
+                    'Content-Type': 'application/json'
+                }
             }
-            
-            const apiEndpoint = 'https://api.poe.com/chat/completions';
-            
-            try {
-                // 尝试直接调用API，失败后会尝试各种代理
-                const response = await apiRequestWithFallback(apiEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${poeKey}`
-                    },
-                    body: JSON.stringify({
-                        model: "Claude-3.5-Sonnet-20240620",
-                        messages: [
-                            { role: "user", content: "Hello, just testing the API connection. Please respond with 'API connection successful'." }
-                        ]
-                    })
-                });
-                
-                console.log('Poe响应状态:', response.status);
-                
-                const result = await response.json();
-                console.log('Poe API测试成功:', result);
-                return { success: true };
-            } catch (error) {
-                console.error('Poe API连接失败:', error);
-                throw error;
-            }
-        }
+        );
         
+        console.log('Poe API测试成功:', result);
+        return { success: true };
+    } catch (error) {
+        if (error.message.includes('401')) {
+            throw new Error("Poe API密钥无效或已过期");
+        } else {
+            throw error;
+        }
+    }
+}    
+
+            
         // 百度文心一言API测试
         else if (provider === 'baidu') {
             const apiKey = apiConfig.baidu?.apiKey;
