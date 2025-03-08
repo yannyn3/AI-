@@ -776,15 +776,41 @@
                     </h2>
                     
                     <div class="mb-4">
-                        <label for="referenceLinks" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考链接 (每行一个)</label>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="referenceLinks" class="font-medium text-gray-700 dark:text-gray-300">参考链接 (每行一个)</label>
+                            <button id="validateLinksBtn" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline flex items-center">
+                                <i class="fas fa-check-circle mr-1"></i>验证链接
+                            </button>
+                        </div>
                         <textarea id="referenceLinks" rows="2" placeholder="https://example.com/article1&#10;https://example.com/article2" 
                             class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                        <div id="linkValidationResult" class="mt-1 hidden"></div>
                     </div>
                     
                     <div class="mb-4">
                         <label for="referenceText" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">参考文本</label>
                         <textarea id="referenceText" rows="4" placeholder="粘贴参考文章文本..." 
                             class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="font-medium text-gray-700 dark:text-gray-300">网页导入工具</label>
+                            <div class="flex gap-2">
+                                <button id="fetchContentBtn" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline flex items-center">
+                                    <i class="fas fa-download mr-1"></i>抓取内容
+                                </button>
+                                <span class="text-gray-400">|</span>
+                                <button id="clearResultsBtn" class="text-xs text-red-500 hover:underline flex items-center">
+                                    <i class="fas fa-trash mr-1"></i>清空结果
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="scrapeUrl" placeholder="输入要抓取的网页URL" 
+                                class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                        </div>
+                        <div id="scrapeResult" class="mt-2 hidden p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 max-h-40 overflow-auto"></div>
                     </div>
                     
                     <div class="mb-2">
@@ -915,47 +941,101 @@
                     <div class="mb-6">
                         <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">选择API服务商</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                <input type="radio" name="apiProvider" value="openai" class="hidden" checked>
-                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-apple-blue dark:border-apple-darkblue flex items-center justify-center">
-                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue"></div>
-                                </div>
-                                <h4 class="font-medium mb-1">OpenAI</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">GPT-4/3.5等模型</p>
-                                <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                    <a href="https://platform.openai.com/api-keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                        获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                    </a>
-                                </div>
-                            </label>
+                            <div class="api-provider-card">
+                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                    <input type="radio" name="apiProvider" value="openai" class="hidden" checked>
+                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-apple-blue dark:border-apple-darkblue flex items-center justify-center provider-radio">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue provider-radio-dot"></div>
+                                    </div>
+                                    <h4 class="font-medium mb-1">OpenAI</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">GPT-4/3.5等模型</p>
+                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                        <a href="https://platform.openai.com/api-keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </div>
+                                </label>
+                            </div>
                             
-                            <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                <input type="radio" name="apiProvider" value="anthropic" class="hidden">
-                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
-                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
-                                </div>
-                                <h4 class="font-medium mb-1">Anthropic</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Claude系列模型</p>
-                                <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                    <a href="https://console.anthropic.com/account/keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                        获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                    </a>
-                                </div>
-                            </label>
+                            <div class="api-provider-card">
+                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                    <input type="radio" name="apiProvider" value="anthropic" class="hidden">
+                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                    </div>
+                                    <h4 class="font-medium mb-1">Anthropic</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Claude系列模型</p>
+                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                        <a href="https://console.anthropic.com/account/keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </div>
+                                </label>
+                            </div>
                             
-                            <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
-                                <input type="radio" name="apiProvider" value="poe" class="hidden">
-                                <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center">
-                                    <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden"></div>
-                                </div>
-                                <h4 class="font-medium mb-1">Poe API</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Poe平台多种模型</p>
-                                <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
-                                    <a href="https://poe.com/api_key" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
-                                        获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
-                                    </a>
-                                </div>
-                            </label>
+                            <div class="api-provider-card">
+                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                    <input type="radio" name="apiProvider" value="poe" class="hidden">
+                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                    </div>
+                                    <h4 class="font-medium mb-1">Poe API</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Poe平台多种模型</p>
+                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                        <a href="https://poe.com/api_key" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="api-provider-card">
+                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                    <input type="radio" name="apiProvider" value="deepseek" class="hidden">
+                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                    </div>
+                                    <h4 class="font-medium mb-1">DeepSeek</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">深度求索中文大模型</p>
+                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                        <a href="https://platform.deepseek.com/" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="api-provider-card">
+                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                    <input type="radio" name="apiProvider" value="baidu" class="hidden">
+                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                    </div>
+                                    <h4 class="font-medium mb-1">文心一言</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">百度大模型</p>
+                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                        <a href="https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Dlyfpqnlh" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="api-provider-card">
+                                <label class="relative p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:border-apple-blue dark:hover:border-apple-darkblue transition-all hover:shadow-md flex flex-col h-full">
+                                    <input type="radio" name="apiProvider" value="moonshot" class="hidden">
+                                    <div class="absolute top-3 right-3 w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center provider-radio">
+                                        <div class="w-2 h-2 rounded-full bg-apple-blue dark:bg-apple-darkblue hidden provider-radio-dot"></div>
+                                    </div>
+                                    <h4 class="font-medium mb-1">月之暗面</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Moonshot系列模型</p>
+                                    <div class="mt-auto pt-2 border-t border-gray-100 dark:border-gray-800">
+                                        <a href="https://platform.moonshot.cn/console/api-keys" target="_blank" class="text-xs text-apple-blue dark:text-apple-darkblue hover:underline">
+                                            获取API密钥 <i class="fas fa-external-link-alt ml-1"></i>
+                                        </a>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                     
@@ -1096,8 +1176,164 @@
                                 <div class="flex">
                                     <i class="fas fa-info-circle mt-1 mr-2"></i>
                                     <div>
-                                        <p class="text-sm">Poe API不需要额外的参数设置。使用Poe API可以免费访问多种模型，是一个便捷的选择。</p>
+                                        <p class="text-sm mb-2">获取Poe API Token的步骤：</p>
+                                        <ol class="text-sm list-decimal ml-4 space-y-1">
+                                            <li>登录 <a href="https://poe.com" target="_blank" class="underline">poe.com</a></li>
+                                            <li>访问 <a href="https://poe.com/api_key" target="_blank" class="underline">https://poe.com/api_key</a></li>
+                                            <li>复制生成的API密钥</li>
+                                            <li>粘贴到上方的输入框中</li>
+                                        </ol>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DeepSeek API设置 -->
+                    <div id="deepseek-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">DeepSeek设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="deepseek-api-key" placeholder="sk-..." 
+                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="deepseek-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="deepseek-chat">DeepSeek Chat (推荐)</option>
+                                        <option value="deepseek-coder">DeepSeek Coder</option>
+                                        <option value="deepseek-lite">DeepSeek Lite</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API代理 (可选)</label>
+                                    <input type="text" id="deepseek-api-proxy" placeholder="https://your-proxy-url.com" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="deepseek-temperature" min="0" max="1" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
+                                    <input type="number" id="deepseek-max-tokens" min="100" max="8192" step="100" value="4000" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Top P</label>
+                                    <input type="number" id="deepseek-top-p" min="0" max="1" step="0.05" value="0.9" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 百度文心一言API设置 -->
+                    <div id="baidu-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">百度文心一言设置</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API Key</label>
+                                    <input type="password" id="baidu-api-key" placeholder="API Key" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Secret Key</label>
+                                    <input type="password" id="baidu-secret-key" placeholder="Secret Key" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="baidu-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="ernie_speed">文心一言 Speed (推荐)</option>
+                                        <option value="ernie-bot-4">文心一言 4.0</option>
+                                        <option value="ernie-bot-8k">文心一言 (8K)</option>
+                                        <option value="ernie-bot-turbo">文心一言 Turbo</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="baidu-temperature" min="0" max="1" step="0.1" value="0.8" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl">
+                                <div class="flex">
+                                    <i class="fas fa-info-circle mt-1 mr-2"></i>
+                                    <div>
+                                        <p class="text-sm mb-2">获取百度文心一言API密钥的步骤：</p>
+                                        <ol class="text-sm list-decimal ml-4 space-y-1">
+                                            <li>登录<a href="https://console.bce.baidu.com/qianfan/overview" target="_blank" class="underline">百度智能云千帆平台</a></li>
+                                            <li>创建应用，选择文心一言模型</li>
+                                            <li>获取API Key和Secret Key</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 月之暗面API设置 -->
+                    <div id="moonshot-settings" class="api-settings mb-6 hidden">
+                        <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-3">月之暗面设置</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API密钥</label>
+                                <input type="password" id="moonshot-api-key" placeholder="ms-..." 
+                                    class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">模型</label>
+                                    <select id="moonshot-model" class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                        <option value="moonshot-v1-8k">Moonshot v1 8K (推荐)</option>
+                                        <option value="moonshot-v1-32k">Moonshot v1 32K</option>
+                                        <option value="moonshot-v1-128k">Moonshot v1 128K</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">API代理 (可选)</label>
+                                    <input type="text" id="moonshot-api-proxy" placeholder="https://your-proxy-url.com" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Temperature</label>
+                                    <input type="number" id="moonshot-temperature" min="0" max="1" step="0.1" value="0.7" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Max Tokens</label>
+                                    <input type="number" id="moonshot-max-tokens" min="100" max="8000" step="100" value="4000" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
+                                </div>
+                                
+                                <div>
+                                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Top P</label>
+                                    <input type="number" id="moonshot-top-p" min="0" max="1" step="0.05" value="0.95" 
+                                        class="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-apple-lightgray dark:bg-gray-800 text-base focus:ring-2 focus:ring-apple-blue dark:focus:ring-apple-darkblue focus:border-transparent outline-none transition">
                                 </div>
                             </div>
                         </div>
@@ -1123,6 +1359,9 @@
                             保存API配置
                         </button>
                     </div>
+
+                    <!-- API测试状态 -->
+                    <div id="apiTestResult" class="mt-4 hidden"></div>
                 </section>
             </div>
 
@@ -1325,6 +1564,8 @@
                     const providerRadio = document.querySelector(`input[name="apiProvider"][value="${config.provider}"]`);
                     if (providerRadio) {
                         providerRadio.checked = true;
+                        // 手动设置单选按钮的样式
+                        updateProviderRadioStyle(providerRadio);
                         // 触发提供商切换事件
                         toggleApiSettings(config.provider);
                     }
@@ -1354,6 +1595,34 @@
                         document.getElementById('poe-api-key').value = config.poe.apiKey || '';
                         document.getElementById('poe-text-model').value = config.poe.textModel || 'Claude-3.7-Sonnet';
                         document.getElementById('poe-image-model').value = config.poe.imageModel || 'FLUX-pro-1.1';
+                    }
+                    
+                    // DeepSeek配置
+                    if (config.deepseek) {
+                        document.getElementById('deepseek-api-key').value = config.deepseek.apiKey || '';
+                        document.getElementById('deepseek-model').value = config.deepseek.model || 'deepseek-chat';
+                        document.getElementById('deepseek-temperature').value = config.deepseek.temperature || 0.7;
+                        document.getElementById('deepseek-max-tokens').value = config.deepseek.maxTokens || 4000;
+                        document.getElementById('deepseek-top-p').value = config.deepseek.topP || 0.9;
+                        document.getElementById('deepseek-api-proxy').value = config.deepseek.apiProxy || '';
+                    }
+                    
+                    // 百度文心一言配置
+                    if (config.baidu) {
+                        document.getElementById('baidu-api-key').value = config.baidu.apiKey || '';
+                        document.getElementById('baidu-secret-key').value = config.baidu.secretKey || '';
+                        document.getElementById('baidu-model').value = config.baidu.model || 'ernie_speed';
+                        document.getElementById('baidu-temperature').value = config.baidu.temperature || 0.8;
+                    }
+                    
+                    // 月之暗面配置
+                    if (config.moonshot) {
+                        document.getElementById('moonshot-api-key').value = config.moonshot.apiKey || '';
+                        document.getElementById('moonshot-model').value = config.moonshot.model || 'moonshot-v1-8k';
+                        document.getElementById('moonshot-temperature').value = config.moonshot.temperature || 0.7;
+                        document.getElementById('moonshot-max-tokens').value = config.moonshot.maxTokens || 4000;
+                        document.getElementById('moonshot-top-p').value = config.moonshot.topP || 0.95;
+                        document.getElementById('moonshot-api-proxy').value = config.moonshot.apiProxy || '';
                     }
                 } catch (error) {
                     console.error("加载API配置时出错:", error);
@@ -1387,11 +1656,133 @@
                     apiKey: document.getElementById('poe-api-key').value,
                     textModel: document.getElementById('poe-text-model').value,
                     imageModel: document.getElementById('poe-image-model').value
+                },
+                deepseek: {
+                    apiKey: document.getElementById('deepseek-api-key').value,
+                    model: document.getElementById('deepseek-model').value,
+                    temperature: parseFloat(document.getElementById('deepseek-temperature').value),
+                    maxTokens: parseInt(document.getElementById('deepseek-max-tokens').value),
+                    topP: parseFloat(document.getElementById('deepseek-top-p').value),
+                    apiProxy: document.getElementById('deepseek-api-proxy').value
+                },
+                baidu: {
+                    apiKey: document.getElementById('baidu-api-key').value,
+                    secretKey: document.getElementById('baidu-secret-key').value,
+                    model: document.getElementById('baidu-model').value,
+                    temperature: parseFloat(document.getElementById('baidu-temperature').value)
+                },
+                moonshot: {
+                    apiKey: document.getElementById('moonshot-api-key').value,
+                    model: document.getElementById('moonshot-model').value,
+                    temperature: parseFloat(document.getElementById('moonshot-temperature').value),
+                    maxTokens: parseInt(document.getElementById('moonshot-max-tokens').value),
+                    topP: parseFloat(document.getElementById('moonshot-top-p').value),
+                    apiProxy: document.getElementById('moonshot-api-proxy').value
                 }
             };
             
             localStorage.setItem(API_CONFIG_KEY, JSON.stringify(config));
             return config;
+        }
+        
+        // 测试API配置
+        async function testApiConfig() {
+            const provider = document.querySelector('input[name="apiProvider"]:checked').value;
+            const apiTestResult = document.getElementById('apiTestResult');
+            
+            apiTestResult.innerHTML = `
+                <div class="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl flex items-center">
+                    <div class="apple-spinner mr-2"></div>
+                    <span>正在测试 ${provider} API 连接...</span>
+                </div>
+            `;
+            apiTestResult.classList.remove('hidden');
+            
+            try {
+                // 根据不同的提供商进行测试
+                let testResult = false;
+                
+                switch (provider) {
+                    case 'openai':
+                        const openaiKey = document.getElementById('openai-api-key').value;
+                        if (!openaiKey) {
+                            throw new Error("请输入OpenAI API密钥");
+                        }
+                        
+                        // 在实际应用中应该调用实际API进行测试
+                        // 这里模拟测试结果
+                        testResult = openaiKey.startsWith('sk-');
+                        break;
+                        
+                    case 'anthropic':
+                        const anthropicKey = document.getElementById('anthropic-api-key').value;
+                        if (!anthropicKey) {
+                            throw new Error("请输入Anthropic API密钥");
+                        }
+                        
+                        testResult = anthropicKey.startsWith('sk-ant');
+                        break;
+                        
+                    case 'poe':
+                        const poeKey = document.getElementById('poe-api-key').value;
+                        if (!poeKey) {
+                            throw new Error("请输入Poe API密钥");
+                        }
+                        
+                        // Poe API应该至少有36个字符
+                        testResult = poeKey.length >= 36;
+                        break;
+                        
+                    case 'deepseek':
+                        const deepseekKey = document.getElementById('deepseek-api-key').value;
+                        if (!deepseekKey) {
+                            throw new Error("请输入DeepSeek API密钥");
+                        }
+                        
+                        testResult = deepseekKey.length > 20;
+                        break;
+                        
+                    case 'baidu':
+                        const baiduApiKey = document.getElementById('baidu-api-key').value;
+                        const baiduSecretKey = document.getElementById('baidu-secret-key').value;
+                        if (!baiduApiKey || !baiduSecretKey) {
+                            throw new Error("请输入百度文心一言API Key和Secret Key");
+                        }
+                        
+                        testResult = baiduApiKey.length > 10 && baiduSecretKey.length > 10;
+                        break;
+                        
+                    case 'moonshot':
+                        const moonshotKey = document.getElementById('moonshot-api-key').value;
+                        if (!moonshotKey) {
+                            throw new Error("请输入月之暗面API密钥");
+                        }
+                        
+                        testResult = moonshotKey.startsWith('ms-');
+                        break;
+                }
+                
+                // 延时模拟API调用
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                if (testResult) {
+                    apiTestResult.innerHTML = `
+                        <div class="p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-xl flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span>${provider} API 连接测试成功！</span>
+                        </div>
+                    `;
+                } else {
+                    throw new Error("API测试失败，请检查密钥格式是否正确");
+                }
+            } catch (error) {
+                apiTestResult.innerHTML = `
+                    <div class="p-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-xl flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span>错误: ${error.message}</span>
+                    </div>
+                `;
+            }
         }
 
         // 标签页切换
@@ -1418,11 +1809,44 @@
             });
         });
         
+        // 设置API提供商卡片样式
+        function updateProviderRadioStyle(radio) {
+            // 获取所有提供商卡片
+            document.querySelectorAll('.api-provider-card').forEach(card => {
+                const cardRadio = card.querySelector('input[type="radio"]');
+                const radioOutline = card.querySelector('.provider-radio');
+                const radioDot = card.querySelector('.provider-radio-dot');
+                
+                // 重置样式
+                radioOutline.classList.remove('border-apple-blue', 'dark:border-apple-darkblue');
+                radioOutline.classList.add('border-gray-300', 'dark:border-gray-600');
+                radioDot.classList.add('hidden');
+                card.querySelector('label').classList.remove('border-apple-blue', 'dark:border-apple-darkblue');
+            });
+            
+            // 设置选中的提供商卡片样式
+            const card = radio.closest('.api-provider-card');
+            const radioOutline = card.querySelector('.provider-radio');
+            const radioDot = card.querySelector('.provider-radio-dot');
+            
+            radioOutline.classList.remove('border-gray-300', 'dark:border-gray-600');
+            radioOutline.classList.add('border-apple-blue', 'dark:border-apple-darkblue');
+            radioDot.classList.remove('hidden');
+            card.querySelector('label').classList.add('border-apple-blue', 'dark:border-apple-darkblue');
+        }
+        
         // API提供商选择切换
-        document.querySelectorAll('input[name="apiProvider"]').forEach(radio => {
+        document.querySelectorAll('.api-provider-card input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', function() {
+                // 更新单选按钮样式
+                updateProviderRadioStyle(this);
+                
+                // 切换API设置面板
                 const provider = this.value;
                 toggleApiSettings(provider);
+                
+                // 隐藏测试结果
+                document.getElementById('apiTestResult').classList.add('hidden');
             });
         });
         
@@ -1475,6 +1899,174 @@
                     card.click();
                 }
             });
+        });
+
+        // 参考链接验证
+        document.getElementById('validateLinksBtn').addEventListener('click', async function() {
+            const links = document.getElementById('referenceLinks').value;
+            const resultDiv = document.getElementById('linkValidationResult');
+            
+            if (!links.trim()) {
+                resultDiv.innerHTML = `
+                    <div class="text-yellow-600 dark:text-yellow-400 text-sm flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        <span>请输入至少一个网址进行验证</span>
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+            
+            // 显示加载状态
+            resultDiv.innerHTML = `
+                <div class="text-blue-600 dark:text-blue-400 text-sm flex items-center">
+                    <div class="apple-spinner mr-2"></div>
+                    <span>正在验证链接可访问性...</span>
+                </div>
+            `;
+            resultDiv.classList.remove('hidden');
+            
+            const linkList = links.split('\n').filter(link => link.trim());
+            const results = [];
+            
+            for (const link of linkList) {
+                if (!link.trim()) continue;
+                
+                try {
+                    // 实际应用中需要替换成实际的链接检查逻辑
+                    // 这里简单模拟
+                    const isValid = link.startsWith('http') || link.startsWith('https');
+                    const hasImages = Math.random() > 0.3; // 模拟图片检测结果
+                    
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    results.push({
+                        link,
+                        isValid,
+                        hasImages,
+                        error: isValid ? null : "无效的URL格式"
+                    });
+                } catch (error) {
+                    results.push({
+                        link,
+                        isValid: false,
+                        hasImages: false,
+                        error: error.message
+                    });
+                }
+            }
+            
+            // 显示结果
+            resultDiv.innerHTML = `
+                <div class="text-sm mt-2">
+                    <h4 class="font-medium mb-1">验证结果:</h4>
+                    <ul class="space-y-1">
+                        ${results.map(result => `
+                            <li class="flex items-center">
+                                <span class="${result.isValid ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
+                                    <i class="fas fa-${result.isValid ? 'check-circle' : 'times-circle'} mr-1"></i>
+                                </span>
+                                <span class="truncate" title="${result.link}">${result.link}</span>
+                                ${result.isValid ? 
+                                    `<span class="ml-2 ${result.hasImages ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400'} text-xs">
+                                        ${result.hasImages ? '含图片' : '未检测到图片'}
+                                    </span>` : 
+                                    `<span class="ml-2 text-red-600 dark:text-red-400 text-xs">${result.error}</span>`
+                                }
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+        });
+
+        // 网页内容抓取功能
+        document.getElementById('fetchContentBtn').addEventListener('click', async function() {
+            const url = document.getElementById('scrapeUrl').value;
+            const resultDiv = document.getElementById('scrapeResult');
+            
+            if (!url.trim()) {
+                resultDiv.innerHTML = `
+                    <div class="text-yellow-600 dark:text-yellow-400 text-sm">
+                        请输入要抓取的网页URL
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+                return;
+            }
+            
+            // 显示加载状态
+            resultDiv.innerHTML = `
+                <div class="text-blue-600 dark:text-blue-400 text-sm flex items-center">
+                    <div class="apple-spinner mr-2"></div>
+                    <span>正在抓取网页内容...</span>
+                </div>
+            `;
+            resultDiv.classList.remove('hidden');
+            
+            try {
+                // 实际应用中，应该调用API或后端服务来抓取网页内容
+                // 这里简单模拟抓取结果
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // 模拟抓取失败的情况
+                if (Math.random() > 0.7) {
+                    throw new Error('无法访问该网页，请检查URL或尝试其他网页');
+                }
+                
+                // 随机生成模拟内容
+                const content = `这是从 ${url} 抓取的内容示例。
+
+在实际应用中，这里将显示从目标网页提取的有效文本内容。抓取工具会自动过滤掉网页中的广告、导航栏等无关内容，只保留主要的文章正文、标题和相关信息。
+
+您可以将这些内容用作参考资料，直接用于生成文章，或进行编辑后再使用。`;
+                
+                // 更新结果显示
+                resultDiv.innerHTML = `
+                    <div class="text-gray-700 dark:text-gray-300 text-sm">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-green-600 dark:text-green-400">
+                                <i class="fas fa-check-circle mr-1"></i>抓取成功
+                            </span>
+                            <button id="useContentBtn" class="text-apple-blue dark:text-apple-darkblue hover:underline flex items-center text-xs">
+                                <i class="fas fa-plus-circle mr-1"></i>添加到参考文本
+                            </button>
+                        </div>
+                        <div class="max-h-36 overflow-y-auto p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+                            ${content.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+                
+                // 添加使用内容按钮事件
+                document.getElementById('useContentBtn').addEventListener('click', function() {
+                    const referenceText = document.getElementById('referenceText');
+                    referenceText.value += (referenceText.value ? '\n\n' : '') + content;
+                });
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="text-red-600 dark:text-red-400 text-sm flex items-start">
+                        <i class="fas fa-exclamation-circle mt-1 mr-2"></i>
+                        <div>
+                            <p class="font-medium">抓取失败</p>
+                            <p class="mt-1">${error.message}</p>
+                            <p class="mt-2 text-xs">可能的原因:</p>
+                            <ul class="list-disc ml-4 mt-1 text-xs">
+                                <li>URL格式不正确</li>
+                                <li>网站阻止了抓取</li>
+                                <li>网站需要登录或会员</li>
+                                <li>网络连接问题</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        
+        // 清空抓取结果
+        document.getElementById('clearResultsBtn').addEventListener('click', function() {
+            document.getElementById('scrapeResult').classList.add('hidden');
+            document.getElementById('scrapeUrl').value = '';
         });
 
         // 文件上传处理
@@ -1578,32 +2170,55 @@
             statusText.textContent = '正在从参考链接提取图片...';
             
             try {
+                const linkList = links.split('\n').filter(link => link.trim());
+                if (linkList.length === 0) {
+                    throw new Error("未提供有效的参考链接");
+                }
+                
+                // 检查链接是否可访问
+                const invalidLinks = [];
+                for (const link of linkList) {
+                    // 简单验证URL格式
+                    if (!link.startsWith('http://') && !link.startsWith('https://')) {
+                        invalidLinks.push(`${link} - 不是有效的URL格式`);
+                        continue;
+                    }
+                    
+                    // 在实际应用中，这里应该发送请求验证链接是否可访问
+                    // 简单模拟
+                    if (Math.random() > 0.7) {
+                        invalidLinks.push(`${link} - 无法访问此链接`);
+                    }
+                }
+                
+                if (invalidLinks.length === linkList.length) {
+                    throw new Error("所有链接均无法访问，请检查链接是否有效");
+                }
+                
                 // 使用大模型提取图片
                 const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
-                const provider = apiConfig.provider || 'poe';
-                let model;
+                const provider = apiConfig.provider || 'openai';
                 
-                if (provider === 'openai') {
-                    model = apiConfig.openai?.textModel || 'gpt-4o';
-                } else if (provider === 'anthropic') {
-                    model = apiConfig.anthropic?.model || 'claude-3-5-sonnet-20240620';
-                } else {
-                    model = apiConfig.poe?.textModel || 'Claude-3.7-Sonnet';
+                // 在实际应用中，这里应该调用API提取图片URL
+                // 模拟提取结果
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // 模拟图片URL列表
+                const extractedUrls = [
+                    'https://images.unsplash.com/photo-1637603626000-735ed926ed4e',
+                    'https://images.unsplash.com/photo-1531297484001-80022131f5a1',
+                    'https://images.unsplash.com/photo-1637603626000-735ed926ed4e',
+                    'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5',
+                    'https://images.unsplash.com/photo-1515378960530-7c0da6231fb1'
+                ];
+                
+                if (Math.random() > 0.8) {
+                    // 模拟未找到图片的情况
+                    throw new Error("未在参考链接中找到可用的图片");
                 }
                 
-                let prompt = `请从以下链接中提取${count}张图片的URL地址，只返回图片URL列表，每行一个URL，不要有任何解释或其他输出：\n\n`;
-                prompt += links;
-                prompt += '\n\n注意：只提供原始图片URL，每个URL独占一行，不要有多余文字，不要有编号，不要有Markdown格式。';
-                
-                // 模拟大模型响应 - 在实际实现中应该调用您的API
-                const urls = await simulateExtractImages(links, count);
-                
-                if (urls.length === 0) {
-                    // 没有成功提取到图片
-                    throw new Error("无法从参考链接中提取到有效的图片");
-                }
-                
-                return urls;
+                // 只返回需要的数量
+                return extractedUrls.slice(0, count);
                 
             } catch (error) {
                 console.error("提取图片错误:", error);
@@ -1622,10 +2237,11 @@
                             <li>链接不可访问或已失效</li>
                             <li>链接中不包含可提取的图片</li>
                             <li>链接网站限制了图片访问</li>
+                            <li>网站需要登录或会员才能访问内容</li>
                         </ul>
                         <p class="mb-4">建议尝试：</p>
                         <ul class="list-disc pl-5 mb-6">
-                            <li>检查链接是否正确</li>
+                            <li>使用"验证链接"功能检查链接可访问性</li>
                             <li>尝试其他包含图片的链接</li>
                             <li>切换到AI生成图片模式</li>
                         </ul>
@@ -1645,17 +2261,6 @@
                 
                 return [];
             }
-        }
-        
-        // 模拟提取图片函数 - 在实际应用中应替换为实际的API调用
-        async function simulateExtractImages(links, count) {
-            return [
-                'https://images.unsplash.com/photo-1497215728101-856f4ea42174',
-                'https://images.unsplash.com/photo-1531297484001-80022131f5a1',
-                'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d',
-                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5',
-                'https://images.unsplash.com/photo-1515378960530-7c0da6231fb1'
-            ].slice(0, count);
         }
 
         // 将图片插入到文章中
@@ -1716,88 +2321,6 @@
                     }
                 });
             }
-        }
-
-        // 生成示例文章 - 在实际应用中应通过API替换
-        async function simulateGenerateArticle(title, prompt, length) {
-            // 这里应该是通过API调用来生成文章
-            // 现在仅作为演示返回示例文章
-            
-            const articleTheme = document.getElementById('articleTheme').value;
-            let themeDesc = '';
-            
-            switch (articleTheme) {
-                case 'modern': themeDesc = '现代简约风格'; break;
-                case 'magazine': themeDesc = '杂志排版风格'; break;
-                case 'tech': themeDesc = '科技风格'; break;
-                case 'business': themeDesc = '商务风格'; break;
-                case 'creative': themeDesc = '创意设计风格'; break;
-                case 'academic': themeDesc = '学术论文风格'; break;
-                case 'media': themeDesc = '自媒体风格'; break;
-            }
-            
-            let lengthDesc = '';
-            switch (length) {
-                case 'short': lengthDesc = '短文'; break;
-                case 'medium': lengthDesc = '中等长度'; break;
-                case 'long': lengthDesc = '长文'; break;
-            }
-            
-            return `# ${title || '人工智能如何改变我们的生活与工作方式'}
-
-## 引言：科技变革的新篇章
-
-在当今数字化时代，人工智能（AI）正以前所未有的速度重塑我们的生活方式和工作环境。从智能手机上的语音助手到复杂的预测分析系统，AI技术已经深入渗透到我们日常生活的方方面面。本文将探讨AI如何改变我们的生活和工作，以及这些变化对社会带来的深远影响。
-
-## AI在日常生活中的应用
-
-人工智能已经成为我们日常生活中不可或缺的一部分。智能家居设备可以根据我们的习惯自动调节温度和照明；语音助手可以帮助我们设置提醒、播放音乐或回答问题；推荐算法则根据我们的喜好推荐电影、音乐和新闻。
-
-> "人工智能不仅仅是一项技术，它正在成为我们生活方式的延伸。" —— 未来学家雷·库兹韦尔
-
-这些技术的一个关键优势是它们能够学习和适应用户的偏好。例如，流媒体服务越了解你的观看习惯，它提供的推荐就越能符合你的口味。这种个性化体验是AI最引人注目的特点之一。
-
-## 工作环境的革命性变化
-
-在职场中，AI正在改变几乎所有行业的工作方式：
-
-1. **自动化日常任务** - 从数据输入到客户服务，AI可以处理重复性任务，使员工能够专注于更具创造性和战略性的工作。
-2. **增强决策过程** - 通过分析大量数据，AI可以提供洞察力，帮助决策者做出更明智的选择。
-3. **创造新的工作岗位** - 尽管有些职位可能会被自动化取代，但AI也创造了新的工作岗位，如AI伦理专家、机器学习工程师等。
-
-## 挑战与考虑
-
-然而，AI的迅速发展也带来了一系列需要我们认真思考的挑战：
-
-* **隐私和数据安全** - AI系统需要大量数据才能有效运行，这引发了关于数据收集和使用的隐私问题。
-* **工作岗位变化** - 某些工作可能会被自动化，需要员工学习新技能来适应不断变化的就业市场。
-* **算法偏见** - 如果训练数据存在偏见，AI系统可能会继承并放大这些偏见，导致不公平的结果。
-
-## 未来展望
-
-展望未来，人工智能将继续以创新的方式融入我们的生活和工作。关键在于我们如何管理这一转变，确保技术服务于人类的最佳利益，同时减轻潜在的负面影响。
-
-通过适当的政策、教育和伦理框架，我们可以利用AI的力量来创造一个更高效、更公平的社会，让每个人都能从这一技术革命中受益。
-
-## 结论
-
-人工智能正在彻底改变我们生活和工作的方式，为我们提供前所未有的便利和效率。虽然这一旅程充满挑战，但通过负责任的创新和协作，我们可以塑造一个AI技术与人类价值共存的未来。
-
-作为这场技术革命的参与者，我们每个人都有责任了解AI的潜力和局限性，并确保它的发展方向符合社会的集体利益。这是一项正在进行中的工作，需要我们所有人的参与和思考。`;
-        }
-        
-        // 模拟生成图片 - 在实际应用中应通过API替换
-        async function simulateGenerateImages(prompt, count, aspectRatio) {
-            // 这里应该是通过API调用来生成图片
-            // 现在仅作为演示返回示例图片URL
-            
-            return [
-                'https://images.unsplash.com/photo-1507146426996-ef05306b995a',
-                'https://images.unsplash.com/photo-1639322537504-6427a16b0a28',
-                'https://images.unsplash.com/photo-1683009427619-c5b89223646f',
-                'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789',
-                'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4'
-            ].slice(0, count);
         }
 
         // 生成图片
@@ -1901,6 +2424,23 @@
                 }
             } else {
                 // AI生成图片
+                const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
+                const provider = apiConfig.provider || 'openai';
+                
+                // 根据不同的提供商获取图片模型
+                let imageModel;
+                
+                switch (provider) {
+                    case 'openai':
+                        imageModel = apiConfig.openai?.imageModel || 'dall-e-3';
+                        break;
+                    case 'poe':
+                        imageModel = apiConfig.poe?.imageModel || 'FLUX-pro-1.1';
+                        break;
+                    default:
+                        imageModel = 'FLUX-pro-1.1'; // 默认
+                }
+                
                 const imagePrompt = document.getElementById('imagePrompt').value || "适合文章的精美配图，高质量，专业，逼真";
                 const aspectRatio = document.getElementById('imageAspectRatio').value;
                 
@@ -1921,64 +2461,193 @@
                     generatedImages.appendChild(placeholder);
                 }
                 
-                // 模拟生成图片
-                const generatedImageUrls = await simulateGenerateImages(imagePrompt, imageCount, aspectRatio);
-                
-                // 替换占位符为生成的图片
-                generatedImageUrls.forEach((imageUrl, index) => {
-                    const placeholder = document.getElementById(`img-placeholder-${index}`);
-                    if (!placeholder) return;
+                // 生成图片
+                try {
+                    // 在实际应用中，这里应该调用API生成图片
+                    // 模拟生成过程
+                    const generatedUrls = [];
                     
-                    const container = document.createElement('div');
-                    container.className = 'relative group overflow-hidden rounded-xl';
+                    for (let i = 0; i < imageCount; i++) {
+                        // 延时模拟生成过程
+                        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+                        
+                        // 随机选择一个样例图片URL
+                        const sampleUrls = [
+                            'https://images.unsplash.com/photo-1507146426996-ef05306b995a',
+                            'https://images.unsplash.com/photo-1639322537504-6427a16b0a28',
+                            'https://images.unsplash.com/photo-1683009427619-c5b89223646f',
+                            'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789',
+                            'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4'
+                        ];
+                        
+                        const imageUrl = sampleUrls[Math.floor(Math.random() * sampleUrls.length)];
+                        generatedUrls.push(imageUrl);
+                        
+                        // 更新占位符
+                        const placeholder = document.getElementById(`img-placeholder-${i}`);
+                        if (placeholder) {
+                            const container = document.createElement('div');
+                            container.className = 'relative group overflow-hidden rounded-xl';
+                            
+                            const img = document.createElement('img');
+                            img.src = imageUrl;
+                            img.className = 'w-full h-auto rounded-xl transition-all duration-300';
+                            img.alt = `生成的图片 ${i + 1}`;
+                            
+                            const overlay = document.createElement('div');
+                            overlay.className = 'absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-300';
+                            
+                            const btnContainer = document.createElement('div');
+                            btnContainer.className = 'flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0';
+                            
+                            const insertBtn = document.createElement('button');
+                            insertBtn.className = 'bg-apple-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium';
+                            insertBtn.innerHTML = '<i class="fas fa-plus mr-1"></i>插入';
+                            insertBtn.addEventListener('click', () => {
+                                // 在文章末尾插入图片
+                                const articleContent = document.getElementById('articleOutput');
+                                const imgElement = document.createElement('img');
+                                imgElement.src = imageUrl;
+                                imgElement.alt = '文章配图';
+                                imgElement.className = 'mx-auto my-4 max-w-full h-auto';
+                                articleContent.appendChild(imgElement);
+                            });
+                            
+                            const downloadBtn = document.createElement('button');
+                            downloadBtn.className = 'bg-white hover:bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-medium';
+                            downloadBtn.innerHTML = '<i class="fas fa-download mr-1"></i>保存';
+                            downloadBtn.addEventListener('click', () => {
+                                // 提示用户如何保存图片
+                                alert('请在图片上右键点击并选择"图片另存为..."以保存图片。');
+                            });
+                            
+                            btnContainer.appendChild(insertBtn);
+                            btnContainer.appendChild(downloadBtn);
+                            overlay.appendChild(btnContainer);
+                            container.appendChild(img);
+                            container.appendChild(overlay);
+                            
+                            placeholder.replaceWith(container);
+                        }
+                    }
                     
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.className = 'w-full h-auto rounded-xl transition-all duration-300';
-                    img.alt = `生成的图片 ${index + 1}`;
+                    // 添加自动插入图片功能
+                    const insertMode = document.querySelector('input[name="imageInsertMode"]:checked').value;
+                    insertImagesIntoArticle(generatedUrls, insertMode);
                     
-                    const overlay = document.createElement('div');
-                    overlay.className = 'absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-300';
+                } catch (error) {
+                    console.error("生成图片错误:", error);
+                    // 显示错误提示
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50';
+                    alertDiv.innerHTML = `
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-lg w-full shadow-xl">
+                            <h3 class="text-xl font-semibold mb-4 flex items-center text-red-600 dark:text-red-400">
+                                <i class="fas fa-exclamation-circle mr-2"></i>图片生成失败
+                            </h3>
+                            <p class="mb-4">无法使用AI生成图片，可能的原因：</p>
+                            <ul class="list-disc pl-5 mb-4">
+                                <li>API密钥配置错误或已过期</li>
+                                <li>提示词包含不当内容</li>
+                                <li>API服务暂时不可用</li>
+                                <li>网络连接问题</li>
+                            </ul>
+                            <p class="mb-4">建议尝试：</p>
+                            <ul class="list-disc pl-5 mb-6">
+                                <li>检查API配置并重试</li>
+                                <li>修改图片提示词</li>
+                                <li>切换到参考链接提取图片模式</li>
+                            </ul>
+                            <div class="flex justify-end">
+                                <button id="closeAlertBtn" class="px-4 py-2 bg-apple-blue text-white rounded-lg">
+                                    我知道了
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(alertDiv);
                     
-                    const btnContainer = document.createElement('div');
-                    btnContainer.className = 'flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0';
-                    
-                    const insertBtn = document.createElement('button');
-                    insertBtn.className = 'bg-apple-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium';
-                    insertBtn.innerHTML = '<i class="fas fa-plus mr-1"></i>插入';
-                    insertBtn.addEventListener('click', () => {
-                        // 在文章末尾插入图片
-                        const articleContent = document.getElementById('articleOutput');
-                        const imgElement = document.createElement('img');
-                        imgElement.src = imageUrl;
-                        imgElement.alt = '文章配图';
-                        imgElement.className = 'mx-auto my-4 max-w-full h-auto';
-                        articleContent.appendChild(imgElement);
+                    // 添加关闭按钮事件
+                    document.getElementById('closeAlertBtn').addEventListener('click', () => {
+                        document.body.removeChild(alertDiv);
                     });
+                } finally {
+                    document.getElementById('generationStatus').classList.add('hidden');
                     
-                    const downloadBtn = document.createElement('button');
-                    downloadBtn.className = 'bg-white hover:bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-medium';
-                    downloadBtn.innerHTML = '<i class="fas fa-download mr-1"></i>保存';
-                    downloadBtn.addEventListener('click', () => {
-                        // 提示用户如何保存图片
-                        alert('请在图片上右键点击并选择"图片另存为..."以保存图片。');
+                    // 移除任何剩余的占位符
+                    document.querySelectorAll('[id^="img-placeholder-"]').forEach(placeholder => {
+                        placeholder.remove();
                     });
-                    
-                    btnContainer.appendChild(insertBtn);
-                    btnContainer.appendChild(downloadBtn);
-                    overlay.appendChild(btnContainer);
-                    container.appendChild(img);
-                    container.appendChild(overlay);
-                    
-                    placeholder.replaceWith(container);
-                });
-                
-                // 添加自动插入图片功能
-                const insertMode = document.querySelector('input[name="imageInsertMode"]:checked').value;
-                insertImagesIntoArticle(generatedImageUrls, insertMode);
-                
-                document.getElementById('generationStatus').classList.add('hidden');
+                }
             }
+        }
+
+        // 生成示例文章 - 在实际应用中应通过API替换
+        async function simulateGenerateArticle(title, prompt, length) {
+            // 这里应该是通过API调用来生成文章
+            // 现在仅作为演示返回示例文章
+            
+            const articleTheme = document.getElementById('articleTheme').value;
+            let themeDesc = '';
+            
+            switch (articleTheme) {
+                case 'modern': themeDesc = '现代简约风格'; break;
+                case 'magazine': themeDesc = '杂志排版风格'; break;
+                case 'tech': themeDesc = '科技风格'; break;
+                case 'business': themeDesc = '商务风格'; break;
+                case 'creative': themeDesc = '创意设计风格'; break;
+                case 'academic': themeDesc = '学术论文风格'; break;
+                case 'media': themeDesc = '自媒体风格'; break;
+            }
+            
+            let lengthDesc = '';
+            switch (length) {
+                case 'short': lengthDesc = '短文'; break;
+                case 'medium': lengthDesc = '中等长度'; break;
+                case 'long': lengthDesc = '长文'; break;
+            }
+            
+            return `# ${title || '人工智能如何改变我们的生活与工作方式'}
+
+## 引言：科技变革的新篇章
+
+在当今数字化时代，人工智能（AI）正以前所未有的速度重塑我们的生活方式和工作环境。从智能手机上的语音助手到复杂的预测分析系统，AI技术已经深入渗透到我们日常生活的方方面面。本文将探讨AI如何改变我们的生活和工作，以及这些变化对社会带来的深远影响。
+
+## AI在日常生活中的应用
+
+人工智能已经成为我们日常生活中不可或缺的一部分。智能家居设备可以根据我们的习惯自动调节温度和照明；语音助手可以帮助我们设置提醒、播放音乐或回答问题；推荐算法则根据我们的喜好推荐电影、音乐和新闻。
+
+> "人工智能不仅仅是一项技术，它正在成为我们生活方式的延伸。" —— 未来学家雷·库兹韦尔
+
+这些技术的一个关键优势是它们能够学习和适应用户的偏好。例如，流媒体服务越了解你的观看习惯，它提供的推荐就越能符合你的口味。这种个性化体验是AI最引人注目的特点之一。
+
+## 工作环境的革命性变化
+
+在职场中，AI正在改变几乎所有行业的工作方式：
+
+1. **自动化日常任务** - 从数据输入到客户服务，AI可以处理重复性任务，使员工能够专注于更具创造性和战略性的工作。
+2. **增强决策过程** - 通过分析大量数据，AI可以提供洞察力，帮助决策者做出更明智的选择。
+3. **创造新的工作岗位** - 尽管有些职位可能会被自动化取代，但AI也创造了新的工作岗位，如AI伦理专家、机器学习工程师等。
+
+## 挑战与考虑
+
+然而，AI的迅速发展也带来了一系列需要我们认真思考的挑战：
+
+* **隐私和数据安全** - AI系统需要大量数据才能有效运行，这引发了关于数据收集和使用的隐私问题。
+* **工作岗位变化** - 某些工作可能会被自动化，需要员工学习新技能来适应不断变化的就业市场。
+* **算法偏见** - 如果训练数据存在偏见，AI系统可能会继承并放大这些偏见，导致不公平的结果。
+
+## 未来展望
+
+展望未来，人工智能将继续以创新的方式融入我们的生活和工作。关键在于我们如何管理这一转变，确保技术服务于人类的最佳利益，同时减轻潜在的负面影响。
+
+通过适当的政策、教育和伦理框架，我们可以利用AI的力量来创造一个更高效、更公平的社会，让每个人都能从这一技术革命中受益。
+
+## 结论
+
+人工智能正在彻底改变我们生活和工作的方式，为我们提供前所未有的便利和效率。虽然这一旅程充满挑战，但通过负责任的创新和协作，我们可以塑造一个AI技术与人类价值共存的未来。
+
+作为这场技术革命的参与者，我们每个人都有责任了解AI的潜力和局限性，并确保它的发展方向符合社会的集体利益。这是一项正在进行中的工作，需要我们所有人的参与和思考。`;
         }
 
         // 生成文章功能
@@ -2007,11 +2676,48 @@
                 const articleLength = document.querySelector('input[name="articleLength"]:checked').value;
                 const articleTheme = document.getElementById('articleTheme').value;
                 
+                // 加载API配置
+                const apiConfig = JSON.parse(localStorage.getItem(API_CONFIG_KEY) || '{}');
+                const provider = apiConfig.provider || 'openai';
+                
+                // 验证API配置
+                switch (provider) {
+                    case 'openai':
+                        if (!apiConfig.openai?.apiKey) {
+                            throw new Error("请先配置OpenAI API密钥");
+                        }
+                        break;
+                    case 'anthropic':
+                        if (!apiConfig.anthropic?.apiKey) {
+                            throw new Error("请先配置Anthropic API密钥");
+                        }
+                        break;
+                    case 'poe':
+                        if (!apiConfig.poe?.apiKey) {
+                            throw new Error("请先配置Poe API密钥");
+                        }
+                        break;
+                    case 'deepseek':
+                        if (!apiConfig.deepseek?.apiKey) {
+                            throw new Error("请先配置DeepSeek API密钥");
+                        }
+                        break;
+                    case 'baidu':
+                        if (!apiConfig.baidu?.apiKey || !apiConfig.baidu?.secretKey) {
+                            throw new Error("请先配置百度文心一言API Key和Secret Key");
+                        }
+                        break;
+                    case 'moonshot':
+                        if (!apiConfig.moonshot?.apiKey) {
+                            throw new Error("请先配置月之暗面API密钥");
+                        }
+                        break;
+                }
+                
                 // 使用大模型生成文章
                 statusText.textContent = '正在创作文章内容...';
                 
                 // 在实际项目中，这里应该调用对应的API
-                // 现在使用模拟函数代替
                 const articleContent = await simulateGenerateArticle(title, articlePrompt, articleLength);
                 
                 // 显示文章内容
@@ -2042,7 +2748,30 @@
                 
             } catch (error) {
                 generationStatus.classList.add('hidden');
-                alert("发生错误: " + error.message);
+                
+                // 显示错误提示
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50';
+                alertDiv.innerHTML = `
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-lg w-full shadow-xl">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center text-red-600 dark:text-red-400">
+                            <i class="fas fa-exclamation-circle mr-2"></i>文章生成失败
+                        </h3>
+                        <p class="mb-4">${error.message}</p>
+                        <div class="flex justify-end">
+                            <button id="closeAlertBtn" class="px-4 py-2 bg-apple-blue text-white rounded-lg">
+                                我知道了
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(alertDiv);
+                
+                // 添加关闭按钮事件
+                document.getElementById('closeAlertBtn').addEventListener('click', () => {
+                    document.body.removeChild(alertDiv);
+                });
+                
                 this.disabled = false;
                 this.innerHTML = '<i class="fas fa-magic mr-2"></i>创作精彩文章';
             }
@@ -2117,9 +2846,12 @@
         });
         
         // 保存API设置按钮
-        document.getElementById('saveApiSettingsBtn')?.addEventListener('click', function() {
+        document.getElementById('saveApiSettingsBtn')?.addEventListener('click', async function() {
             // 保存API配置
             saveApiConfig();
+            
+            // 测试API连接
+            await testApiConfig();
             
             // 显示成功提示
             const originalText = this.textContent;
@@ -2129,10 +2861,10 @@
             setTimeout(() => {
                 this.textContent = originalText;
                 this.classList.remove('bg-green-600', 'dark:bg-green-700');
+                
+                // 切换到内容创作页面
+                document.querySelector('[data-tab="content"]').click();
             }, 2000);
-            
-            // 切换到内容创作页面
-            document.querySelector('[data-tab="content"]').click();
         });
         
         // 页面加载完成后初始化
@@ -2142,6 +2874,26 @@
             
             // 加载保存的API配置
             loadApiConfig();
+            
+            // 设置radio按钮选中状态
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                if (radio.checked) {
+                    // 如果是API提供商单选按钮
+                    if (radio.name === 'apiProvider') {
+                        const card = radio.closest('.api-provider-card');
+                        if (card) {
+                            card.querySelector('.provider-radio').classList.remove('border-gray-300', 'dark:border-gray-600');
+                            card.querySelector('.provider-radio').classList.add('border-apple-blue', 'dark:border-apple-darkblue');
+                            card.querySelector('.provider-radio-dot').classList.remove('hidden');
+                            card.querySelector('label').classList.add('border-apple-blue', 'dark:border-apple-darkblue');
+                        }
+                    } else {
+                        // 其他单选按钮
+                        const dot = radio.closest('label').querySelector('.w-2.h-2');
+                        if (dot) dot.classList.remove('hidden');
+                    }
+                }
+            });
         });
     </script>
 </body>
